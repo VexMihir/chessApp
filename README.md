@@ -1,1 +1,1 @@
-# chessApp
+# Chess App
