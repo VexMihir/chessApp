@@ -3,7 +3,6 @@
 
 **Team Members:** Dan Blustein, Mihir Bhandari, Jason Lai, Alex Nguyen, Kevin Dang
 ## Design Document
-### TLDR
 This project implements an online chess game with multiplayer functionality. The application will allow its users to match and play chess games over the internet. The application will provide real-time updates, handle network issues and allow the retrieval and playback of saved games.
 
 **Primary Technologies:** Node.js, Express.js, Socket.io, React.js, and MongoDB, CSS.
