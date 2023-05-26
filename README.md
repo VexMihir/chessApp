@@ -24,12 +24,12 @@ This project implements an online chess game with multiplayer functionality. The
 ### Project task requirements
 
 #### Minimal Requirements:
-- 1. Allows people to play Chess games over the internet.
+1. Allows people to play Chess games over the internet.
 	-   Stable connection.
 	-  Real Time
-- 2. Room System.
+2. Room System.
 	-   Users will be able to select a game room to play another player in. The only input really required from the user is some temporary username.
-- 3. Be able to represent a chess game on a UI using React and CSS.
+3. Be able to represent a chess game on a UI using React and CSS.
 #### Standard Requirements:
    - Users should be able to offer a draw or resign (forfeit) the game
 -   Having the last 100 games on the website posted somewhere, where users can click and playback the game.
