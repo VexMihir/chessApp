@@ -1,4 +1,4 @@
-# CPSC 455 Project
+# CPSC 455 Project 
 **Team Name:** JAMDK
 
 **Team Members:** Dan Blustein, Mihir Bhandari, Jason Lai, Alex Nguyen, Kevin Dang
