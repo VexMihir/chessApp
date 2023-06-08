@@ -1,21 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
+import ChessApp from './ChessApp';
 import reportWebVitals from './reportWebVitals';
 
 import io from 'socket.io-client';
 
-const socket = io('http://localhost:5001');
+// const socket = io('http://localhost:5001');
 
-socket.on('connect', function() {
-  console.log('Connected to server');
-});
+// socket.on('connect', function() {
+//   console.log('Connected to server');
+// });
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <ChessApp />
   </React.StrictMode>
 );
 
