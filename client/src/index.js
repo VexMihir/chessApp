@@ -3,8 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import ChessApp from './ChessApp';
 import reportWebVitals from './reportWebVitals';
-import SocketTesting from './SocketTestingApp';
-import reportWebVitals from './reportWebVitals';
+// import SocketTesting from './SocketTestingApp';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
