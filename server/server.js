@@ -1,3 +1,5 @@
+// We relied on ChatGPT and CoPilot to generate much of the following code. We understand it doe ;)
+
 const express = require('express');
 const cors = require('cors');
 const app = express();
@@ -19,19 +21,17 @@ server.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`)
 });
 
-rooms = {}
+let rooms = {};
 
 io.on('connect', (socket) => {
-  console.log('a user connected!');
+  console.log(`User ${socket.id} connected`);
 
   socket.on('disconnect', () => {
     console.log('user disconnected');
   });
 
-  // Listen for a createRoom event
   socket.on('createRoom', () => {
-    // Return a random room number
-    console.log('createRoom event received')
+    console.log('createRoom event received');
 
     const newUniqueRoomNumber = () => {
       const roomNumber = Math.floor(Math.random() * 1000000);
@@ -40,23 +40,41 @@ io.on('connect', (socket) => {
       } else {
         return roomNumber;
       }
-    }
+    };
 
-    const roomNumber = newUniqueRoomNumber();
-    socket.emit('joinedRoom', roomNumber);
+    const roomNumber = `${newUniqueRoomNumber()}`;
+    rooms[roomNumber] = true; // later we will replace this with a game object
     socket.join(roomNumber);
+    io.to(roomNumber).emit('joinedRoom', roomNumber); 
+    console.log(`Room ${roomNumber} created`)
   });
 
-  // Listen for a joinRoom event
-  socket.on('joinRoom', (roomNumber) => {
-    // Check if the number of clients in the room is less than 2
-    // If so, join the room
-    if (io.sockets.adapter.rooms.get(roomNumber).size < 2) {
+  socket.on('joinRoom', async (roomNumber) => {
+    console.log("joinRoom event received");
+
+    // Log the number of clients in the room, if the room exists
+    let roomExists = rooms[roomNumber]
+    if (roomExists) {
+      let clients = await io.in(roomNumber).fetchSockets();
+      
+      // Check if the room exists
+      if (clients) {
+        console.log(`There are ${clients.length} clients in room ${roomNumber} before joining`);
+      } else {
+        console.log(`There are 0 clients in room ${roomNumber} before joining. This should not happen.`);
+        socket.emit('error', 'Room does not exist')
+      }
       socket.join(roomNumber);
-      socket.emit('joinedRoom', roomNumber);
+
+      // for logging: the number of clients in the room after the join
+      clients = await io.in(roomNumber).fetchSockets();
+      console.log(`There are ${clients.length} clients in room ${roomNumber} after the join`);
+      io.to(roomNumber).emit('joinedRoom', roomNumber); 
+
     } else {
-      socket.emit('roomFull');
+      socket.emit('error', 'Room does not exist')
+      console.log('Error emitted - room does not exist')
+      return
     }
   });
-  
 });
