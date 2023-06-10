@@ -1,5 +1,3 @@
-// We relied on ChatGPT and CoPilot to generate much of the following code. We understand it doe ;)
-
 const express = require('express');
 const cors = require('cors');
 const app = express();
