@@ -1,0 +1,26 @@
+.navigation__ul {
+    position: fixed;
+    z-index: 2;
+    width: 200px;
+    height: 100vh;
+    background-color: #769656;
+    color: white;
+    border: solid 1px white;
+}
+
+.navigation__list {
+    font-size: x-large;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.navigation__list:hover {
+    background-color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
+}
+
+.navigation__button {
+    width: 100%;
+    font-size: xx-large;
+    cursor: pointer;
+}
