@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import ChessApp from './ChessApp';
 import reportWebVitals from './reportWebVitals';
+import {Provider} from "react-redux";
+
 
 import io from 'socket.io-client';
 
@@ -14,9 +16,11 @@ import io from 'socket.io-client';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  // <React.StrictMode>
-    <ChessApp />
-  // </React.StrictMode>
+  <React.StrictMode>
+      <Provider store={}>
+          <ChessApp />
+      </Provider>
+  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

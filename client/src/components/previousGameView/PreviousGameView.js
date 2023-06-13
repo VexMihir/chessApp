@@ -5,7 +5,9 @@ import "./style.css";
 import Navigation from "../navigation/Navigation";
 
 export default function PreviousGameView() {
+  const currIndx = useSelector()
   const [isNavigationClose, setIsNavigationClose] = useState(true);
+
   function handleClose() {
     if (isNavigationClose) {
       setIsNavigationClose(false);

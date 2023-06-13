@@ -3,5 +3,15 @@ export function indiPieceUpdate(payload) {
         type: INDIPIECEUPDATE,
         payload: payload
     }
+}
+export function startingPointUpdate() {
+    return {
+        type: STARTINGPOINT,
+    }
+}
 
+export function endingPointUpdate() {
+    return {
+        type: ENDINGPOINT,
+    }
 }
