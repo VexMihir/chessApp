@@ -1,0 +1,30 @@
+#PrevListMoveButtons {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    gridColumnGap: 2px;
+    margin: 5px 1px 5px 1px;
+}
+
+#PrevMoveListPanel {
+    height: 15rem;
+    line-height: 15;
+    margin: 1px 1px 1px 1px;
+    border: solid black;
+    overflow-y: scroll;
+    background-color: white;
+    color: black;
+    font-size: larger;
+}
+
+#moveChild {
+    margin-top: 1rem;
+    margin-left: 1rem;
+    height: 1rem;
+    display: grid;
+    grid-template-columns: 10% 45% 45%
+}
+
+#moveChild >* {
+    height: 1rem;
+    line-height: 1;
+}

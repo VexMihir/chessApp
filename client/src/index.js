@@ -7,6 +7,7 @@ import {Provider} from "react-redux";
 
 
 import io from 'socket.io-client';
+import {mainStore} from "./Redux/Store/mainStore";
 
 // const socket = io('http://localhost:5001');
 
@@ -17,7 +18,7 @@ import io from 'socket.io-client';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-      <Provider store={}>
+      <Provider store={mainStore}>
           <ChessApp />
       </Provider>
   </React.StrictMode>

@@ -1,10 +1,12 @@
-const PGN_INITIALSTATE = {
-    PNGOBJ: JSON.stringify({
-        prevMoveList: ["rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"]
+export const PGN_INITIALSTATE = {
+    PGNOBJ: JSON.stringify({
+        prevMoveListFEN: ["rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"],
+        prevMoveListLAN: [],
     }),
     currIdx: 0
 };
 
-const INDIPIECEUPDATE = "INDIPIECEUPDATE";
-const STARTINGPOINT = "STARTINGPOINT";
-const ENDINGPOINT = "ENDINGPOINT";
+export const INDIPIECEUPDATE = "INDIPIECEUPDATE";
+export const STARTINGPOINT = "STARTINGPOINT";
+export const ENDINGPOINT = "ENDINGPOINT";
+export const LOADGAME = "LOADGAME";

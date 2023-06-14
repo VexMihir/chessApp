@@ -1,4 +1,6 @@
-function pgnReducers(state = PGN_INITIALSTATE, action) {
+import {ENDINGPOINT, INDIPIECEUPDATE, LOADGAME, PGN_INITIALSTATE, STARTINGPOINT} from "../String/PGN_INITIALSTATE";
+
+export const pgnReducers = (state = PGN_INITIALSTATE, action) => {
 
     switch (action.type) {
         case INDIPIECEUPDATE: return {
@@ -16,5 +18,13 @@ function pgnReducers(state = PGN_INITIALSTATE, action) {
                 currIdx: PGNObj.prevMoveList.length - 1
             }
         }
+        case LOADGAME: {
+            return {
+                ...state,
+                currIdx: 0,
+                PGNOBJ: action.payload
+            }
+        }
+        default: return state
     }
 }

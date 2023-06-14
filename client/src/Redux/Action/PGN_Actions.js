@@ -1,3 +1,4 @@
+import {ENDINGPOINT, INDIPIECEUPDATE, LOADGAME, STARTINGPOINT} from "../String/PGN_INITIALSTATE";
 export function indiPieceUpdate(payload) {
     return {
         type: INDIPIECEUPDATE,
@@ -12,6 +13,13 @@ export function startingPointUpdate() {
 
 export function endingPointUpdate() {
     return {
-        type: ENDINGPOINT,
+        type: ENDINGPOINT
+    }
+}
+
+export function loadGameDB(payload) {
+    return {
+        type: LOADGAME,
+        payload: payload
     }
 }
