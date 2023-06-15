@@ -1,80 +1,81 @@
-// We relied on ChatGPT and CoPilot to generate much of the following code. We understand it doe ;)
-
 const express = require('express');
-const cors = require('cors');
-const app = express();
-const port = 5001;
-
 const http = require('http');
+const socketIo = require('socket.io');
+const cors = require('cors');
+
+const app = express();
 const server = http.createServer(app);
-const { Server } = require("socket.io");
-const io = new Server(server, {
+const io = socketIo(server, {
   cors: {
-    origin: "http://localhost:3000",  
-    methods: ["GET", "POST"] 
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+    allowedHeaders: ["my-custom-header"],
+    credentials: true
   }
 });
+const port = 5001;
 
 app.use(cors());
 
-server.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`)
+app.use(express.json());
+
+app.get('/', (req, res) => {
+  res.send("Welcome to the game!")
 });
 
 let rooms = {};
 
-io.on('connect', (socket) => {
-  console.log(`User ${socket.id} connected`);
-
-  socket.on('disconnect', () => {
-    console.log('user disconnected');
-  });
-
-  socket.on('createRoom', () => {
-    console.log('createRoom event received');
-
-    const newUniqueRoomNumber = () => {
-      const roomNumber = Math.floor(Math.random() * 1000000);
-      if (rooms[roomNumber]) {
-        return newUniqueRoomNumber();
-      } else {
-        return roomNumber;
-      }
-    };
-
-    const roomNumber = `${newUniqueRoomNumber()}`;
-    rooms[roomNumber] = true; // later we will replace this with a game object
-    socket.join(roomNumber);
-    io.to(roomNumber).emit('joinedRoom', roomNumber); 
-    console.log(`Room ${roomNumber} created`)
-  });
-
-  socket.on('joinRoom', async (roomNumber) => {
-    console.log("joinRoom event received");
-
-    // Log the number of clients in the room, if the room exists
-    let roomExists = rooms[roomNumber]
-    if (roomExists) {
-      let clients = await io.in(roomNumber).fetchSockets();
-      
-      // Check if the room exists
-      if (clients) {
-        console.log(`There are ${clients.length} clients in room ${roomNumber} before joining`);
-      } else {
-        console.log(`There are 0 clients in room ${roomNumber} before joining. This should not happen.`);
-        socket.emit('error', 'Room does not exist')
-      }
-      socket.join(roomNumber);
-
-      // for logging: the number of clients in the room after the join
-      clients = await io.in(roomNumber).fetchSockets();
-      console.log(`There are ${clients.length} clients in room ${roomNumber} after the join`);
-      io.to(roomNumber).emit('joinedRoom', roomNumber); 
-
+app.get('/createGame', (req, res) => {
+  const newUniqueRoomNumber = () => {
+    const roomNumber = Math.floor(Math.random() * 1000000);
+    if (rooms[roomNumber]) {
+      return newUniqueRoomNumber();
     } else {
-      socket.emit('error', 'Room does not exist')
-      console.log('Error emitted - room does not exist')
-      return
+      return roomNumber;
+    }
+  };
+  const roomNumber = newUniqueRoomNumber();
+  rooms[roomNumber] = { players: [], scores: [0, 0] };
+  res.send({ roomNumber });
+});
+
+io.on('connection', (socket) => {
+  console.log('New client connected');
+
+  socket.on('join room', (roomNumber) => {
+    if (rooms[roomNumber]) {
+      socket.join(roomNumber);
+      rooms[roomNumber].players.push(socket.id);
+
+      if (rooms[roomNumber].players.length === 2) {
+        io.to(roomNumber).emit('start game');
+      }
+    } else {
+      console.log(`Room ${roomNumber} does not exist`);
     }
   });
+
+  socket.on('click', (roomNumber) => {
+    if (rooms[roomNumber]) {
+      const playerIndex = rooms[roomNumber].players.indexOf(socket.id);
+      rooms[roomNumber].scores[playerIndex]++;
+
+      if (rooms[roomNumber].scores[playerIndex] === 3) {
+        io.to(roomNumber).emit('game over', playerIndex);
+        delete rooms[roomNumber];
+      } else {
+        io.to(roomNumber).emit('score update', rooms[roomNumber].scores);
+      }
+    }
+  });
+
+  socket.on('disconnect', () => {
+    console.log('Client disconnected');
+  });
 });
+
+server.listen(port, () => {
+  console.log(`Server is running on http://localhost:${port}`);
+});
+
+module.exports = app; // for testing purposes

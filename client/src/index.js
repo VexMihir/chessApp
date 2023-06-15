@@ -1,14 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import ChessApp from './ChessApp';
 import reportWebVitals from './reportWebVitals';
-// import SocketTesting from './SocketTestingApp';
+import App from './App';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <ChessApp />
+    <App />
   </React.StrictMode>
 );
 
