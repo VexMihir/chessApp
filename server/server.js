@@ -35,7 +35,7 @@ app.get('/createGame', (req, res) => {
     }
   };
   const roomNumber = newUniqueRoomNumber();
-  rooms[roomNumber] = { players: [], scores: [0, 0] };
+  rooms[roomNumber] = { players: [], spectators: [], scores: [0, 0] };
   res.send({ roomNumber });
 });
 
@@ -44,6 +44,7 @@ io.on('connection', (socket) => {
 
   socket.on('join room', (roomNumber) => {
     if (rooms[roomNumber]) {
+      if (rooms[roomNumber].players.length < 2) {
       socket.join(roomNumber);
       rooms[roomNumber].players.push(socket.id);
 
@@ -51,9 +52,23 @@ io.on('connection', (socket) => {
         io.to(roomNumber).emit('start game');
       }
     } else {
-      console.log(`Room ${roomNumber} does not exist`);
+      socket.emit('room full', roomNumber);
+      console.log(`User ${socket.id} attempted to join room ${roomNumber}, which is full`);
     }
-  });
+  } else {
+    console.log(`Room ${roomNumber} does not exist`);
+  }
+});
+
+socket.on('join as spectator', (roomNumber) => {
+  if (rooms[roomNumber]) {
+    socket.join(roomNumber);
+    rooms[roomNumber].spectators.push(socket.id);
+    console.log(`User ${socket.id} joined as a spectator in room ${roomNumber}`);
+  } else {
+    console.log(`Room ${roomNumber} does not exist`);
+  }
+});
 
   socket.on('click', (roomNumber) => {
     if (rooms[roomNumber]) {
@@ -71,6 +86,12 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', () => {
     console.log('Client disconnected');
+    const roomNumber = Object.keys(rooms).find((key) =>
+      rooms[key].players.includes(socket.id)
+    );
+    if (roomNumber) {
+      io.to(roomNumber).emit('player disconnected', roomNumber);
+    }
   });
 });
 
