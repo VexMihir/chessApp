@@ -1,13 +1,20 @@
 .sideboard__main {
     display: flex;
     flex-direction: column;
-    /* justify-content: center; */
     justify-content: space-around;
-    /* background-color: cornflowerblue; */
-    width: 40%;
+    width: 50%;
     height: 100%;
     margin: auto;
     align-items: center;
+}
+
+.sideboard__section {
+    width: 90%;
+}
+
+.sideboard__buttonSection {
+    display: flex;
+    justify-content: space-around;
 }
 
 .sideboard__button {
@@ -21,11 +28,11 @@
     font-weight: bold;
     background-color: #eeeed2;
     border-radius:10px;
+    font-size: x-large;
+    width: 200px;
 }
 
 .sideboard__button_elevated:hover {
     background-color: #eeeed2bd;
 }
 
-.sideboard__button_elevated:active {
-}
