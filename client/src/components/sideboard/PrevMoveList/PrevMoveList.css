@@ -1,0 +1,18 @@
+.PrevMoveListWhole {
+    border: double black;
+    height: fit-content;
+    background-color: darkblue;
+    padding: 2rem;
+}
+
+.ButtonPanel {
+    margin: 1rem 1rem 1rem 1rem;
+    display: inline-block;
+}
+
+.ButtonPanel >* {
+    margin: 0.20rem 0.20rem;
+    background-color: #040404;
+    color: white;
+    font-size: medium;
+}

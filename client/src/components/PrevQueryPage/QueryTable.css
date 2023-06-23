@@ -1,0 +1,28 @@
+body {
+    background-color: #5928ed;
+    color: white;
+    font-size: 1em;
+}
+.QueryTable {
+    border-collapse: collapse;
+    margin: 3rem 0;
+    font-size: 0.9rem;
+    background-color: darkolivegreen;
+}
+.QueryTable thead tr {
+    background-color: darkslategray;
+    text-align: left;
+    font-weight: bold;
+    border-bottom: black;
+}
+
+.QueryTable th,
+.QueryTable td {
+    padding: 2rem 2rem;
+    font-size: 0.9rem
+}
+
+
+.QueryTable tbody tr:nth-of-type(even) {
+    background-color: darkslategray;
+}
