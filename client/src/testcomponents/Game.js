@@ -10,7 +10,6 @@ const Game = () => {
   const [opponentClicks, setOpponentClicks] = useState(0);
   const [gameOver, setGameOver] = useState(false);
   const [socket, setSocket] = useState(null); // Add this line
-  const [isDisconnected, setIsDisconnected] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -43,10 +42,9 @@ const Game = () => {
     });
 
     newSocket.on('player disconnected', (roomNumber) => {
-      if (roomId === roomNumber && !isDisconnected) {
-          setIsDisconnected(true);
-        // alert('Opponent disconnected');
-       //  navigate('/');
+      if (roomId === roomNumber) {
+        alert('Opponent disconnected');
+        navigate('/');
         
       }
     });
@@ -65,12 +63,6 @@ const Game = () => {
 
   return (
     <div>
-      {isDisconnected && (
-        <div className="disconnect-alert">
-          <p>Opponent disconnected. Do you want to reconnect?</p>
-          <button onClick={() => navigate('/')}>Go to Home</button>
-        </div>
-      )}
       <p>You have clicked {yourClicks} times.</p>
       <button onClick={handleClick} disabled={gameOver}>Click Me</button>
       <p>Your opponent has clicked {opponentClicks} times.</p>
