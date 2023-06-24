@@ -8,7 +8,8 @@ const Game = () => {
   const [opponentClicks, setOpponentClicks] = useState(0);
   const [gameOver, setGameOver] = useState(false);
   const [socket, setSocket] = useState(null);
-  const [users, setUsers] = useState([]); // Add users state
+  const [players, setPlayers] = useState([]);
+  const [spectators, setSpectators] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -16,7 +17,7 @@ const Game = () => {
     const newSocket = io('http://localhost:5001');
     setSocket(newSocket);
 
-    newSocket.emit('join room', roomId, getUsernameFromState()); // Pass username
+    newSocket.emit('join room', roomId, getUsernameFromState());
 
     newSocket.on('score update', (scores) => {
       setYourClicks(scores[0]);
@@ -35,7 +36,7 @@ const Game = () => {
     newSocket.on('room full', () => {
       const confirmSpectator = window.confirm('The room is full. Do you want to join as a spectator?');
       if (confirmSpectator) {
-        newSocket.emit('join as spectator', roomId, getUsernameFromState()); // Pass username
+        newSocket.emit('join as spectator', roomId, getUsernameFromState());
       } else {
         navigate('/');
       }
@@ -49,7 +50,8 @@ const Game = () => {
     });
 
     newSocket.on('user list update', (userList) => {
-      setUsers(userList);
+      setPlayers(userList.players);
+      setSpectators(userList.spectators);
     });
 
     return () => {
@@ -67,19 +69,28 @@ const Game = () => {
 
   const getUsernameFromState = () => {
     const locationState = location.state;
-    return locationState ? locationState.username : ""; // Retrieve username from state
+    return locationState ? locationState.username : '';
   };
 
   return (
     <div>
+      <h1>Room Number {roomId}</h1>
       <p>You have clicked {yourClicks} times.</p>
-      <button onClick={handleClick} disabled={gameOver}>Click Me</button>
+      <button onClick={handleClick} disabled={gameOver}>
+        Click Me
+      </button>
       <p>Your opponent has clicked {opponentClicks} times.</p>
       {gameOver && <p>Game Over</p>}
-      <h3>User List:</h3>
+      <h2>Players:</h2>
       <ul>
-        {users.map((user, index) => (
-          <li key={index}>{user}</li>
+        {players.map((player) => (
+          <li key={player.id}>{player.username}</li>
+        ))}
+      </ul>
+      <h2>Spectators:</h2>
+      <ul>
+        {spectators.map((spectator) => (
+          <li key={spectator.id}>{spectator.username}</li>
         ))}
       </ul>
     </div>

@@ -1,4 +1,3 @@
-// server.js
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
@@ -59,7 +58,10 @@ io.on('connection', (socket) => {
       console.log(`Room ${roomNumber} does not exist`);
     }
 
-    const userList = [...rooms[roomNumber].players.map(player => player.username), ...rooms[roomNumber].spectators.map(spectator => spectator.username)];
+    const userList = {
+      players: rooms[roomNumber].players,
+      spectators: rooms[roomNumber].spectators
+    };
     io.to(roomNumber).emit('user list update', userList);
   });
 
@@ -69,7 +71,10 @@ io.on('connection', (socket) => {
       rooms[roomNumber].spectators.push({ id: socket.id, username });
       console.log(`User ${socket.id} joined as a spectator in room ${roomNumber}`);
 
-      const userList = [...rooms[roomNumber].players.map(player => player.username), ...rooms[roomNumber].spectators.map(spectator => spectator.username)];
+      const userList = {
+        players: rooms[roomNumber].players,
+        spectators: rooms[roomNumber].spectators
+      };
       io.to(roomNumber).emit('user list update', userList);
     } else {
       console.log(`Room ${roomNumber} does not exist`);
@@ -100,7 +105,10 @@ io.on('connection', (socket) => {
       rooms[roomNumber].players = rooms[roomNumber].players.filter(player => player.id !== socket.id);
       rooms[roomNumber].spectators = rooms[roomNumber].spectators.filter(spectator => spectator.id !== socket.id);
 
-      const userList = [...rooms[roomNumber].players.map(player => player.username), ...rooms[roomNumber].spectators.map(spectator => spectator.username)];
+      const userList = {
+        players: rooms[roomNumber].players,
+        spectators: rooms[roomNumber].spectators
+      };
       io.to(roomNumber).emit('user list update', userList);
 
       io.to(roomNumber).emit('player disconnected', roomNumber);
