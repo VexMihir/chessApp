@@ -1,0 +1,51 @@
+.chessApp__page {
+    height: 100vh;
+  }
+  
+  .chessApp__page_theme {
+    background-color: #5928ed;
+    color: #ffffff;
+  }
+  
+  .chessApp__ul {
+    display: flex;
+    justify-content: space-between;
+    height: 100%;
+    align-items: center;
+    font-size: xx-large;
+  }
+  
+  .chessApp__nav {
+    height: 10vh;
+  }
+  
+  .chessApp__nav_theme {
+    background-color: #769656;
+  }
+  
+  .chessApp__threeBar {
+    font-size: 72px;
+    margin-left: 10px;
+  }
+
+  .chessApp__threeBar:hover {
+    cursor: pointer;
+  }
+  
+  .chessApp__timer {
+    padding: 10px;
+  }
+  
+  .chessApp__timer_theme {
+    border: solid 1px white;
+  }
+  
+  .chessApp__roomInfo {
+    margin-right: 10px;
+  }
+  
+  .chessApp__main {
+    display: flex;
+    height: 90vh;
+  }
+  

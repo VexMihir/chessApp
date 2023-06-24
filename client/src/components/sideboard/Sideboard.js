@@ -1,20 +1,38 @@
-import React from 'react'
-import UserList from './top/UserList'
-import PrevMovesList from './middle/PrevMovesList'
-import Forfeit from './bottom/Forfeit'
-import OfferDraw from './bottom/OfferDraw'
+import React from "react";
+import UserList from "./top/UserList";
+import { PrevMoveList } from "./PrevMoveList/PrevMoveList";
+import Forfeit from "./bottom/Forfeit";
+import OfferDraw from "./bottom/OfferDraw";
+import { PrevMovePrevButton } from "./PrevMoveList/Buttons/PrevMovePrevButtons";
 
-import './style.css'
+import "./style.css";
 
-export default function Sideboard() {
+export default function Sideboard(props) {
   return (
-    <div className='sideboard__main'>
-      <UserList />
-      <PrevMovesList />
-      <div>
-        <Forfeit />
-        <OfferDraw />
-      </div>
-    </div>
-  )
+    <>
+      {props.type === "inGame" ? (
+        <div className="sideboard__main">
+          <div className="sideboard__section">
+            <UserList />
+            <PrevMoveList />
+            <div className="sideboard__buttonSection">
+              <Forfeit />
+              <OfferDraw />
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="sideboard__main">
+          <div className="sideboard__section">
+            <UserList />
+            <PrevMoveList />
+
+            <div className="sideboard__buttonSection">
+              <PrevMovePrevButton />
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
 }

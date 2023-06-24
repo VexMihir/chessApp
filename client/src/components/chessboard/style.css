@@ -4,26 +4,27 @@
     align-items: center;
     justify-content: center;
     margin: auto;
-    width: 60%;
+    width: 50%;
     height: 100%;
     
 }
 
 .chessboard__row {
     display: flex;
+
 }
 
-.chessboard__grid {
-    width: 60px;
-    height: 60px;
+.chessboard__chessCell {
+    width: 75px;
+    height: 75px;
 }
 
-.chessboard__grid_light {
+.chessboard__chessCell_light {
     background-color: #eeeed2;
     color: black;
 }
 
-.chessboard__grid_dark {
+.chessboard__chessCell_dark {
     background-color: #769656;
     color: black;
 }
@@ -38,6 +39,15 @@
     /* Make the tag priority higher than its parent tag */
     position: relative;
     z-index: 1;
+}
+
+.chessboard__chessPiece:hover {
+    background-color: #f7f769;
+}
+
+.chessboard__chessPiece_empty {
+    color: transparent;
+    
 }
 
 

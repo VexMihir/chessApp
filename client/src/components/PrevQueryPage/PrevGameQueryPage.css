@@ -1,0 +1,21 @@
+.header {
+    font-size: xxx-large;
+    border-bottom: solid black;
+    padding: 1rem 2rem;
+    margin: 2rem;
+    text-align: center;
+}
+
+.header img {
+    width: 100px;
+    height: 100px;
+}
+
+.tableDB {
+    display: flex;
+    justify-content: center;
+}
+
+.tableDB > * {
+    width: 80%;
+}

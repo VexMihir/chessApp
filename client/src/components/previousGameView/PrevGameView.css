@@ -1,0 +1,7 @@
+.mainComponent {
+    display: flex;
+    column-gap: 5rem;
+    justify-content: center;
+    vertical-align: bottom;
+}
+  
