@@ -36,3 +36,12 @@
     transform: rotate(360deg);
   }
 }
+
+.disconnect-alert {
+  padding: 20px;
+  background-color: #ff0000;
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+}
