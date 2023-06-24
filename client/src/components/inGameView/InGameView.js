@@ -7,18 +7,18 @@ import Navigation from "../navigation/Navigation";
 
 export default function InGameView() {
 
-  const [isNavigationClose, setIsNavigationClose] = useState(true);
+  const [isNavigationOpen, setIsNavigationOpen] = useState(false);
   function handleClose() {
     console.log("line 11");
-    if (isNavigationClose) {
-      setIsNavigationClose(false);
+    if (isNavigationOpen) {
+      setIsNavigationOpen(false);
     } else {
-      setIsNavigationClose(true);
+      setIsNavigationOpen(true);
     }
   }
   return (
     <>
-      {isNavigationClose && (
+      {isNavigationOpen && (
         <>
           <Navigation onClose={handleClose} />
         </>
@@ -30,9 +30,6 @@ export default function InGameView() {
               <li onClick={handleClose}>≡</li>
             </div>
             <div className="chessApp__title">JAMDK Chess App</div>
-            <div className="chessApp__timer chessApp__timer_theme">
-              <li>Timer: 15:00</li>
-            </div>
             <div className="chessApp__roomInfo">
               <li>Room Info: 10</li>
             </div>
