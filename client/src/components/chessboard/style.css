@@ -1,3 +1,17 @@
+.chessboard__timer {
+    font-size: xx-large;
+}
+
+.chessboard__timer_theme {
+    border: solid 1px white;
+}
+
+.chessboard__top {
+    width: 700px;
+    display: flex;
+    font-size: xx-large;
+    justify-content: space-around;
+}
 .chessboard__main {
     display: flex;
     flex-direction: column;
