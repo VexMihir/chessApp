@@ -3,9 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import {Provider} from "react-redux";
-
-
-import io from 'socket.io-client';
+import ChessApp from "./ChessApp.js"
 import {mainStore} from "./Redux/Store/mainStore";
 
 // const socket = io('http://localhost:5001');
