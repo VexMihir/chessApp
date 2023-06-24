@@ -1,3 +1,4 @@
+// server.js
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
@@ -16,11 +17,10 @@ const io = socketIo(server, {
 const port = 5001;
 
 app.use(cors());
-
 app.use(express.json());
 
 app.get('/', (req, res) => {
-  res.send("Welcome to the game!")
+  res.send("Welcome to the game!");
 });
 
 let rooms = {};
@@ -42,37 +42,43 @@ app.get('/createGame', (req, res) => {
 io.on('connection', (socket) => {
   console.log('New client connected');
 
-  socket.on('join room', (roomNumber) => {
+  socket.on('join room', (roomNumber, username) => {
     if (rooms[roomNumber]) {
       if (rooms[roomNumber].players.length < 2) {
-      socket.join(roomNumber);
-      rooms[roomNumber].players.push(socket.id);
+        socket.join(roomNumber);
+        rooms[roomNumber].players.push({ id: socket.id, username });
 
-      if (rooms[roomNumber].players.length === 2) {
-        io.to(roomNumber).emit('start game');
+        if (rooms[roomNumber].players.length === 2) {
+          io.to(roomNumber).emit('start game');
+        }
+      } else {
+        socket.emit('room full', roomNumber);
+        console.log(`User ${socket.id} attempted to join room ${roomNumber}, which is full`);
       }
     } else {
-      socket.emit('room full', roomNumber);
-      console.log(`User ${socket.id} attempted to join room ${roomNumber}, which is full`);
+      console.log(`Room ${roomNumber} does not exist`);
     }
-  } else {
-    console.log(`Room ${roomNumber} does not exist`);
-  }
-});
 
-socket.on('join as spectator', (roomNumber) => {
-  if (rooms[roomNumber]) {
-    socket.join(roomNumber);
-    rooms[roomNumber].spectators.push(socket.id);
-    console.log(`User ${socket.id} joined as a spectator in room ${roomNumber}`);
-  } else {
-    console.log(`Room ${roomNumber} does not exist`);
-  }
-});
+    const userList = [...rooms[roomNumber].players.map(player => player.username), ...rooms[roomNumber].spectators.map(spectator => spectator.username)];
+    io.to(roomNumber).emit('user list update', userList);
+  });
+
+  socket.on('join as spectator', (roomNumber, username) => {
+    if (rooms[roomNumber]) {
+      socket.join(roomNumber);
+      rooms[roomNumber].spectators.push({ id: socket.id, username });
+      console.log(`User ${socket.id} joined as a spectator in room ${roomNumber}`);
+
+      const userList = [...rooms[roomNumber].players.map(player => player.username), ...rooms[roomNumber].spectators.map(spectator => spectator.username)];
+      io.to(roomNumber).emit('user list update', userList);
+    } else {
+      console.log(`Room ${roomNumber} does not exist`);
+    }
+  });
 
   socket.on('click', (roomNumber) => {
     if (rooms[roomNumber]) {
-      const playerIndex = rooms[roomNumber].players.indexOf(socket.id);
+      const playerIndex = rooms[roomNumber].players.findIndex(player => player.id === socket.id);
       rooms[roomNumber].scores[playerIndex]++;
 
       if (rooms[roomNumber].scores[playerIndex] === 3) {
@@ -87,9 +93,16 @@ socket.on('join as spectator', (roomNumber) => {
   socket.on('disconnect', () => {
     console.log('Client disconnected');
     const roomNumber = Object.keys(rooms).find((key) =>
-      rooms[key].players.includes(socket.id)
+      rooms[key].players.some(player => player.id === socket.id) ||
+      rooms[key].spectators.some(spectator => spectator.id === socket.id)
     );
     if (roomNumber) {
+      rooms[roomNumber].players = rooms[roomNumber].players.filter(player => player.id !== socket.id);
+      rooms[roomNumber].spectators = rooms[roomNumber].spectators.filter(spectator => spectator.id !== socket.id);
+
+      const userList = [...rooms[roomNumber].players.map(player => player.username), ...rooms[roomNumber].spectators.map(spectator => spectator.username)];
+      io.to(roomNumber).emit('user list update', userList);
+
       io.to(roomNumber).emit('player disconnected', roomNumber);
     }
   });
