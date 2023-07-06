@@ -2,7 +2,6 @@ const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
 const cors = require('cors');
-const ChessGame = require('./game/game.js');
 
 const app = express();
 const server = http.createServer(app);
@@ -35,13 +34,7 @@ app.get('/createGame', (req, res) => {
     }
   };
   const roomNumber = newUniqueRoomNumber();
-  // rooms[roomNumber] = { players: [], spectators: [], scores: [0, 0] };
-  // instead of instantiating the previous game with just scores, we need to instantiate it with the default Chess game state, plus players and spectators
-  rooms[roomNumber] = {
-    game: new ChessGame(),
-    players: [],
-    spectators: []
-  }
+  rooms[roomNumber] = { players: [], spectators: [], scores: [0, 0] };
   res.send({ roomNumber });
 });
 
@@ -88,29 +81,19 @@ io.on('connection', (socket) => {
     }
   });
 
-  socket.on('move', (roomNumber, move) => {
+  socket.on('click', (roomNumber) => {
     if (rooms[roomNumber]) {
-        try {
-            // could throw an error if the move is invalid
-            pieceMove = rooms[roomNumber].game.movePiece(move);
-            currentFen = rooms[roomNumber].game.getCurrentFEN();
-            validMoves = rooms[roomNumber].game.validMoves();
-            console.log(`Valid moves: ${validMoves}`)
-            io.to(roomNumber).emit('moveMade', move, currentFen, validMoves);
-        } catch (error) {
-            console.log(error);
-            // sending back an error message
-            socket.emit('errorMoving', `Error moving: ${error}`);
-            return;
-        }
-        // send back the move that was just made, the updated FEN, and the list of legal moves
-    } else {
-        console.log(`Room ${roomNumber} does not exist`);
-        // send back an error message
-        socket.emit('error', `Error moving: room ${roomNumber} does not exist`);
-    }
-    });
+      const playerIndex = rooms[roomNumber].players.findIndex(player => player.id === socket.id);
+      rooms[roomNumber].scores[playerIndex]++;
 
+      if (rooms[roomNumber].scores[playerIndex] === 3) {
+        io.to(roomNumber).emit('game over', playerIndex);
+        delete rooms[roomNumber];
+      } else {
+        io.to(roomNumber).emit('score update', rooms[roomNumber].scores);
+      }
+    }
+  });
 
   socket.on('disconnect', () => {
     console.log('Client disconnected');
