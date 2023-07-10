@@ -14,10 +14,12 @@ function ChessGame(state) {
 
     this.getGameState = function() {
         return {
-            gameOver: this.game.game_over(),
-            inCheckmate: this.game.in_checkmate(),
-            inStalemate: this.game.in_stalemate(),
-            inDraw: this.game.in_draw()
+            gameOver: this.game.isGameOver(),
+            inCheckmate: this.game.isCheckmate(),
+            inDraw: this.game.isDraw(),
+            drewByStalemate: this.game.isStalemate(),
+            drewByThreefoldRepetition: this.game.isThreefoldRepetition(),
+            drewByInsufficientMaterial: this.game.isInsufficientMaterial(),
         };
     };
 
@@ -47,20 +49,20 @@ function ChessGame(state) {
 
 module.exports = ChessGame;
 
-// Test cases
-let game = new ChessGame('-1');
-game.showBoard();
-try {
-    game.movePiece('e3');
-    game.showBoard();
-    game.movePiece('f6');
-    game.showBoard();
-    game.movePiece('f4');
-    game.showBoard();
-    game.movePiece('g5');
-    game.showBoard();
-    game.movePiece('Qh5');
-    game.showBoard();
-} catch (error) {
-    console.error(error.message);
-}
+// // Test cases
+// let game = new ChessGame('-1');
+// game.showBoard();
+// try {
+//     game.movePiece('e3');
+//     game.showBoard();
+//     game.movePiece('f6');
+//     game.showBoard();
+//     game.movePiece('f4');
+//     game.showBoard();
+//     game.movePiece('g5');
+//     game.showBoard();
+//     game.movePiece('Qh5');
+//     game.showBoard();
+// } catch (error) {
+//     console.error(error.message);
+// }
