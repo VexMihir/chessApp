@@ -41,7 +41,8 @@ app.get('/createGame', (req, res) => {
   rooms[roomNumber] = {
     game: new ChessGame(),
     players: [],
-    spectators: []
+    spectators: [],
+    currentPlayer: null
   }
   res.send({ roomNumber });
 });

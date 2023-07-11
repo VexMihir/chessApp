@@ -2,10 +2,14 @@ const handleJoinRoom = (io, socket, rooms) => (roomNumber, username) => {
     if (rooms[roomNumber]) {
         if (rooms[roomNumber].players.length < 2) {
             socket.join(roomNumber);
-            rooms[roomNumber].players.push({ id: socket.id, username });
-
+            let color = 'white';
+            if (rooms[roomNumber].players.length === 1) {
+              color = 'black';
+            }
+            rooms[roomNumber].players.push({ id: socket.id, username, color });
             if (rooms[roomNumber].players.length === 2) {
-                io.to(roomNumber).emit('start game');
+              rooms[roomNumber].currentPlayer = rooms[roomNumber].players[0].id;
+              io.to(roomNumber).emit('start game');
             }
         } else {
             socket.emit('room full', roomNumber);

@@ -46,12 +46,23 @@ const handleMove = (io, socket, rooms) => (roomNumber, move) => {
         socket.emit('error', `Error moving: room ${roomNumber} does not exist`);
         return;
     }
-
     const game = rooms[roomNumber].game;
+    const currentPlayer = rooms[roomNumber].currentPlayer;
+
+    if (socket.id !== currentPlayer) {
+        socket.emit('error', `It's not your turn`);
+        console.log(`User ${socket.id} attempted to move when it's not their turn`)
+        return;
+    }
+
     handleGameMove(game, move, io, roomNumber);
+  
     const gameState = game.getGameState();
-    
-    if (gameState.gameOver){
+  
+    // switch the current player after a valid move
+    rooms[roomNumber].currentPlayer = rooms[roomNumber].players.find(player => player.id !== currentPlayer).id;
+  
+    if(gameState.gameOver){
         handleDraw(gameState, io, roomNumber);
         handleCheckmate(gameState, io, roomNumber);
         pushHistoryToMongoAndManageDB(game, roomNumber);
