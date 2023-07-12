@@ -1,3 +1,5 @@
+const { EVENTS } = require('../aliases');
+
 const handleJoinAsSpectator = (io, socket, rooms) => (roomNumber, username) => {
     if (rooms[roomNumber]) {
         socket.join(roomNumber);
@@ -8,7 +10,7 @@ const handleJoinAsSpectator = (io, socket, rooms) => (roomNumber, username) => {
             players: rooms[roomNumber].players,
             spectators: rooms[roomNumber].spectators
         };
-        io.to(roomNumber).emit('user list update', userList);
+        io.to(roomNumber).emit(EVENTS.USER_LIST_UPDATE, userList);
     } else {
         console.log(`Room ${roomNumber} does not exist`);
     }

@@ -11,6 +11,7 @@ const Game = () => {
   const [fen, setFen] = useState(''); // FEN state
   const navigate = useNavigate();
   const location = useLocation();
+  const [timers, setTimers] = useState([0, 0]);
 
   useEffect(() => {
     const newSocket = io('http://localhost:5001');
@@ -44,6 +45,14 @@ const Game = () => {
       setSpectators(userList.spectators);
     });
 
+    newSocket.on('time update', (timerValues) => {
+      // since timerValues is a map, we need to convert it to an array, the keys are the times for each player
+      setTimers(Object.values(timerValues));
+
+
+      
+    });
+
     return () => {
       newSocket.off('moveMade');
       newSocket.disconnect();
@@ -61,6 +70,12 @@ const Game = () => {
   const getUsernameFromState = () => {
     const locationState = location.state;
     return locationState ? locationState.username : '';
+  };
+
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
   };
 
   return (
@@ -87,6 +102,12 @@ const Game = () => {
       </form>
       <h3>Current Game State (FEN):</h3>
       <p>{fen}</p>
+      <h3>Timers:</h3>
+      <ul>
+        {timers.map((timer, index) => (
+          <li key={index}>{formatTime(timer)}</li>
+        ))}
+      </ul>
     </div>
   );
 };

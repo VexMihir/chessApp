@@ -42,7 +42,9 @@ app.get('/createGame', (req, res) => {
     game: new ChessGame(),
     players: [],
     spectators: [],
-    currentPlayer: null
+    timers: {},
+    currentPlayer: null,
+    drawOffer: null
   }
   res.send({ roomNumber });
 });

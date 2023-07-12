@@ -1,3 +1,5 @@
+const { EVENTS } = require('../aliases');
+
 const handleDisconnect = (io, socket, rooms) => () => {
     console.log('Client disconnected');
     const roomNumber = Object.keys(rooms).find((key) =>
@@ -12,8 +14,8 @@ const handleDisconnect = (io, socket, rooms) => () => {
             players: rooms[roomNumber].players,
             spectators: rooms[roomNumber].spectators
         };
-        io.to(roomNumber).emit('user list update', userList);
-        io.to(roomNumber).emit('player disconnected', roomNumber);
+        io.to(roomNumber).emit(EVENTS.USER_LIST_UPDATE, userList);
+        io.to(roomNumber).emit(EVENTS.PLAYER_DISCONNECTED, roomNumber);
     }
 };
 
