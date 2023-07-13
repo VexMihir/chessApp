@@ -1,8 +1,8 @@
 const { Chess } = require("chess.js");
 
 // constructor for a chess game
-function ChessGame(state) {
-    this.game = state === "-1" ? new Chess() : new Chess(state);
+function ChessGame() {
+    this.game = new Chess()
 
     this.isValidFEN = function(fen) {
         return Chess.validateFen(fen).valid;

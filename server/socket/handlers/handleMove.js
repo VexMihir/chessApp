@@ -42,7 +42,7 @@ const handleCheckmate = (gameState, io, roomNumber) => {
     // TODO handle checkmate, emit events, etc
 };
 
-const handleMove = (io, socket, rooms) => (roomNumber, move) => {
+const handleMove = (io, socket, rooms, gameSchema, gameModel) => (roomNumber, move) => {
     if (!checkRoomExists(rooms, roomNumber)) {
         socket.emit('error', `Error moving: room ${roomNumber} does not exist`);
         return;
@@ -65,7 +65,7 @@ const handleMove = (io, socket, rooms) => (roomNumber, move) => {
     if (gameState.gameOver){
         handleNonOfferedDraw(gameState, io, roomNumber);
         handleCheckmate(gameState, io, roomNumber);
-        pushHistoryToMongoAndManageDB(game, roomNumber);
+        pushHistoryToMongoAndManageDB(rooms[roomNumber], gameSchema, gameModel);
     }
 };
 

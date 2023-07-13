@@ -7,13 +7,13 @@ const { EVENTS } = require('./aliases');
 
 let rooms;
 
-const init = (io, roomInstance) => {
+const init = (io, roomInstance, gameSchema, gameModel) => {
     rooms = roomInstance;
     io.on(EVENTS.CONNECTION, (socket) => {
         console.log('New client connected');
         socket.on(EVENTS.JOIN_ROOM, handleJoinRoom(io, socket, rooms));
         socket.on(EVENTS.JOIN_AS_SPECTATOR, handleJoinAsSpectator(io, socket, rooms));
-        socket.on(EVENTS.MOVE, handleMove(io, socket, rooms));
+        socket.on(EVENTS.MOVE, handleMove(io, socket, rooms, gameSchema, gameModel));
         socket.on(EVENTS.DISCONNECT, handleDisconnect(io, socket, rooms));
     });
 };
