@@ -1,10 +1,10 @@
 #PrevMoveListPanel {
-    height: 15rem;
+    height: 23rem;
     line-height: 15;
     margin: 1px 1px 1px 1px;
     border:  solid black;
     overflow-y: scroll;
-    background-color: black;
+    background-color: rgba(0, 0, 0, 0.78);
     color: white;
     font-size: larger;
 }

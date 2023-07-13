@@ -1,4 +1,4 @@
-import {ENDINGPOINT, INDIPIECEUPDATE, LOADGAME, PAUSEPREMOVELIST, STARTINGPOINT} from "../String/PGN_INITIALSTATE";
+import {ENDINGPOINT, INDIPIECEUPDATE, LOADGAME, PAUSEPREMOVELIST, STARTINGPOINT} from "../String/prevGameViewInit";
 export function indiPieceUpdate(payload) {
     return {
         type: INDIPIECEUPDATE,

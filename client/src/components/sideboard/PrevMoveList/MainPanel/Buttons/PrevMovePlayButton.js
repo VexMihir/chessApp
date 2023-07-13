@@ -1,7 +1,9 @@
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {pauseMoveList} from "../../../../Redux/Action/PGN_Actions";
-import {loadPageContinuously} from "../../../../Redux/Thunk/PrevMovePlayButton";
+import {pauseMoveList} from "../../../../../Redux/Action/prevGamViewActions";
+import {loadPageContinuously} from "../../../../../Redux/Thunk/PrevMovePlayButton";
+import {faCirclePlay} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 export function PrevMovePlayButton() {
     const dispatch = useDispatch()
@@ -28,14 +30,13 @@ export function PrevMovePlayButton() {
     }, [currIndx,  currPGNOBj.prevMoveListFEN.length])
 
     return (
-        <button
-            className={"PrevMoveList"}
-            key={"PrevMoveStarButton"}
+        <button className="bg-white hover:shadow-lg active:shadow-black
+        py-2 px-4 border border-gray-400 rounded"
             id={"PrevMoveStarButton"}
             disabled={setPlay}
             onClick={async (e) => {
                 await handleStartOnClick(e)
             }}
-        >PLAY</button>
+        ><FontAwesomeIcon icon={faCirclePlay} size={"xl"} alignmentBaseline={"central"}/></button>
     )
 }

@@ -1,6 +1,8 @@
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
-import {indiPieceUpdate, pauseMoveList} from "../../../../Redux/Action/PGN_Actions";
+import {indiPieceUpdate, pauseMoveList} from "../../../../../Redux/Action/prevGamViewActions";
+import {faCaretRight} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 export function PrevMoveNextButton() {
     const dispatch = useDispatch();
@@ -28,10 +30,12 @@ export function PrevMoveNextButton() {
 
 
     return (
-            <button
+        <button className="bg-white hover:bg-violet-900 active:shadow-violet-950
+        py-2 px-4 border border-gray-400 rounded"
+                key={"PrevMoveNextButton"}
                 id={"NextButtonP"}
                 onClick={(e) => handleNext(e)}
                 disabled={nextDisability}
-            >NEXT</button>
+            ><FontAwesomeIcon icon={faCaretRight} size={"xl"} alignmentBaseline={"central"}/></button>
     );
 }

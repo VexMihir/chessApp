@@ -1,4 +1,4 @@
-import {LOADOBJDATABASE} from "../String/prevGameView_INITIALSTATE";
+import {LOADOBJDATABASE} from "../String/prevGameQueryInit";
 
 export function loadDataBaseObj(payload) {
     return {

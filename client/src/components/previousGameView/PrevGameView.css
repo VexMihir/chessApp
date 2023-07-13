@@ -1,7 +1,8 @@
 .mainComponent {
     display: flex;
+    flex-direction: row;
     column-gap: 5rem;
     justify-content: center;
-    vertical-align: bottom;
+    align-items: flex-end;
 }
   

@@ -98,8 +98,8 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log('Client disconnected');
     const roomNumber = Object.keys(rooms).find((key) =>
-      rooms[key].players.some(player => player.id === socket.id) ||
-      rooms[key].spectators.some(spectator => spectator.id === socket.id)
+        rooms[key].players.some(player => player.id === socket.id) ||
+        rooms[key].spectators.some(spectator => spectator.id === socket.id)
     );
     if (roomNumber) {
       rooms[roomNumber].players = rooms[roomNumber].players.filter(player => player.id !== socket.id);

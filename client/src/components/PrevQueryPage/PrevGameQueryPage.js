@@ -1,27 +1,38 @@
-import {useSelector} from "react-redux";
-import {QueryTable} from "./QueryTable";
 import "./PrevGameQueryPage.css"
-export function PrevGameQueryPage() {
-    const pgnData = useSelector((state)=>state.PrevGameQuery);
+import {Outlet, useNavigate} from "react-router-dom";
+import {Pagination} from "./Pagnination/Pagination";
+import {useEffect} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {getDBObj} from "../../Redux/Thunk/PrevGameDB";
 
-    const getHeaders = (data) => {
-        let headerKeys = [];
-        const keys = Object.keys(data[0]);
-        for (let items of keys) {
-            if (typeof data[0][items] ===  "string" || typeof data[0][items] === "number") {
-                headerKeys.push(items)
-            }
+export function PrevGameQueryPage() {
+    const dispatch = useDispatch()
+    const initFlag = useSelector((state)=>state.PrevGameQuery.flag)
+    const navigate = useNavigate()
+    let flag = false;
+
+    useEffect(()=> {
+        if (flag) return;
+        if (!initFlag) {
+            dispatch(getDBObj())
         }
-        return headerKeys;
-    }
+        navigate("/previousGameView/1");
+        return (
+            () => {
+                flag = true;
+            }
+        )
+    }, [])
     return (
         <div >
             <div className={"header"}>
-                <img src={"https://static-00.iconduck.com/assets.00/chess-icon-2048x2048-fv5fz4v1.png"} />
                <h1>CHESS DATABASE</h1>
             </div>
-            <div className={"tableDB"}>
-                <QueryTable data={pgnData} dataKey={getHeaders(pgnData)} />
+            <div>
+                <Outlet />
+            </div>
+            <div>
+                <Pagination />
             </div>
         </div>
     )

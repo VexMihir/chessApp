@@ -3,11 +3,11 @@ import {
     INDIPIECEUPDATE,
     LOADGAME,
     PAUSEPREMOVELIST,
-    PGN_INITIALSTATE,
+    PrevGameViewInit,
     STARTINGPOINT
-} from "../String/PGN_INITIALSTATE";
+} from "../String/prevGameViewInit";
 
-export const pgnReducers = (state = PGN_INITIALSTATE, action) => {
+export const pgnReducers = (state = PrevGameViewInit, action) => {
 
     switch (action.type) {
         case INDIPIECEUPDATE: return {
@@ -37,6 +37,7 @@ export const pgnReducers = (state = PGN_INITIALSTATE, action) => {
             return {
                 ...state,
                 currIdx: 0,
+                playStatus: true,
                 PGNOBJ: action.payload
             }
         }
