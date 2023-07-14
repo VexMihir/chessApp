@@ -71,7 +71,8 @@ const handleMove = (io, socket, rooms, gameSchema, gameModel) => (roomNumber, mo
     if (gameState.gameOver){
         handleNonOfferedDraw(gameState, io, roomNumber);
         handleCheckmate(gameState, io, roomNumber, rooms);
-        pushHistoryToMongoAndManageDB(rooms[roomNumber], gameSchema, gameModel);
+        // this was pushHistoryToMongoAndManageDB before, changed it to pushToMongoAndManageDB -kevin
+        pushToMongoAndManageDB(rooms[roomNumber], gameSchema, gameModel);
     }
 };
 
