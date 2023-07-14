@@ -4,10 +4,7 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import {Provider} from "react-redux";
 import ChessApp from "./ChessApp.js"
-import App from "./App.js"
 import {mainStore} from "./Redux/Store/mainStore";
-
-// playground environment
 
 // const socket = io('http://localhost:5001');
 
@@ -19,7 +16,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <React.StrictMode>
         <Provider store={mainStore}>
-            <App />
+            <ChessApp />
         </Provider>
     </React.StrictMode>
 );
