@@ -38,8 +38,14 @@ const handleNonOfferedDraw = (gameState, io, roomNumber) => {
     }
 };
 
-const handleCheckmate = (gameState, io, roomNumber) => {
-    // TODO handle checkmate, emit events, etc
+const handleCheckmate = (gameState, io, roomNumber, rooms) => {
+    if (gameState.inCheckmate()) {
+        const currentPlayer = rooms[roomNumber].players.find(player => player.id === rooms[roomNumber].currentPlayer);
+        const winningPlayerColor = currentPlayer.color === 'White' ? 'Black' : 'White';
+        // For the room, set the winner to the player who is not the current player
+        rooms[roomNumber].winner = winningPlayerColor
+        io.to(roomNumber).emit(EVENTS.GAME_OVER_CHECKMATE, `${winningPlayerColor}`);
+    }
 };
 
 const handleMove = (io, socket, rooms, gameSchema, gameModel) => (roomNumber, move) => {
@@ -64,7 +70,7 @@ const handleMove = (io, socket, rooms, gameSchema, gameModel) => (roomNumber, mo
   
     if (gameState.gameOver){
         handleNonOfferedDraw(gameState, io, roomNumber);
-        handleCheckmate(gameState, io, roomNumber);
+        handleCheckmate(gameState, io, roomNumber, rooms);
         pushHistoryToMongoAndManageDB(rooms[roomNumber], gameSchema, gameModel);
     }
 };
