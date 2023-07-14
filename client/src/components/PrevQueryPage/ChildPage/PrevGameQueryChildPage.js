@@ -35,10 +35,10 @@ export function PrevGameQueryChildPage() {
 
     }
 
-
+    const data = parseSubArr(subArr)
     return (
         <div className={"tableDB"}>
-            <QueryTable data={parseSubArr(subArr)} dataKey={headers} />
+            <QueryTable data={data} />
         </div>
     )
 }

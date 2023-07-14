@@ -1,5 +1,5 @@
 import {useSelector} from "react-redux";
-import {Link, useParams} from "react-router-dom";
+import {Link, NavLink, useParams} from "react-router-dom";
 import {useState} from "react";
 
 export function Pagination() {
@@ -26,7 +26,7 @@ export function Pagination() {
         currFirstPage: 1,
         currLastPage: pagArr.length,
         currCentralPage: Math.ceil((1+ pagArr.length)/2),
-        currPaArr: pagArr,
+        currPaArr: pagArr
     });
 
     const childClick = (childIndex) => {
@@ -197,34 +197,45 @@ export function Pagination() {
 
     return (
         <nav>
-            <Link to={"/previousGameView/"+ Number(currLink.currChildIndex -1 )}
-                  onClick={
-                      ()=> {
-                          childClick(Number(currLink.currChildIndex) - 1)
-                      }
-                  }>Prev</Link>
-            {
-                currLink.currPaArr.map( (child) =>
-                    {
-                        return <Link
-                            to={"/previousGameView/" + child}
-                            onClick={
-                            ()=> {
-                                childClick(child)
-                              }
+            <ul className={"inline-flex -space-x-px text-sm list-none"}>
+                <li>
+                    <NavLink to={"/previousGameView/"+ Number(currLink.currChildIndex -1 )}
+                             className={"flex items-center no-underline justify-center px-3 h-8 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"}
+                             onClick={
+                                 ()=> {
+                                     childClick(Number(currLink.currChildIndex) - 1)
+                                 }
+                             }>Previous</NavLink>
+                </li>
+                {
+                    currLink.currPaArr.map( (child) =>
+                        {
+                            return <li>
+                                <NavLink
+                                    className={"flex no-underline items-center justify-center px-3 h-8 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"}
+                                    to={"/previousGameView/" + child}
+                                    onClick={
+                                        ()=> {
+                                            childClick(child)
+                                        }
+                                    }
+                                >{child}</NavLink>
+                            </li>
                         }
-                                >{child}</Link>
-                    }
-                )
-            }
-            <Link
-                to={"/previousGameView/"+ (Number(currLink.currChildIndex)+ 1)}
-                onClick={
-                    ()=> {
-                        childClick(Number(currLink.currChildIndex) + 1)
-                    }
+                    )
                 }
-            >Next</Link>
+                <li>
+                    <NavLink
+                        to={"/previousGameView/"+ (Number(currLink.currChildIndex)+ 1)}
+                        className={"flex no-underline items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"}
+                        onClick={
+                            ()=> {
+                                childClick(Number(currLink.currChildIndex) + 1)
+                            }
+                        }
+                    >Next</NavLink>
+                </li>
+            </ul>
         </nav>
     )
 

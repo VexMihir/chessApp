@@ -14,7 +14,6 @@ export function getDBObj() {
             )*/
 
             /*if (response.status === 200) {
-                let result = await response.json()
                 for (let items of result) {
                 let parsedObj = gameHistoryParser(items.history);
                 let pgnObj = {};
@@ -22,10 +21,11 @@ export function getDBObj() {
                 pgnObj["prevMoveListLAN"] = parsedObj.sanArr;
                 pgnObj["flags"] = parsedObj.flagArr;
                 pgnObj["transition"] = parsedObj.fromToArr;
-                pgnObj["playerOne"] = items.playerOne;
-                pgnObj["playerTwo"] = items.playerTwo;
-                pgnObj["date"] = items.date;
+                pgnObj["playerOne"] = items.players[0].username;
+                pgnObj["playerTwo"] = items.players[1].username;
+                pgnObj["date"] = items.date.toString();
                 payload.push(pgnObj);
+                }
             }
             }*/
             let result = dbMockArray
@@ -38,7 +38,7 @@ export function getDBObj() {
                 pgnObj["transition"] = parsedObj.fromToArr;
                 pgnObj["playerOne"] = items.playerOne;
                 pgnObj["playerTwo"] = items.playerTwo;
-                pgnObj["date"] = items.date;
+                pgnObj["date"] = items.date.toString();
                 payload.push(pgnObj);
             }
             dispatch(loadDataBaseObj(payload));

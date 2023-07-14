@@ -14,15 +14,14 @@ body {
     text-align: left;
     font-weight: bold;
     border-bottom: black;
+    border-bottom: solid black;
 }
 
 .QueryTable th,
 .QueryTable td {
     padding: 2rem 2rem;
-    font-size: 0.9rem
+    font-size: 0.9rem;
+    border-bottom: solid black;
+
 }
 
-
-.QueryTable tbody tr:nth-of-type(even) {
-    background-color: darkslategray;
-}

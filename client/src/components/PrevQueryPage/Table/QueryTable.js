@@ -6,15 +6,10 @@ import Chessboard from "chessboardjsx";
 import {useState} from "react";
 
 
-export function QueryTable({data, dataKey}) {
+export function QueryTable({data}) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    let previewStatus = [];
-
-    for (let i = 0; i < data.length; i++) {
-        previewStatus.push(false)
-    }
-    const [preview, setPreview] = useState(previewStatus);
+    const [preview, setPreview] = useState([false, false, false, false, false]);
 
  function navigateToMoveList(e, index) {
      e.preventDefault();
@@ -27,7 +22,7 @@ export function QueryTable({data, dataKey}) {
          return [
              ...preview.slice(0, currIndex),
              true,
-             ...preview.slice(currIndex+1, previewStatus.length)
+             ...preview.slice(currIndex+1, preview.length)
          ]
      })
  }
@@ -68,19 +63,9 @@ export function QueryTable({data, dataKey}) {
                                         lassName={"checkBox"+currIndex}
                                         rowSpan={3}
                                     ><input type={"checkbox"}/></td>
-                                    {   preview[currIndex] ?
-                                        <td key={"chessBoardPreview"+currIndex}
-                                            className={"chessBoardPreview"}
-                                            id={"chessBoardPreview"}
-                                            rowSpan={3}
-                                        >
-                                            <Chessboard position={row.lastFenStr} width={170}/>
-                                        </td>:
-                                        null
-                                    }
                                 </tr>
-                                <tr>Player #1: {row.playerOne}</tr>
-                                <tr>Player #2: {row.playerTwo}</tr>
+                                <tr><td>Player #1: {row.playerOne}</td></tr>
+                                <tr><td>Player #2: {row.playerTwo}</td></tr>
                             </>
                 )
                 }

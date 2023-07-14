@@ -7,7 +7,7 @@ export function WaitingRoomForm () {
     const dispatch = useDispatch();
     const roomNumber = useSelector(state=>state.JoinRoomReducer.roomNumber);
 
-    let {state} = useLocation()
+    let {state} = useLocation();
 
     useEffect(()=> {
         dispatch(getRoomNumberAsync(state.userName))

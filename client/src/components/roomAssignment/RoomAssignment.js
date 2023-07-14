@@ -4,14 +4,16 @@ import {NavLink, Outlet} from "react-router-dom";
 
 
 export default function RoomAssignment() {
-
     return (
         <div className={"h-[calc(100vh_-_20px)] bg-chessImage bg-cover bg-center bg-no-repeat " +
             "rounded-2xl shadow-white shadow-lg"}>
             <div className={"text-5xl flex justify-center items-center"}
             >
-                JAMDK CHESS
-                <hr />
+                <h1 className={"text-indigo-400"}
+                    style={{
+                        textShadow: "1px 1px 4px purple"
+                    }}
+                >JAMDK CHESS</h1>
             </div>
             <div className={""} >
                 <div
@@ -34,6 +36,7 @@ export default function RoomAssignment() {
                                       "z-0"
                                       :
                                       "text-white no-underline font-bold text-lg " +
+                                      "rounded-l-2xl " +
                                       "flex justify-center items-center " +
                                       "hover:bg-violet-900 font-bold " +
                                       "z-1 " +
