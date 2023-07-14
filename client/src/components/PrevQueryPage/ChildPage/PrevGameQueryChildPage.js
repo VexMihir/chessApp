@@ -5,7 +5,6 @@ import {useSelector} from "react-redux";
 export function PrevGameQueryChildPage() {
 
     const pgnData = useSelector((state)=>state.PrevGameQuery.databaseArr);
-    const headers = ["game", "playerOne", "playerTwo", "date", "numberOfMoves"];
     const CARDPERPAGE = 5;
 
     let {pageNum} = useParams();
@@ -27,8 +26,8 @@ export function PrevGameQueryChildPage() {
             newObj["playerOne"] =  items["playerOne"];
             newObj["playerTwo"] = items["playerTwo"];
             newObj["date"] = items["date"];
-            newObj["numberOfMoves"] = items.transition.length;
-            newObj["lastFenStr"] = items.prevMoveListFEN[items.prevMoveListFEN.length - 1]
+            //newObj["numberOfMoves"] = items.transition.length;
+            //newObj["lastFenStr"] = items.prevMoveListFEN[items.prevMoveListFEN.length - 1]
             ret.push(newObj)
         }
         return ret;
@@ -36,6 +35,7 @@ export function PrevGameQueryChildPage() {
     }
 
     const data = parseSubArr(subArr)
+
     return (
         <div className={"tableDB"}>
             <QueryTable data={data} />

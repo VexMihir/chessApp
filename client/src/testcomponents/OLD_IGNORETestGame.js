@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+/*import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import io from 'socket.io-client';
 
@@ -97,4 +97,4 @@ const Game = () => {
   );
 };
 
-export default Game;
+export default Game;*/

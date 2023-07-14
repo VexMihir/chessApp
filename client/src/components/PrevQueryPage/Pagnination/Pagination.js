@@ -1,5 +1,5 @@
 import {useSelector} from "react-redux";
-import {Link, NavLink, useParams} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 import {useState} from "react";
 
 export function Pagination() {
@@ -42,7 +42,14 @@ export function Pagination() {
     }
 
     const nextCLick = (childIndex) => {
-        if(checkEdgeCase(childIndex)) return;
+        if(checkEdgeCase(childIndex)) {
+            setCurrLink((prevState => {
+                return {
+                    ...prevState,
+                    currChildIndex: prevState.currChildIndex + 1
+                }
+            }) )
+        };
         setCurrLink((prevState) => {
             let newCurrFirstPage = prevState.currFirstPage - 1;
             let newCurrLastPage = prevState.currLastPage - 1;
@@ -63,7 +70,16 @@ export function Pagination() {
     }
 
     const prevClick = (childIndex) => {
-        if(checkEdgeCase(childIndex)) return;
+
+        if(checkEdgeCase(childIndex)) {
+            setCurrLink((prevState => {
+                return {
+                    ...prevState,
+                    currChildIndex: prevState.currChildIndex - 1
+                }
+            }) )
+        };
+
         setCurrLink((prevState) => {
             let newCurrFirstPage = prevState.currFirstPage - 1;
             let newCurrLastPage = prevState.currLastPage - 1;
@@ -196,7 +212,7 @@ export function Pagination() {
 
 
     return (
-        <nav>
+        <nav className={"m-auto"}>
             <ul className={"inline-flex -space-x-px text-sm list-none"}>
                 <li>
                     <NavLink to={"/previousGameView/"+ Number(currLink.currChildIndex -1 )}
@@ -205,6 +221,7 @@ export function Pagination() {
                                  ()=> {
                                      childClick(Number(currLink.currChildIndex) - 1)
                                  }
+
                              }>Previous</NavLink>
                 </li>
                 {
@@ -212,7 +229,7 @@ export function Pagination() {
                         {
                             return <li>
                                 <NavLink
-                                    className={"flex no-underline items-center justify-center px-3 h-8 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"}
+                                    className={"flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"}
                                     to={"/previousGameView/" + child}
                                     onClick={
                                         ()=> {

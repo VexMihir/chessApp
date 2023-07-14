@@ -1,4 +1,4 @@
-import React from 'react';
+/*import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './testcomponents/Home';
 import ChessGame from './testcomponents/ChessGame';
@@ -14,4 +14,4 @@ function App() {
   );
 }
 
-export default App;
+export default App;*/

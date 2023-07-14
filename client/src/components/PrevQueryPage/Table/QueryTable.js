@@ -1,76 +1,86 @@
 import {useDispatch} from "react-redux";
 import {loadGameDB} from "../../../Redux/Action/prevGamViewActions";
 import {useNavigate} from "react-router-dom";
-import "./QueryTable.css"
-import Chessboard from "chessboardjsx";
 import {useState} from "react";
+import Chessboard from "chessboardjsx";
 
 
 export function QueryTable({data}) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [preview, setPreview] = useState([false, false, false, false, false]);
-
+    const [check, setCheck] = useState([false, false, false, false, false])
  function navigateToMoveList(e, index) {
      e.preventDefault();
-     dispatch(loadGameDB(index.currIndex));
-     navigate("/prevMoveList")
+     //dispatch(loadGameDB(index.currIndex));
+     //navigate("/prevMoveList")
  }
 
- function onShowPreview(currIndex) {
-     setPreview( (preview) => {
-         return [
-             ...preview.slice(0, currIndex),
-             true,
-             ...preview.slice(currIndex+1, preview.length)
-         ]
-     })
+ const checkAll = (e) => {
+        if (e.target.checked) {
+            setCheck([true, true, true, true, true])
+        } else {
+            setCheck([false, false, false, false, false])
+        }
  }
 
- function offShowPreview(currIndex) {
-     setPreview( (previewStatus) => {
-         return [
-             ...previewStatus.slice(0, currIndex),
-             false,
-             ...previewStatus.slice(currIndex+1, previewStatus.length)
-         ]
-     })
- }
     return (
-        <table className={"QueryTable"}>
-            <thead>
+        <>
+            <table className={"table-auto border-none border-collapse rounded-lg shadow shadow-purple-400 shadow-lg"}>
+                <thead className={"bg-violet-900 text-left font-bold text-xl"}>
                 <tr>
-                    <th>Game</th>
-                    <th>Date</th>
-                    <th>Number of moves</th>
-                    <th><input type={"checkbox"} /></th>
+                    <th className={"py-6 px-5"}>Game</th>
+                    <th className={"py-6"}>Date</th>
+                    {/*<th>Number of moves</th>*/}
+                    <th className={"py-6"}
+                        onChange={
+                            (e)=>{
+                                e.preventDefault();
+                                checkAll(e)
+                            }
+                        }
+
+                    ><input type={"checkbox"} /></th>
                 </tr>
-            </thead>
-            <tbody>
+                </thead>
+                <tbody>
                 {data.map((row, currIndex)=>
-                {
+                    {
+                        let bgColor = "bg-purple-900"
+
+                        if (currIndex % 2 === 0) {
+                            bgColor = "bg-purple-800"
+                        }
+
                         return (
                             <>
                                 <tr key={currIndex}
-                                    onMouseOver={()=>{onShowPreview(currIndex)}}
-                                    onMouseLeave={()=>{offShowPreview(currIndex)}}
                                     onClick={(e)=>{navigateToMoveList(e, {currIndex})}}
+                                    className={"text-left text-medium border-none  "+ bgColor}
                                 >
-                                    <td>{row.game}</td>
-                                    <td rowSpan={3}>{row.date}</td>
-                                    <td rowSpan={3}>{row.numberOfMoves}</td>
-                                    <td key={"checkBox"+currIndex} c
-                                        lassName={"checkBox"+currIndex}
+                                    <td className={"py-4 pl-5"} key={row.game+currIndex}>{row.game}</td>
+                                    <td rowSpan={3} className={"py-4 px-1"} key={row.date+currIndex}>{row.date}</td>
+                                    {/*<td rowSpan={3}>{row.numberOfMoves}</td>*/}
+                                    <td key={"checkBox"+currIndex}
                                         rowSpan={3}
-                                    ><input type={"checkbox"}/></td>
+                                        className={"py-4"}
+                                        key={currIndex+"checkbox"}
+                                    ><input type={"checkbox"}
+                                            checked={check[currIndex]}
+                                    /></td>
                                 </tr>
-                                <tr><td>Player #1: {row.playerOne}</td></tr>
-                                <tr><td>Player #2: {row.playerTwo}</td></tr>
+                                <tr key={currIndex+ "p1"} className={"text-left text-medium border-none "+ bgColor}>
+                                    <td className={"py-4 px-5"} key={row.playerOne+currIndex}>Player #1: {row.playerOne}</td>
+                                </tr>
+                                <tr key={currIndex + "p2"} className={"text-left text-medium border-none "+ bgColor}>
+                                    <td className={"py-4 px-5"} key={row.playerOne+currIndex}>Player #2: {row.playerTwo}</td>
+                                </tr>
                             </>
-                )
-                }
+                        )
+                    }
                 )}
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+
+        </>
     )
 }

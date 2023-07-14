@@ -5,6 +5,7 @@ const cors = require('cors');
 const ChessGame = require('./game/game.js');
 const socketHandlers = require('./socket/socketHandlers.js');
 const mongoose = require('mongoose');
+const {getAllDocuments} = require("./socket/handlers/getOneAndGetAllMongo");
 require('dotenv').config();
 
 const app = express();
@@ -64,6 +65,16 @@ app.get('/createGame', (req, res) => {
   }
   res.send({ roomNumber });
 });
+
+app.get('/getDBData', async (req, res) => {
+  try {
+    let result = await getAllDocuments()
+    return res.status(200).send(result)
+  } catch (error) {
+    console.error(error)
+    return res.status(500).send(error.message)
+  }
+})
 
 server.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);

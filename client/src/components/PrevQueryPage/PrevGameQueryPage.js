@@ -24,14 +24,12 @@ export function PrevGameQueryPage() {
         )
     }, [])
     return (
-        <div >
-            <div className={"header"}>
+        <div className={"flex flex-col absolute w-[100%] text-white overflow-hidden"} >
+            <div className={"text-white font-bold text-xl relative m-auto"}>
                <h1>CHESS DATABASE</h1>
             </div>
-            <div>
+            <div className={"flex flex-col w-[100%] text-white items-centre"}>
                 <Outlet />
-            </div>
-            <div>
                 <Pagination />
             </div>
         </div>

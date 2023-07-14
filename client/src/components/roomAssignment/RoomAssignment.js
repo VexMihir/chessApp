@@ -7,6 +7,15 @@ export default function RoomAssignment() {
     return (
         <div className={"h-[calc(100vh_-_20px)] bg-chessImage bg-cover bg-center bg-no-repeat " +
             "rounded-2xl shadow-white shadow-lg"}>
+            <div className={"float-right text-white " +
+                " shadow-white shadow-[0px_0px_10px_1px] " +
+                " border border-solid border-purple-800" +
+                " p-4 m-4 " +
+                " no-underline backdrop-blur-md float-right relative bottom-0 right-0"
+            }><NavLink
+                to={"/PreviousGameView"}
+                className={"text-white no-underline text-sm"}
+            >Chess Database</NavLink></div>
             <div className={"text-5xl flex justify-center items-center"}
             >
                 <h1 className={"text-indigo-400"}
