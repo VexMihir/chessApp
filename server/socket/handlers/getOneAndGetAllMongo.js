@@ -45,7 +45,7 @@ async function getOneDocument(id) {
     const db = client.db("ChessGames");
     let collection = db.collection("Games");
     let objID = new ObjectId(id);
-    let res = await collection.findOne({ _id: objID });
+    let ans = await collection.findOne({ _id: objID });
 
     // RETURNS GAME WITH GIVEN ID
     return ans;
