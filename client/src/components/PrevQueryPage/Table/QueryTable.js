@@ -29,7 +29,7 @@ export function QueryTable({data}) {
                 <tr>
                     <th className={"py-6 px-5"}>Game</th>
                     <th className={"py-6"}>Date</th>
-                    {/*<th>Number of moves</th>*/}
+                    <th>Number of moves</th>
                     <th className={"py-6"}>Result</th>
                     <th
                         onChange={

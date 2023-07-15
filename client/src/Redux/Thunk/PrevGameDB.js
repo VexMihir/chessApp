@@ -21,14 +21,10 @@ export function getDBObj() {
                 pgnObj["prevMoveListLAN"] = parsedObj.sanArr;
                 pgnObj["flags"] = parsedObj.flagArr;
                 pgnObj["transition"] = parsedObj.fromToArr;
-                pgnObj["playerOne"] = items.playerOneUsername;
-                pgnObj["playerTwo"] = items.playerTwoUsername;
-                pgnObj["date"] = items.date.toString();
-                if(items.winner) {
-                    pgnObj["result"] = "1-0"
-                } else {
-                    pgnObj["result"] = "0-1"
-                };
+                pgnObj["playerOne"] = items.playerOneData.username + "(" +items.playerOneData.color + ")";
+                pgnObj["playerTwo"] = items.playerTwoData.username + "(" +items.playerTwoData.color + ")";
+                pgnObj["date"] = items.date;
+                pgnObj["result"] = items.winner
                 payload.push(pgnObj);
                 }
             }
