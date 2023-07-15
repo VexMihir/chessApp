@@ -3,7 +3,7 @@ import UserList from "./top/UserList";
 import { PrevMoveList } from "./PrevMoveList/PrevMoveList";
 import Forfeit from "./bottom/Forfeit";
 import OfferDraw from "./bottom/OfferDraw";
-import { PrevMovePrevButton } from "./PrevMoveList/Buttons/PrevMovePrevButtons";
+import { PrevMovePrevButton } from "./PrevMoveList/MainPanel/Buttons/PrevMovePrevButtons";
 
 import "./style.css";
 

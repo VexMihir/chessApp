@@ -4,7 +4,10 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import {Provider} from "react-redux";
 import ChessApp from "./ChessApp.js"
+import App from "./App.js"
 import {mainStore} from "./Redux/Store/mainStore";
+
+// playground environment
 
 // const socket = io('http://localhost:5001');
 

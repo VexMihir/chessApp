@@ -1,4 +1,4 @@
-import {indiPieceUpdate} from "../Action/PGN_Actions";
+import {indiPieceUpdate} from "../Action/prevGamViewActions";
 
 export function loadPageContinuously() {
     return async (dispatch, getState) => {

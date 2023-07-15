@@ -1,0 +1,23 @@
+#PrevMoveListPanel {
+    height: 23rem;
+    line-height: 15;
+    margin: 1px 1px 1px 1px;
+    border:  solid black;
+    overflow-y: scroll;
+    background-color: rgba(0, 0, 0, 0.78);
+    color: white;
+    font-size: larger;
+}
+
+#moveChild {
+    margin-top: 1rem;
+    margin-left: 1rem;
+    height: 1rem;
+    display: grid;
+    grid-template-columns: 10% 45% 45%
+}
+
+#moveChild >* {
+    height: 1rem;
+    line-height: 1;
+}

@@ -1,9 +1,11 @@
 import {combineReducers} from "@reduxjs/toolkit";
-import {pgnReducers} from "../Reducers/PGN_Reducers";
-import {prevGameQueryReducer} from "../Reducers/prevGameQuery_Reducers";
+import {pgnReducers} from "../Reducers/prevGameViewReducer";
+import {prevGameQueryReducer} from "../Reducers/prevGameQueryReducers";
+import {joinRoomReducer} from "../Reducers/joinPageReducers";
 
 export const rootReducer = combineReducers(
     {
+        JoinRoomReducer: joinRoomReducer,
         PGNReducer: pgnReducers,
         PrevGameQuery: prevGameQueryReducer
     }
