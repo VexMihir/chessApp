@@ -18,11 +18,18 @@ async function pushToMongoAndManageDB(gameRoom, gameSchema, Game) {
         .then(() => console.log('Game saved to database'))
         .catch(error => console.log(error));
 
-  if (Game.countDocuments() >= MAX_ELEMENT_LIMIT) {
-    console.log("DELETING OLDEST GAME FROM MONGO")
-    const oldestGame = await Game.findOne().sort({ date: 1 });
-    await Game.deleteOne({ _id: oldestGame._id });
-  }
+
+    let gameCount = await Game.countDocuments();
+    if (gameCount > MAX_ELEMENT_LIMIT) {
+        console.log("DELETING OLDEST GAME FROM MONGO")
+        const oldestGame = await Game.findOne().sort({ date: 1 });
+        if (oldestGame) {
+          Game.findByIdAndRemove(oldestGame._id)
+              .then(() => console.log('Oldest game deleted'))
+              .catch(error => console.log(error));
+        }
+    }
+
 }
 
 module.exports = { pushToMongoAndManageDB }
