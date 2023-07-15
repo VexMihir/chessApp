@@ -25,7 +25,7 @@ export function FindRoomForm() {
                 <legend className={"rounded text-white m-1"}>Enter Room Number</legend>
                 <input type={"text"} placeholder={"Enter Room Number"}
                        ref={refInput}
-                       onChange={(e)=>(handleOnChange(e))}
+                       onChange={(e)=>(handleRoomNumber(e))}
                        className={"rounded-md text-white px-0.5 border-none mbt-4 bg-violet-900/30 w-[80%] h-[90%]"}
                 />
             </fieldset>
@@ -35,7 +35,8 @@ export function FindRoomForm() {
                         "text-white font-bold border border-purple-450 rounded " +
                         "shadow shadow-md shadow-white " +
                         "m-auto"}
-                to={"/waitingRoomForm"}
+                onChange={(e)=>(handleRoomNumber(e))}
+                to={"/inGameView/"+ roomNumber}
                 state={{userName: userName}}
             >Join Room</NavLink>
         </div>
