@@ -12,6 +12,7 @@ const Game = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [timers, setTimers] = useState([0, 0]);
+  const [username, setUsername] = useState('');
 
   useEffect(() => {
     const newSocket = io('http://localhost:5001');
@@ -48,9 +49,11 @@ const Game = () => {
     newSocket.on('time update', (timerValues) => {
       // since timerValues is a map, we need to convert it to an array, the keys are the times for each player
       setTimers(Object.values(timerValues));
-
-
       
+    });
+
+    newSocket.on('checkmate', (winningPlayerColor) => {
+      alert(`Game Over - Checkmate! ${winningPlayerColor} wins!`);
     });
 
     return () => {
@@ -78,13 +81,20 @@ const Game = () => {
     return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
   };
 
+  const getOpponentUsername = () => {
+    const opponent = players.find((player) => player.id !== socket.id);
+    return opponent ? opponent.username : '';
+  };
+
   return (
     <div>
       <h1>Room Number {roomId}</h1>
       <h2>Players:</h2>
       <ul>
-        {players.map((player) => (
-          <li key={player.id}>{player.username}</li>
+      {players.map((player) => (
+          <li key={player.id}>
+            {player.id === socket.id ? `${username} (You) - Color: ${player.color}` : `${getOpponentUsername()} - Color: ${player.color}`}
+          </li>
         ))}
       </ul>
       <h2>Spectators:</h2>

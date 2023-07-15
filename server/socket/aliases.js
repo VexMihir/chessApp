@@ -17,7 +17,7 @@ module.exports = {
         DRAW_DECLINED: 'drawDeclined',
         DRAW_RESCINDED: 'drawRescinded',
         CHECKMATE: 'checkmate',
-        GAME_OVER_NON_DRAW: 'game over',
+        RESIGNATION: 'resignation',
         GAME_OVER_DRAW: 'game over draw',
     },
     OFFERED_DRAW_STATES: {

@@ -1,59 +1,35 @@
-const { MongoClient, ObjectId } = require("mongodb");
+const { MongoClient } = require("mongodb");
 
-const uri = "stub";
 const MAX_ELEMENT_LIMIT = 5;
 
 async function pushToMongoAndManageDB(gameRoom, gameSchema, Game) {
+  console.log("PUSHING TO MONGO")
   const newGame = new Game({
-      history: gameRoom.game.getHistory(),
-      playerOneUsername: gameRoom.players[0],
-      playerTwoUsername: gameRoom.players[1],
+      history: gameRoom.game.getGameHistory(),
+      playerOneData: gameRoom.players[0],
+      playerTwoData: gameRoom.players[1],
       date: new Date(),
-      // TODO: get winner info for mongo
-      winner: true
+      winner: gameRoom.winner
   });
 
-  let JSONGame = JSON.stringify(newGame)
+  console.log(newGame.history)
+  
+  newGame.save()
+        .then(() => console.log('Game saved to database'))
+        .catch(error => console.log(error));
 
-  const client = await MongoClient.connect(uri, {
-    useNewUrlParser: true,
-  }).catch((err) => {
-    console.log(err);
-  });
 
-  if (!client) {
-    return;
-  }
-
-  try {
-    const db = client.db("ChessGames");
-    let collection = db.collection("Games");
-    let count = await collection.countDocuments();
-    if (count >= MAX_ELEMENT_LIMIT) {
-        // delete
-        let everything = await collection.find();
-        let collectionAsArr = await everything.toArray()
-        let remove = await collection.deleteOne({_id: collectionAsArr[0]._id})
-        console.log(remove)
+    let gameCount = await Game.countDocuments();
+    if (gameCount > MAX_ELEMENT_LIMIT) {
+        console.log("DELETING OLDEST GAME FROM MONGO")
+        const oldestGame = await Game.findOne().sort({ date: 1 });
+        if (oldestGame) {
+          Game.findByIdAndRemove(oldestGame._id)
+              .then(() => console.log('Oldest game deleted'))
+              .catch(error => console.log(error));
+        }
     }
-    let res = await collection.insertOne(JSONGame);
-    console.log(res)
 
-    // NOTE: i don't know what the params look like are so this was to test. I am trusting that the object gameRoom passed in will work
-    // let res = await collection.insertOne({
-    //   history: ["1", "2"],
-    //   playerOneUsername: "wallstar",
-    //   playerTwoUsername: "dex",
-    //   date: new Date(),
-    //   winner: true,
-    // });
-
-    // console.log(res);
-  } catch (err) {
-    console.log(err);
-  } finally {
-    client.close();
-  }
 }
 
-module.exports = { pushToMongoAndManageDB };
+module.exports = { pushToMongoAndManageDB }

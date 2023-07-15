@@ -40,9 +40,9 @@ const handleJoinRoom = (io, socket, rooms) => (roomNumber, username) => {
                 firstPlayerColor = rooms[roomNumber].players[0].color;
                 color = getOppositeColor(firstPlayerColor);
             }
-            rooms[roomNumber].players.push({ id: socket.id, username, color });
+            rooms[roomNumber].players.push({ id: socket.id, username: username, color: color });
             if (rooms[roomNumber].players.length === 2) {
-              rooms[roomNumber].currentPlayer = rooms[roomNumber].players[0].id;
+              rooms[roomNumber].currentPlayer = rooms[roomNumber].players[0].color == WHITE ? rooms[roomNumber].players[0].id :rooms[roomNumber].players[1].id;
               timers = rooms[roomNumber].timers
               // set both players' timers to 5 minutes
               timers[rooms[roomNumber].players[0].id] = 300;
