@@ -33,11 +33,11 @@ mongoose.connect(process.env.MONGO_URI)
     .catch(error => console.log(error));
 
 const gameSchema = new mongoose.Schema({
-    gameHistory: [{}],
+    history: [{}],
     playerOneData: Object,
     playerTwoData: Object,
     date: Date,
-    winner: Boolean // true if playerOne wins, false if playerTwo wins
+    winner: String // "White", "Black", or "Draw"
 });
 
 const Game = mongoose.model('Games', gameSchema);
@@ -63,6 +63,26 @@ app.get('/createGame', (req, res) => {
     drawOffer: null
   }
   res.send({ roomNumber });
+});
+
+app.get('/games', async (req, res) => {
+    const uuid = req.query.uuid;
+    if (uuid) {
+        try {
+            const game = await Game.findOne({ _id: uuid });
+            if (game) {
+                res.send(game);
+            } else {
+                res.status(404).send({ message: 'No game found with the specified UUID.' });
+            }
+        } catch (error) {
+            console.log(error);
+            res.status(500).send({ message: 'Error finding game by UUID.' });
+        }
+    } else {
+        const games = await Game.find().sort({ date: -1 }).limit(10);
+        res.send(games);
+    }
 });
 
 server.listen(port, () => {

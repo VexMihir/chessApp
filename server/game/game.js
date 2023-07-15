@@ -23,6 +23,10 @@ function ChessGame() {
         };
     };
 
+    this.getGameHistory = function() {
+        return this.game.history({ verbose: true });
+    };
+
     this.validMoves = function(square=null) {
         if (!square) {
             return this.game.moves();
@@ -48,21 +52,3 @@ function ChessGame() {
 }
 
 module.exports = ChessGame;
-
-// // Test cases
-// let game = new ChessGame('-1');
-// game.showBoard();
-// try {
-//     game.movePiece('e3');
-//     game.showBoard();
-//     game.movePiece('f6');
-//     game.showBoard();
-//     game.movePiece('f4');
-//     game.showBoard();
-//     game.movePiece('g5');
-//     game.showBoard();
-//     game.movePiece('Qh5');
-//     game.showBoard();
-// } catch (error) {
-//     console.error(error.message);
-// }
