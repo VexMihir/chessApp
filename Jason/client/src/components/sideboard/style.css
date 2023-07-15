@@ -1,0 +1,38 @@
+.sideboard__main {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 50%;
+    height: 100%;
+    margin: auto;
+    align-items: center;
+}
+
+.sideboard__section {
+    width: 90%;
+}
+
+.sideboard__buttonSection {
+    display: flex;
+    justify-content: space-around;
+}
+
+.sideboard__button {
+    width: 100px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-left: 10px;
+}
+
+.sideboard__button_elevated {
+    font-weight: bold;
+    background-color: #eeeed2;
+    border-radius:10px;
+    font-size: x-large;
+    width: 200px;
+}
+
+.sideboard__button_elevated:hover {
+    background-color: #eeeed2bd;
+}
+
