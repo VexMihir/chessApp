@@ -1,4 +1,3 @@
-import "./PrevGameQueryPage.css"
 import {Outlet, useNavigate} from "react-router-dom";
 import {Pagination} from "./Pagnination/Pagination";
 import {useEffect} from "react";
@@ -25,10 +24,10 @@ export function PrevGameQueryPage() {
     }, [])
     return (
         <div className={"flex flex-col absolute w-[100%] text-white overflow-hidden"} >
-            <div className={"text-white font-bold text-xl relative m-auto"}>
+            <div className={"text-white font-bold text-5xl relative m-auto"}>
                <h1>CHESS DATABASE</h1>
             </div>
-            <div className={"flex flex-col w-[100%] text-white items-centre"}>
+            <div className={"flex flex-col w-[100%] text-white items-centre justify-centre"}>
                 <Outlet />
                 <Pagination />
             </div>

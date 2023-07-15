@@ -6,8 +6,7 @@ export function Pagination() {
 
     const pgnData = useSelector((state)=>state.PrevGameQuery.databaseArr);
 
-    const pageTotalNo = Math.ceil( pgnData.length / 10);
-
+    const pageTotalNo = Math.ceil( pgnData.length / 5);
     let pagArr = []
 
     if (pageTotalNo >= 5) {
@@ -18,7 +17,7 @@ export function Pagination() {
         }
     }
 
-    const [currLink, setCurrLink] = useState({
+    let initObj = {
         totalFirstPage: 1,
         totalLastPage: pageTotalNo,
         currPage: 1,
@@ -26,8 +25,16 @@ export function Pagination() {
         currFirstPage: 1,
         currLastPage: pagArr.length,
         currCentralPage: Math.ceil((1+ pagArr.length)/2),
-        currPaArr: pagArr
-    });
+    }
+
+    const [currLink, setCurrLink] = useState(initObj);
+    const [currArr, setCurrArr] = useState(pagArr)
+
+    if (pagArr.length > 0 && currArr.length === 0) {
+        setCurrArr(
+            [...pagArr]
+        )
+    }
 
     const childClick = (childIndex) => {
         if (currLink.currLastPage === childIndex) {
@@ -54,19 +61,25 @@ export function Pagination() {
             let newCurrFirstPage = prevState.currFirstPage - 1;
             let newCurrLastPage = prevState.currLastPage - 1;
             let newCurrCentralPage = childIndex;
-            let newIndex = prevState.currPaArr[prevState.currPaArr.length -1] + 1;
             return {
                 ...prevState,
                 currChildIndex: childIndex,
                 currFirstPage: newCurrFirstPage,
                 currLastPage: newCurrLastPage,
                 currCentralPage: newCurrCentralPage,
-                currPaArr: [
-                    ...prevState.currPaArr.slice(1, prevState.currPaArr.length),
-                    newIndex
-                ]
             }
         })
+
+        setCurrArr(
+            (prevState => {
+                let newIndex = prevState[prevState.length -1] + 1;
+                return [
+                    ...prevState.slice(1, prevState.length),
+                    newIndex
+                ]
+            })
+        )
+
     }
 
     const prevClick = (childIndex) => {
@@ -84,20 +97,24 @@ export function Pagination() {
             let newCurrFirstPage = prevState.currFirstPage - 1;
             let newCurrLastPage = prevState.currLastPage - 1;
             let newCurrCentralPage = childIndex;
-            let newIndex = prevState.currPaArr[0] - 1;
-
             return {
                 ...prevState,
                 currChildIndex: childIndex,
                 currFirstPage: newCurrFirstPage,
                 currLastPage: newCurrLastPage,
                 currCentralPage: newCurrCentralPage,
-                currPaArr: [
-                    newIndex,
-                    ...prevState.currPaArr.slice(0, prevState.currPaArr.length -1),
-                ]
             }
         })
+
+        setCurrArr(
+            (prevState => {
+                let newIndex = prevState[0] - 1;
+                return [
+                    newIndex,
+                    ...prevState.slice(0, prevState.length -1),
+                ]
+            })
+        )
     }
 
     const lastPageClick = (childIndex) => {
@@ -106,22 +123,26 @@ export function Pagination() {
             let newCurrFirstPage = prevState.currFirstPage + 2;
             let newCurrLastPage = prevState.currLastPage + 2;
             let newCurrCentralPage = childIndex;
-            const lastElement = prevState.currPaArr[prevState.currPaArr.length - 1];
-            let newIndex1 = lastElement + 1;
-            let newIndex2 = lastElement + 2;
             return {
                 ...prevState,
                 currChildIndex: childIndex,
                 currFirstPage: newCurrFirstPage,
                 currLastPage: newCurrLastPage,
                 currCentralPage: newCurrCentralPage,
-                currPaArr: [
-                    ...prevState.currPaArr.slice(2, prevState.currPaArr.length),
+            }
+        })
+        setCurrArr(
+            (prevState => {
+                const lastElement = prevState[prevState.length - 1];
+                let newIndex1 = lastElement + 1;
+                let newIndex2 = lastElement + 2;
+                return [
+                    ...prevState.slice(2, prevState.length),
                     newIndex1,
                     newIndex2
                 ]
-            }
-        })
+            })
+        )
     }
 
     const firstPageClick = (childIndex) => {
@@ -130,39 +151,45 @@ export function Pagination() {
             let newCurrFirstPage = prevState.currFirstPage - 2;
             let newCurrLastPage = prevState.currLastPage - 2;
             let newCurrCentralPage = childIndex;
-            const lastElement = prevState.currPaArr[0];
-            let newIndex1 = lastElement - 2;
-            let newIndex2 = lastElement - 1;
             return {
                 ...prevState,
                 currChildIndex: childIndex,
                 currFirstPage: newCurrFirstPage,
                 currLastPage: newCurrLastPage,
                 currCentralPage: newCurrCentralPage,
-                currPaArr: [
-                    newIndex1,
-                    newIndex2,
-                    ...prevState.currPaArr.slice(0, prevState.currPaArr.length - 2),
-                ]
             }
         })
+        setCurrArr(
+            (prevState => {
+                const lastElement = prevState[0];
+                let newIndex1 = lastElement - 2;
+                let newIndex2 = lastElement - 1;
+                return [
+                    newIndex1,
+                    newIndex2,
+                    ...prevState.slice(0, prevState.length-2)
+                ]
+            })
+        )
     }
 
     const setLastFivePage = () => {
+        setCurrArr(
+            [
+                ...currArr.splice(0, currArr.length),
+                currLink.totalLastPage - 4,
+                currLink.totalLastPage - 3,
+                currLink.totalLastPage - 2,
+                currLink.totalLastPage - 1,
+                currLink.totalLastPage
+            ]
+        )
         setCurrLink((prevState) => {
             return {
                 ...prevState,
                 currFirstPage: prevState.totalLastPage - 4,
                 currLastPage: prevState.totalLastPage,
                 currCentralPage: prevState.totalLastPage - 2,
-                currPaArr: [
-                    ...prevState.currPaArr.slice(0, 0),
-                    prevState.totalLastPage - 4,
-                    prevState.totalLastPage - 3,
-                    prevState.totalLastPage - 2,
-                    prevState.totalLastPage - 1,
-                    prevState.totalLastPage
-                ]
             }
         })
     }
@@ -174,16 +201,18 @@ export function Pagination() {
                 currFirstPage: 1,
                 currLastPage: 5,
                 currCentralPage: 3,
-                currPaArr: [
-                    ...prevState.currPaArr.slice(0, 0),
-                    1,
-                    2,
-                    3,
-                    4,
-                    5
-                ]
             }
         })
+        setCurrArr(
+            setCurrArr([
+                ...currArr.splice(0, currArr.length),
+                1,
+                2,
+                3,
+                4,
+                5
+            ])
+        )
     }
 
     const checkEdgeCase = (childIndex) => {
@@ -225,7 +254,7 @@ export function Pagination() {
                              }>Previous</NavLink>
                 </li>
                 {
-                    currLink.currPaArr.map( (child) =>
+                    currArr.map( (child) =>
                         {
                             return <li>
                                 <NavLink

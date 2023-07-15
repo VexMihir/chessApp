@@ -1,7 +1,6 @@
 const { MongoClient, ObjectId } = require("mongodb");
 
-const uri =
-  "stub";
+const uri = "stub";
 const MAX_ELEMENT_LIMIT = 5;
 
 async function pushToMongoAndManageDB(gameRoom, gameSchema, Game) {

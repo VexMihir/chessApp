@@ -7,10 +7,13 @@
     height: fit-content;
     background-color: rgba(12, 12, 54, 0.63);
     padding: 2rem;
+    color: white;
 }
 
 .ButtonPanel {
    margin: 1rem 1rem 1rem 0rem;
+    text-decoration-color: white;
+
 }
 
 

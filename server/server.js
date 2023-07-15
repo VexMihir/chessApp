@@ -5,7 +5,6 @@ const cors = require('cors');
 const ChessGame = require('./game/game.js');
 const socketHandlers = require('./socket/socketHandlers.js');
 const mongoose = require('mongoose');
-const {getAllDocuments} = require("./socket/handlers/getOneAndGetAllMongo");
 require('dotenv').config();
 
 const app = express();
@@ -34,11 +33,11 @@ mongoose.connect(process.env.MONGO_URI)
     .catch(error => console.log(error));
 
 const gameSchema = new mongoose.Schema({
-    gameHistory: [{}],
-    playerOneData: Object,
-    playerTwoData: Object,
-    date: Date,
-    winner: Boolean // true if playerOne wins, false if playerTwo wins
+  gameHistory: [{}],
+  playerOneData: Object,
+  playerTwoData: Object,
+  date: Date,
+  winner: Boolean // true if playerOne wins, false if playerTwo wins
 });
 
 const Game = mongoose.model('Games', gameSchema);
@@ -65,16 +64,6 @@ app.get('/createGame', (req, res) => {
   }
   res.send({ roomNumber });
 });
-
-app.get('/getDBData', async (req, res) => {
-  try {
-    let result = await getAllDocuments()
-    return res.status(200).send(result)
-  } catch (error) {
-    console.error(error)
-    return res.status(500).send(error.message)
-  }
-})
 
 server.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);

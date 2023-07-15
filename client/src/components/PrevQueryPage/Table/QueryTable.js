@@ -2,7 +2,6 @@ import {useDispatch} from "react-redux";
 import {loadGameDB} from "../../../Redux/Action/prevGamViewActions";
 import {useNavigate} from "react-router-dom";
 import {useState} from "react";
-import Chessboard from "chessboardjsx";
 
 
 export function QueryTable({data}) {
@@ -11,8 +10,8 @@ export function QueryTable({data}) {
     const [check, setCheck] = useState([false, false, false, false, false])
  function navigateToMoveList(e, index) {
      e.preventDefault();
-     //dispatch(loadGameDB(index.currIndex));
-     //navigate("/prevMoveList")
+     dispatch(loadGameDB(index.currIndex));
+     navigate("/prevMoveList")
  }
 
  const checkAll = (e) => {
@@ -25,13 +24,14 @@ export function QueryTable({data}) {
 
     return (
         <>
-            <table className={"table-auto border-none border-collapse rounded-lg shadow shadow-purple-400 shadow-lg"}>
+            <table className={"table-auto border-none border-collapse rounded-lg shadow shadow-purple-400 shadow-lg w-[100%] "}>
                 <thead className={"bg-violet-900 text-left font-bold text-xl"}>
                 <tr>
                     <th className={"py-6 px-5"}>Game</th>
                     <th className={"py-6"}>Date</th>
                     {/*<th>Number of moves</th>*/}
-                    <th className={"py-6"}
+                    <th className={"py-6"}>Result</th>
+                    <th
                         onChange={
                             (e)=>{
                                 e.preventDefault();
@@ -55,20 +55,19 @@ export function QueryTable({data}) {
                             <>
                                 <tr key={currIndex}
                                     onClick={(e)=>{navigateToMoveList(e, {currIndex})}}
-                                    className={"text-left text-medium border-none  "+ bgColor}
+                                    className={"text-left text-medium border-none "+ bgColor}
                                 >
                                     <td className={"py-4 pl-5"} key={row.game+currIndex}>{row.game}</td>
                                     <td rowSpan={3} className={"py-4 px-1"} key={row.date+currIndex}>{row.date}</td>
                                     {/*<td rowSpan={3}>{row.numberOfMoves}</td>*/}
+                                    <td rowSpan={3} className={"py-4 px-1"} key={row.result+currIndex}>{row.result}</td>
                                     <td key={"checkBox"+currIndex}
                                         rowSpan={3}
                                         className={"py-4"}
                                         key={currIndex+"checkbox"}
-                                    ><input type={"checkbox"}
-                                            checked={check[currIndex]}
-                                    /></td>
+                                    ><input type={"checkbox"}/></td>
                                 </tr>
-                                <tr key={currIndex+ "p1"} className={"text-left text-medium border-none "+ bgColor}>
+                                <tr key={currIndex+ "p1"} className={"text-left text-medium border-none  "+ bgColor}>
                                     <td className={"py-4 px-5"} key={row.playerOne+currIndex}>Player #1: {row.playerOne}</td>
                                 </tr>
                                 <tr key={currIndex + "p2"} className={"text-left text-medium border-none "+ bgColor}>

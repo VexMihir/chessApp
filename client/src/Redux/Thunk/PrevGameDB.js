@@ -1,4 +1,6 @@
 import {loadDataBaseObj} from "../Action/prevGameQueryActions";
+import {dbMockArray} from "../../components/PrevQueryPage/testedMockObject/dbMockArray";
+import {gameHistoryParser} from "./DBObjParser";
 
 export function getDBObj() {
 
@@ -23,10 +25,27 @@ export function getDBObj() {
                 pgnObj["playerOne"] = items.playerOneUsername;
                 pgnObj["playerTwo"] = items.playerTwoUsername;
                 pgnObj["date"] = items.date.toString();
-                pgnObj["winner"] = items.winner;
+                if(items.winner) {
+                    pgnObj["result"] = "1-0"
+                } else {
+                    pgnObj["result"] = "0-1"
+                };
                 payload.push(pgnObj);
                 }
             }
+            /*let result = dbMockArray
+            for (let items of result) {
+                let parsedObj = gameHistoryParser(items.history);
+                let pgnObj = {};
+                pgnObj["prevMoveListFEN"] = parsedObj.fenStrArr;
+                pgnObj["prevMoveListLAN"] = parsedObj.sanArr;
+                pgnObj["flags"] = parsedObj.flagArr;
+                pgnObj["transition"] = parsedObj.fromToArr;
+                pgnObj["playerOne"] = items.playerOne;
+                pgnObj["playerTwo"] = items.playerTwo;
+                pgnObj["date"] = items.date.toString();
+                payload.push(pgnObj);
+            }*/
             dispatch(loadDataBaseObj(payload));
         } catch (error) {
             console.log(error.message)

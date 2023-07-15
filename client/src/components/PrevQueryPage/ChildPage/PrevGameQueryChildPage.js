@@ -26,6 +26,7 @@ export function PrevGameQueryChildPage() {
             newObj["playerOne"] =  items["playerOne"];
             newObj["playerTwo"] = items["playerTwo"];
             newObj["date"] = items["date"];
+            newObj["result"] = items.result
             //newObj["numberOfMoves"] = items.transition.length;
             //newObj["lastFenStr"] = items.prevMoveListFEN[items.prevMoveListFEN.length - 1]
             ret.push(newObj)
@@ -37,7 +38,7 @@ export function PrevGameQueryChildPage() {
     const data = parseSubArr(subArr)
 
     return (
-        <div className={"tableDB"}>
+        <div className={"flex justify-center w-[90%] h-[90%] m-auto"}>
             <QueryTable data={data} />
         </div>
     )

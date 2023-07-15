@@ -15,7 +15,8 @@ export function PrevMoveList() {
       playerOne: pgnObj.playerOne,
       playerTwo: pgnObj.playerTwo,
       date: pgnObj.date,
-      numberOfMoves: LANMoveList.length
+      numberOfMoves: LANMoveList.length,
+      result: pgnObj.result
   }
 
 

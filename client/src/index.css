@@ -9,10 +9,10 @@
 
 body {
     background-color: #5928ed;
-    text-decoration-color: white;
+    color: white;
 }
 
 html, body, #app, #app>div {
     height: 100%;
-    overflow: hidden;
+    text-decoration-color: white;
 }
