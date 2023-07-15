@@ -28,19 +28,6 @@ export function getDBObj() {
                 payload.push(pgnObj);
                 }
             }
-            /*let result = dbMockArray
-            for (let items of result) {
-                let parsedObj = gameHistoryParser(items.history);
-                let pgnObj = {};
-                pgnObj["prevMoveListFEN"] = parsedObj.fenStrArr;
-                pgnObj["prevMoveListLAN"] = parsedObj.sanArr;
-                pgnObj["flags"] = parsedObj.flagArr;
-                pgnObj["transition"] = parsedObj.fromToArr;
-                pgnObj["playerOne"] = items.playerOne;
-                pgnObj["playerTwo"] = items.playerTwo;
-                pgnObj["date"] = items.date.toString();
-                payload.push(pgnObj);
-            }*/
             dispatch(loadDataBaseObj(payload));
         } catch (error) {
             console.log(error.message)

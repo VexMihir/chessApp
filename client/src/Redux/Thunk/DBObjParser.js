@@ -26,12 +26,12 @@ export function gameHistoryParser(hisArr) {
             sanArr.push(item[history.from])
         } else {
             fenStrArr.push(item[history.after])
-            sanArr.push(item[history.to])
         }
         let fromtoObj = {
             from: item[history.from],
             to: item[history.to]
         }
+        sanArr.push(item[history.san])
         fromToArr.push(fromtoObj);
         flagArr.push(item[history.flags])
     }
