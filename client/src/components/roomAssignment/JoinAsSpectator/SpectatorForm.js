@@ -14,7 +14,7 @@ export function SpectatorForm() {
 
     const handleRoomNumber = (e) => {
         e.preventDefault();
-        setRoomNumber(Number(refInput.current.value))
+        setRoomNumber(Number(refRoom.current.value))
     }
 
     return (
@@ -22,8 +22,15 @@ export function SpectatorForm() {
             <fieldset className={"inline-block m-auto p-2 border border-solid border-purple-450 border-3 mt-[1rem] " +
                 "rounded-xl p-2 " +
                 "shadow shadow-sm shadow-white "}>
+                <legend className={"rounded text-white m-1"}>Join As Spectator</legend>
                 <legend className={"rounded text-white m-1"}>Enter Room Number</legend>
                 <input type={"text"} placeholder={"Enter Room Number"}
+                       ref={refRoom}
+                       onChange={(e)=>(handleRoomNumber(e))}
+                       className={"rounded-md text-white w-80 h-10 px-0.5 border-none m-1 bg-violet-900/30"}
+                />
+                <legend className={"rounded text-white m-1"}>Enter Your Username</legend>
+                <input type={"text"} placeholder={"Enter Your User Name"}
                        ref={refInput}
                        onChange={(e)=>(handleOnChange(e))}
                        className={"rounded-md text-white w-80 h-10 px-0.5 border-none m-1 bg-violet-900/30"}
@@ -35,7 +42,7 @@ export function SpectatorForm() {
                             "text-white font-bold border border-purple-450 rounded " +
                             "shadow shadow-md shadow-white " +
                             "m-auto mb-[3rem]"}
-                    to={"/waitingRoomForm"}
+                    to={"/inGameView/"+ roomNumber}
                     state={{userName: userName}}
                 >Join As Spectator</NavLink>
         </div>
