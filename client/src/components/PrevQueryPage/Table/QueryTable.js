@@ -59,7 +59,7 @@ export function QueryTable({data}) {
                                 >
                                     <td className={"py-4 pl-5"} key={row.game+currIndex}>{row.game}</td>
                                     <td rowSpan={3} className={"py-4 px-1"} key={row.date+currIndex}>{row.date}</td>
-                                    {/*<td rowSpan={3}>{row.numberOfMoves}</td>*/}
+                                    <td rowSpan={3}>{row.numberOfMoves}</td>
                                     <td rowSpan={3} className={"py-4 px-1"} key={row.result+currIndex}>{row.result}</td>
                                     <td key={"checkBox"+currIndex}
                                         rowSpan={3}

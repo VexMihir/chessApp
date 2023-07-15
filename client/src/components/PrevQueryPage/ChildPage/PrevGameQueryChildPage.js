@@ -27,7 +27,7 @@ export function PrevGameQueryChildPage() {
             newObj["playerTwo"] = items["playerTwo"];
             newObj["date"] = items["date"];
             newObj["result"] = items.result
-            //newObj["numberOfMoves"] = items.transition.length;
+            newObj["numberOfMoves"] = items.transition.length;
             //newObj["lastFenStr"] = items.prevMoveListFEN[items.prevMoveListFEN.length - 1]
             ret.push(newObj)
         }
