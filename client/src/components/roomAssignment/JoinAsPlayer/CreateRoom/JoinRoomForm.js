@@ -6,7 +6,7 @@ export function JoinRoomForm() {
     const [userName, setUserName] = useState(null);
     const handleOnChange = (e) => {
         e.preventDefault();
-        setUserName(refInput.current.value)
+        setUserName(e.target.value)
     }
 
     return (
@@ -15,8 +15,9 @@ export function JoinRoomForm() {
                 "rounded-xl p-2 " +
                 "shadow shadow-sm shadow-white "}>
 
-                <legend className={"rounded text-white m-1" }>Enter Your Username</legend>
-                <input type={"text"}
+                <legend className={"rounded text-white m-1" }>Create Room</legend>
+                <input required
+                       type={"text"}
                        ref={refInput}
                        placeholder={"Enter Your Username"}
                        onChange={(e)=>(handleOnChange(e))}
@@ -25,7 +26,7 @@ export function JoinRoomForm() {
             </fieldset>
             <NavLink
                 className=
-                    {"no-underline border  inline block mt-2 py-2 px-4 hover:bg-gray-100 " +
+                    {"no-underline border  inline block mt-4 py-3 px-4 hover:bg-gray-900 " +
                         "text-white font-bold border border-purple-450 rounded " +
                         "shadow shadow-md shadow-white " +
                         "m-auto"}
