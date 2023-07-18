@@ -7,6 +7,7 @@ export function Pagination() {
     const pgnData = useSelector((state)=>state.PrevGameQuery.databaseArr);
 
     const pageTotalNo = Math.ceil( pgnData.length / 5);
+
     let pagArr = []
 
     if (pageTotalNo >= 5) {
@@ -34,21 +35,39 @@ export function Pagination() {
         setCurrArr(
             [...pagArr]
         )
+        setCurrLink(
+            (prevState) => {
+                return {
+                    ...prevState,
+                    totalFirstPage: 1,
+                    totalLastPage: currArr.length,
+                    currPage: 1,
+                    currChildIndex: 1,
+                    currFirstPage: 1,
+                    currLastPage: currArr.length,
+                    currCentralPage: Math.ceil((1+ currArr.length)/2),
+                }
+            }
+        )
     }
 
-    const childClick = (childIndex) => {
+    const childClick = (e, childIndex) => {
         if (currLink.currLastPage === childIndex) {
-            lastPageClick(childIndex)
+            lastPageClick(e, childIndex)
         } else if (currLink.currFirstPage === childIndex) {
-            firstPageClick(childIndex)
+            firstPageClick(e, childIndex)
         } else if (childIndex < currLink.currCentralPage) {
-            prevClick(childIndex)
+            prevClick(e, childIndex)
         } else if (childIndex > currLink.currCentralPage) {
-            nextCLick(childIndex)
+            nextCLick(e, childIndex)
         }
     }
 
-    const nextCLick = (childIndex) => {
+    const nextCLick = (e, childIndex) => {
+        if (childIndex > currLink.totalLastPage) {
+            e.preventDefault()
+            return;
+        }
         if(checkEdgeCase(childIndex)) {
             setCurrLink((prevState => {
                 return {
@@ -82,7 +101,12 @@ export function Pagination() {
 
     }
 
-    const prevClick = (childIndex) => {
+    const prevClick = (e, childIndex) => {
+
+        if (childIndex < 1) {
+            e.preventDefault();
+            return;
+        }
 
         if(checkEdgeCase(childIndex)) {
             setCurrLink((prevState => {
@@ -117,8 +141,14 @@ export function Pagination() {
         )
     }
 
-    const lastPageClick = (childIndex) => {
-        if(checkEdgeCase(childIndex)) return;
+    const lastPageClick = (e, childIndex) => {
+
+        if (childIndex < 1) {
+            e.preventDefault();
+            return;
+        }
+
+
         setCurrLink((prevState) => {
             let newCurrFirstPage = prevState.currFirstPage + 2;
             let newCurrLastPage = prevState.currLastPage + 2;
@@ -145,7 +175,13 @@ export function Pagination() {
         )
     }
 
-    const firstPageClick = (childIndex) => {
+    const firstPageClick = (e, childIndex) => {
+
+        if (childIndex < 1) {
+            e.preventDefault();
+            return;
+        }
+
         if(checkEdgeCase(childIndex)) return;
         setCurrLink((prevState) => {
             let newCurrFirstPage = prevState.currFirstPage - 2;
@@ -174,14 +210,16 @@ export function Pagination() {
     }
 
     const setLastFivePage = () => {
+        let newLastPages = [];
+        for (let i = 4; i >0; i++) {
+            if (currLink.currLastPage - i > 0) {
+                newLastPages[4-i] = currLink.currLastPage - i
+            }
+        }
         setCurrArr(
             [
                 ...currArr.splice(0, currArr.length),
-                currLink.totalLastPage - 4,
-                currLink.totalLastPage - 3,
-                currLink.totalLastPage - 2,
-                currLink.totalLastPage - 1,
-                currLink.totalLastPage
+                ...newLastPages
             ]
         )
         setCurrLink((prevState) => {
@@ -206,11 +244,7 @@ export function Pagination() {
         setCurrArr(
             setCurrArr([
                 ...currArr.splice(0, currArr.length),
-                1,
-                2,
-                3,
-                4,
-                5
+                ...pagArr
             ])
         )
     }
@@ -247,8 +281,8 @@ export function Pagination() {
                     <NavLink to={"/previousGameView/"+ Number(currLink.currChildIndex -1 )}
                              className={"flex items-center no-underline justify-center px-3 h-8 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"}
                              onClick={
-                                 ()=> {
-                                     childClick(Number(currLink.currChildIndex) - 1)
+                                 (e)=> {
+                                     childClick(e, Number(currLink.currChildIndex) - 1)
                                  }
 
                              }>Previous</NavLink>
@@ -275,8 +309,8 @@ export function Pagination() {
                         to={"/previousGameView/"+ (Number(currLink.currChildIndex)+ 1)}
                         className={"flex no-underline items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"}
                         onClick={
-                            ()=> {
-                                childClick(Number(currLink.currChildIndex) + 1)
+                            (e)=> {
+                                childClick(e, Number(currLink.currChildIndex) + 1)
                             }
                         }
                     >Next</NavLink>
