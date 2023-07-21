@@ -276,9 +276,10 @@ export function Pagination() {
 
     return (
         <nav className={"m-auto"}>
-            <ul className={"inline-flex -space-x-px text-sm list-none"}>
+            <ul className={"inline-flex -space-x-px text-sm list-none"} key={"pag"}>
                 <li>
                     <NavLink to={"/previousGameView/"+ Number(currLink.currChildIndex -1 )}
+                             key={"prev"}
                              className={"flex items-center no-underline justify-center px-3 h-8 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"}
                              onClick={
                                  (e)=> {
@@ -290,10 +291,11 @@ export function Pagination() {
                 {
                     currArr.map( (child) =>
                         {
-                            return <li>
+                            return <li key={child+"list"}>
                                 <NavLink
                                     className={"flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"}
                                     to={"/previousGameView/" + child}
+                                    key={Number(child)+"index"}
                                     onClick={
                                         ()=> {
                                             childClick(child)
@@ -307,6 +309,7 @@ export function Pagination() {
                 <li>
                     <NavLink
                         to={"/previousGameView/"+ (Number(currLink.currChildIndex)+ 1)}
+                        key={"Next"}
                         className={"flex no-underline items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"}
                         onClick={
                             (e)=> {
