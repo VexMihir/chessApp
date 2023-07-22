@@ -2,6 +2,8 @@ const { EVENTS } = require('../aliases');
 
 const handleJoinRoom = (io, socket, rooms) => (roomNumber, username) => {
 
+    console.log("line 5", roomNumber, username);
+
     const WHITE = "white";
     const BLACK = "black";
 

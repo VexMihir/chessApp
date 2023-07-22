@@ -38,6 +38,7 @@ const handleCheckmate = (gameState, io, roomNumber, rooms) => {
 };
 
 const handleMove = (io, socket, rooms, gameSchema, gameModel) => (roomNumber, move) => {
+
     if (!checkRoomExists(rooms, roomNumber)) {
         socket.emit('error', `Error moving: room ${roomNumber} does not exist`);
         return;
@@ -51,12 +52,23 @@ const handleMove = (io, socket, rooms, gameSchema, gameModel) => (roomNumber, mo
         return;
     }
 
+    console.log("line 55");
     try {
+        console.log("line 57", roomNumber, move);
         const pieceMove = game.movePiece(move);
+        console.log("line 59");
         const currentFen = game.getCurrentFEN();
+        console.log("line 61");
         const validMoves = game.validMoves();
-        const history = game.getHistory();
+        console.log("line 63");
+        const history = game.getGameHistory();
+        console.log("line 65");
         io.to(roomNumber).emit(EVENTS.MOVE_MADE, move, currentFen, validMoves, history);
+        console.log("move", move);
+        console.log("currentFen", currentFen);
+        console.log("validMoves", validMoves);
+        console.log("history", history);
+        console.log("line 67");
     } catch (error) {
         io.to(roomNumber).emit(EVENTS.ERROR_MOVING, `Error moving: ${error}`);
         console.log(`Error moving: ${error}`)

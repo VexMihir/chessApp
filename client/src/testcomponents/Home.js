@@ -1,4 +1,4 @@
-/*import '../App.css';
+// import '../App.css';
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -12,7 +12,7 @@ function Home() {
     try {
       const response = await axios.get('http://localhost:5001/createGame');
       if (response.data && response.data.roomNumber) {
-        navigate(`/${response.data.roomNumber}`, { state: { username } }); // Pass username in state
+        navigate(`/in/${response.data.roomNumber}`, { state: { username } }); // Pass username in state
       }
     } catch (error) {
       console.error(error);
@@ -20,7 +20,7 @@ function Home() {
   };
 
   const joinRoom = () => {
-    navigate(`/${roomNumber}`, { state: { username } }); // Pass username in state
+    navigate(`/in/${roomNumber}`, { state: { username } }); // Pass username in state
   };
 
   const handleRoomNumberChange = (event) => {
@@ -43,4 +43,4 @@ function Home() {
   );
 }
 
-export default Home;*/
+export default Home;

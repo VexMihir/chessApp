@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import {  BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./ChessApp.css";
 import InGameView from "./components/inGameView/InGameView";
 import RoomAssignment from "./components/roomAssignment/RoomAssignment";
@@ -8,14 +8,18 @@ import {PrevGameQueryChildPage} from "./components/PrevQueryPage/ChildPage/PrevG
 import {SpectatorForm} from "./components/roomAssignment/JoinAsSpectator/SpectatorForm";
 import PreviousGameView from "./components/previousGameView/PreviousGameView";
 import {PlayerForm} from "./components/roomAssignment/JoinAsPlayer/PlayerForm";
+import Home from "./testcomponents/Home";
+import Game from "./testcomponents/ChessGame";
+
 
 function ChessApp() {
   return (
       <>
-        <BrowserRouter>
+        <Router>
           <Routes>
 
-                <Route path="/" element={<RoomAssignment />}>
+                <Route path="/" element={<RoomAssignment/>}> 
+                {/* {<RoomAssignment >}> */}
                     <Route path="/playerForm" element={<PlayerForm />} />
                     <Route path={"/joinAsSpectator"} element={<SpectatorForm />} />
                     <Route path="/waitingRoomForm" element={<WaitingRoomForm />} />
@@ -27,10 +31,10 @@ function ChessApp() {
 
               <Route path={"/prevMoveList"} element={<PreviousGameView />} />
 
-
-              <Route path="/inGameView/:id" element={<InGameView />} />
+              <Route path="inGameView/:id" element={<InGameView/>}/>
+              {/* // <InGameView />} /> */}
           </Routes>
-        </BrowserRouter>
+        </Router>
       </>
   );
 }

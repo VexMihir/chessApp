@@ -1,0 +1,114 @@
+.promotionModal {
+    position: fixed;
+    z-index: 10000;
+    width: 100%;
+    height: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+}
+
+.promotionModal_theme {
+    background-color: rgba(0, 0, 0, 0.534);
+}
+
+.promotionModal__main {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+}
+
+.promotionModal__title {
+    background-color: rgb(104, 148, 187);
+    padding: 10px;
+    color: white;
+}
+
+.promotionModal__main_theme {
+    font-size: x-large;
+    background-color: rgb(255, 255, 255);
+}
+
+.promotionModal__content {
+    padding: 10px;
+}
+
+.promotionModal_buttonSection {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    
+}
+
+.promotionModal__button {
+    font-size: x-large;
+    margin: 10px;
+}
+
+
+.outcomeModal {
+    position: fixed;
+    z-index: 10000;
+    /* width: 100%; */
+    /* min-width: 500px; */
+    height: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center
+}
+
+.outcomeModal_theme {
+    background-color: rgba(0, 0, 0, 0.534);
+    color: black;
+}
+
+.outcomeModal__main {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+}
+
+.outcomeModal__main_theme {
+    font-size: x-large;
+    background-color: rgb(255, 255, 255);
+     /* source: https://www.w3schools.com/css/css3_shadows_box.asp */
+     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+
+.messageModal {
+    position: fixed;
+    z-index: 10000;
+    width: 100%;
+    /* min-width: 500px; */
+    height: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center
+}
+
+.messageModal_theme {
+    background-color: rgba(0, 0, 0, 0.534);
+}
+
+.messageModal__main {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+}
+
+.messageModal__main_theme {
+    font-size: x-large;
+    background-color: rgb(255, 255, 255);
+     /* source: https://www.w3schools.com/css/css3_shadows_box.asp */
+     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}

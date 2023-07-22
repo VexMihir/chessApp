@@ -20,6 +20,7 @@ root.render(
     <React.StrictMode>
         <Provider store={mainStore}>
             <ChessApp />
+            {/* <App /> */}
         </Provider>
     </React.StrictMode>
 );

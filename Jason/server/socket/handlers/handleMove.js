@@ -11,6 +11,8 @@ const checkRoomExists = (rooms, roomNumber) => {
 
 const handleGameMove = (game, move, io, roomNumber) => {
     try {
+        console.log("line 16", roomNumber);
+        console.log("line 14", move);
         const pieceMove = game.movePiece(move);
         const currentFen = game.getCurrentFEN();
         const validMoves = game.validMoves();
@@ -49,6 +51,8 @@ const handleCheckmate = (gameState, io, roomNumber) => {
 };
 
 const handleMove = (io, socket, rooms, gameSchema, gameModel) => (roomNumber, move, square) => {
+    console.log("line 54");
+
     if (!checkRoomExists(rooms, roomNumber)) {
         socket.emit('error', `Error moving: room ${roomNumber} does not exist`);
         return;
