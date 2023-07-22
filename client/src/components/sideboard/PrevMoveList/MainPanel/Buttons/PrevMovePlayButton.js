@@ -30,9 +30,9 @@ export function PrevMovePlayButton() {
     }, [currIndx,  currPGNOBj.prevMoveListFEN.length])
 
     return (
-        <button className="bg-white hover:shadow-lg active:shadow-black
+        <button  className="bg-white hover:bg-violet-900 active:shadow-violet-950
         py-2 px-4 border border-gray-400 rounded"
-            id={"PrevMoveStarButton"}
+                 key={"PrevMovePlayButton"}
             disabled={setPlay}
             onClick={async (e) => {
                 await handleStartOnClick(e)

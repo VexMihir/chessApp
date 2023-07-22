@@ -10,7 +10,7 @@ export function QueryTable({data}) {
  function navigateToMoveList(e, index) {
      e.preventDefault();
      dispatch(loadGameDB(index.currIndex));
-     navigate("/prevMoveList")
+     navigate("/prevMoveList", {replace: false})
  }
 
     return (
@@ -51,7 +51,6 @@ export function QueryTable({data}) {
                                 <tr key={currIndex + "p2"} className={"text-left text-medium border-none "+ bgColor}>
                                     <td className={"py-4 px-5"} key={row.playerTwo+currIndex}>Player #2: {row.playerTwo}</td>
                                 </tr>
-
                             </Fragment>
                         )
                     }

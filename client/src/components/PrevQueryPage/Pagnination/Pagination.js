@@ -225,9 +225,9 @@ export function Pagination() {
         setCurrLink((prevState) => {
             return {
                 ...prevState,
-                currFirstPage: prevState.totalLastPage - 4,
-                currLastPage: prevState.totalLastPage,
-                currCentralPage: prevState.totalLastPage - 2,
+                currFirstPage: 1,
+                currLastPage: 2,
+                currCentralPage: 1,
             }
         })
     }
@@ -237,8 +237,8 @@ export function Pagination() {
             return {
                 ...prevState,
                 currFirstPage: 1,
-                currLastPage: 5,
-                currCentralPage: 3,
+                currLastPage: 2,
+                currCentralPage: 1,
             }
         })
         setCurrArr(
@@ -277,17 +277,6 @@ export function Pagination() {
     return (
         <nav className={"m-auto"}>
             <ul className={"inline-flex -space-x-px text-sm list-none"} key={"pag"}>
-                <li>
-                    <NavLink to={"/previousGameView/"+ Number(currLink.currChildIndex -1 )}
-                             key={"prev"}
-                             className={"flex items-center no-underline justify-center px-3 h-8 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"}
-                             onClick={
-                                 (e)=> {
-                                     childClick(e, Number(currLink.currChildIndex) - 1)
-                                 }
-
-                             }>Previous</NavLink>
-                </li>
                 {
                     currArr.map( (child) =>
                         {
@@ -306,18 +295,6 @@ export function Pagination() {
                         }
                     )
                 }
-                <li>
-                    <NavLink
-                        to={"/previousGameView/"+ (Number(currLink.currChildIndex)+ 1)}
-                        key={"Next"}
-                        className={"flex no-underline items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"}
-                        onClick={
-                            (e)=> {
-                                childClick(e, Number(currLink.currChildIndex) + 1)
-                            }
-                        }
-                    >Next</NavLink>
-                </li>
             </ul>
         </nav>
     )

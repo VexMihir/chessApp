@@ -1,8 +1,6 @@
 import React from "react";
 import {NavLink, Outlet} from "react-router-dom";
 
-
-
 export default function RoomAssignment() {
     return (
         <div className={"h-[calc(100vh_-_20px)] bg-chessImage bg-cover bg-center bg-no-repeat " +
@@ -35,7 +33,7 @@ export default function RoomAssignment() {
 
                 >
                     <div
-                        className={"grid grid-cols-2"}
+                        className={"grid grid-cols-2 w-[90%]"}
                     >
                         <NavLink  to={"/playerForm"}
                                   className={(state)=> state.isActive ? "text-white no-underline font-bold text-lg " +
@@ -70,7 +68,7 @@ export default function RoomAssignment() {
                             Join As Spectator
                         </NavLink>
                     </div>
-                    <Outlet />
+                    <Outlet  />
                 </div>
             </div >
         </div>

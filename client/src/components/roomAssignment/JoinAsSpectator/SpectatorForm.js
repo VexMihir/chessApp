@@ -16,24 +16,28 @@ export function SpectatorForm() {
     }
 
     return (
-        <div className={"grid grid-rows-[1fr_auto] w-[100%] h-[100%] opacity-90 p-4"}>
-            <fieldset className={"inline-block m-auto p-2 border border-solid border-purple-450 border-3 mt-[1rem] " +
-                "rounded-xl p-2 " +
+        <div className={"grid grid-rows-[1fr_auto] w-[100%] opacity-90 p-4"}>
+            <fieldset className={"grid grid-rows-2 grid-cols-2 m-auto p-2 border border-solid border-purple-450 border-3 mt-[1rem] " +
+                "rounded-xl p-0 " +
                 "shadow shadow-sm shadow-white "}>
                 <legend className={"rounded text-white m-1"}>Join As Spectator</legend>
-                <legend className={"rounded text-white m-1"}>Enter Room Number</legend>
-                <input type={"number"}
+                <input required
+                       type={"number"}
                        min={0}
-                       max={10000}
+                       max={1000000}
                        placeholder={"Enter Room Number"}
                        onChange={(e)=>(handleRoomNumber(e))}
-                       className={"rounded-md text-white w-80 h-10 px-0.5 border-none m-1 bg-violet-900/30"}
+                       className={"peer/Num rounded-md text-white w-80 h-10 px-0.5 border-none m-1 bg-violet-900/30"}
                 />
-                <legend className={"rounded text-white m-1"}>Enter Your Username</legend>
-                <input type={"text"} placeholder={"Enter Your User Name"}
+                <p className="m-0 invisible peer-invalid/Num:visible text-white font-extrabold  text-sm">Room must be a
+                    number between 0 and 1000000</p>
+                <input required
+                    type={"text"} placeholder={"Enter Your User Name"}
                        onChange={(e)=>(handleOnChange(e))}
-                       className={"rounded-md text-white w-80 h-10 px-0.5 border-none m-1 bg-violet-900/30"}
+                       className={"peer/Text rounded-md text-white w-80 h-10 px-0.5 border-none m-1 bg-violet-900/30"}
                 />
+                <p className="mb-1 invisible peer-invalid/Text:visible text-white font-extrabold text-sm">Username cannot be empty</p>
+
             </fieldset>
             <NavLink
                     className=
