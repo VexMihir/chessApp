@@ -4,32 +4,61 @@ import {useRef, useState} from "react";
 export function JoinRoomForm() {
     const refInput = useRef(null)
     const [userName, setUserName] = useState(null);
+    const [userNameError, setuserNameError] = useState(false);
+
     const handleOnChange = (e) => {
+        checkEmptyUserName(e)
         e.preventDefault();
-        setUserName(e.target.value)
+        setUserName(e.target.value);
+    }
+
+    const checkEmptyUserName = (e) => {
+        if(!e.target.value || e.target.value.length === 0) {
+            setuserNameError(true)
+        } else {
+            setuserNameError(false)
+        }
+    }
+
+    const finalCheck = (e) => {
+        if (!userName || userName.length === 0 ) {
+            e.preventDefault();
+            window.alert("USERNAME CANNOT BE EMPTY")
+        }
     }
 
     return (
-        <div className={"grid grid-rows-[1fr_auto] w-[80%] h-[80%] opacity-90 p-4"}>
-            <fieldset className={"inline-block m-auto p-2 border border-solid border-purple-450 border-3 mt-[1rem] w-[80%] h-[10rem] " +
+        <div className={"w-[50%] h-[100%] flex flex-col mb-1"}>
+            <fieldset className={"w-[95%] " +
                 "rounded-xl p-2 " +
                 "shadow shadow-sm shadow-white "}>
 
-                <legend className={"rounded text-white m-1" }>Create Room</legend>
+                <legend className={"rounded text-white " }>Create Room</legend>
+                <label>Enter username</label>
                 <input required
-                       type={"text"} placeholder={"Enter Your User Name"}
+                       type={"text"}
                        ref={refInput}
                        onChange={(e)=>(handleOnChange(e))}
-                       className={"peer/Text rounded-md text-white w-80 h-10 px-0.5 border-none m-1 bg-violet-900/30"}
+                       onBlur={(e)=>{checkEmptyUserName(e)}}
+                       className={"peer/Text rounded-md text-white py-[0.25rem] border-none bg-violet-900/30 " +
+                           "w-[90%] relative " +
+                           "m-auto"}
                 />
-                <p className="mb-1 invisible peer-invalid/Text:visible text-white font-extrabold text-sm">Username cannot be empty</p>
+                {
+                    userNameError?  <p className="mb-1 text-pink-700  text-sm">
+                        <mark className={"bg-white text-pink-600"}>Username cannot be empty</mark></p>: ""
+
+                }
             </fieldset>
             <NavLink
                 className=
-                    {"no-underline border  inline block mt-4 py-3 px-4 hover:bg-gray-900 " +
-                        "text-white font-bold border border-purple-450 rounded " +
-                        "shadow shadow-md shadow-white " +
-                        "m-auto"}
+                    {
+                        "m-auto text-center " +
+                        "no-underline border py-3 px-4 hover:bg-gray-900 " +
+                        "text-white font-bold rounded " +
+                        "shadow shadow-md shadow-white mt-[1rem]"
+                    }
+                onClick={(e)=>{finalCheck(e)}}
                 to={"/waitingRoomForm"}
                 state={{userName: userName}
                 }>Create Room</NavLink>

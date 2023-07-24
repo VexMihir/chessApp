@@ -6,52 +6,96 @@ export function FindRoomForm() {
     const refRoom = useRef(null);
     const [userName, setUserName] = useState(null);
     const [roomNumber, setRoomNumber] = useState(null);
+    const [userNameError, setuserNameError] = useState(false);
+    const [roomEror, setRoomNumberError] = useState(false);
 
     const handleOnChange = (e) => {
+        checkEmptyUserName(e)
         e.preventDefault();
         setUserName(e.target.value)
     }
 
     const handleRoomNumber = (e) => {
+        checkInvalid(e)
         e.preventDefault();
         setRoomNumber(Number(e.target.value))
     }
 
+    const checkEmptyUserName = (e) => {
+        if(!e.target.value || e.target.value.length === 0) {
+            setuserNameError(true)
+        } else {
+            setuserNameError(false)
+        }
+    }
+
+    const checkInvalid = (e) => {
+        if(!e.target.value || e.target.value.length === 0 || !isNaN(e.target.value)) {
+            setRoomNumberError(true)
+        } else {
+            setRoomNumberError(false)
+        }
+    }
+    const finalCheck = (e) => {
+        if (!userName || userName.length === 0 ) {
+            e.preventDefault();
+            window.alert("USERNAME CANNOT BE EMPTY")
+        } else if (!roomNumber || roomNumber < 0 || roomNumber > 1000000) {
+            e.preventDefault();
+            window.alert("ROOM NUMBER IS INVALID")
+        }
+    }
+
     return (
-        <div className={"grid grid-rows-[auto_auto] w-[80%] h-[80%] opacity-90 p-4"}>
-            <fieldset className={"inline-block m-auto p-2 border border-solid border-purple-450 border-3 mt-[1rem] h-[80%]" +
+        <div className={"w-[50%] h-[100%] flex flex-col mb-1"}>
+            <fieldset className={" " +
                 "rounded-xl p-2 " +
                 "shadow shadow-sm shadow-white "}>
                 <legend className={"rounded-2xl text-white"}>Find Room</legend>
+                <label>Enter room number</label>
+                <br/>
                 <input  required
                         min={0}
                         max={1000000}
                         type={"number"}
-                       placeholder={"Enter Room Number"}
-                       ref={refRoom}
-                       onChange={(e)=>(handleRoomNumber(e))}
-                       className={"peer/Num rounded-md text-white w-80 h-10 px-0.5 border-none m-1 bg-violet-900/30"}
+                        ref={refRoom}
+                        onChange={(e)=>(handleRoomNumber(e))}
+                        className={"peer/Num rounded-md text-white px-0.5 border-none m-1 bg-violet-900/30"}
+                        onBlur={(e)=>{checkInvalid(e)}}
                 />
-                <p className="m-0 invisible peer-invalid/Num:visible text-white font-extrabold  text-sm">Room must be a
-                    number between 0 and 1000000</p>
+                {
+                    roomEror?  <p className="mb-1 text-pink-700  text-sm">
+                        <mark className={"bg-white text-pink-600"}>Room number must be a number between 0 and 1000000
+                        </mark></p>: ""
+
+                }
+                <br/>
+                <label>Enter username</label>
+                <br/>
                 <input required
-                       type={"text"} placeholder={"Enter Your User Name"}
                        ref={refInput}
                        onChange={(e)=>(handleOnChange(e))}
-                       className={"peer/Text rounded-md text-white w-80 h-10 px-0.5 border-none m-1 bg-violet-900/30"}
+                       onBlur={(e)=>{checkEmptyUserName(e)}}
+                       className={"peer/Text rounded-md text-white  px-0.5 border-none m-1 bg-violet-900/30 w-[90%]"}
                 />
-                <p className="m-0 invisible peer-invalid/Text:visible text-white font-extrabold  text-sm">Username cannot be empty</p>
+                {
+                    userNameError?  <p className="mb-1 text-pink-700  text-sm">
+                        <mark className={"bg-white text-pink-600"}>Username cannot be empty</mark></p>: ""
+
+                }
             </fieldset>
             <NavLink
                 className=
-                    {"no-underline border  inline block mt-3 py-2 px-4 hover:bg-gray-900 " +
-                        "text-white font-bold border border-purple-450 rounded " +
+                    {"m-auto text-center " +
+                        "no-underline border py-3 px-4 hover:bg-gray-900 " +
+                        "text-white font-bold rounded " +
                         "shadow shadow-md shadow-white " +
-                        "m-auto"}
-                onChange={(e)=>(handleRoomNumber(e))}
+                        ""}
+                onClick={(e)=>{finalCheck(e)}}
                 to={"/inGameView/"+ roomNumber}
                 state={{userName: userName}}
             >Join Room</NavLink>
+            <br />
         </div>
     )
 }
