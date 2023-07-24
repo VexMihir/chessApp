@@ -58,7 +58,7 @@ export function SpectatorForm() {
                        min={0}
                        max={1000000}
                        onChange={(e)=>(handleRoomNumber(e))}
-                       className={"peer/Num rounded-md text-white py-0.5 border-none m-1 bg-violet-900/30"}
+                       className={"peer/Num rounded-md text-white py-0.5 border-none m-1 bg-violet-900/30 w-[90%]"}
                        onBlur={(e)=>{checkInvalid(e)}}
                 />
                 <br />

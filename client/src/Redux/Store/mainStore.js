@@ -6,7 +6,5 @@ export const mainStore = configureStore(
     {
         reducer: rootReducer,
         middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(loadDBIndexM),
-
     }
-
 )

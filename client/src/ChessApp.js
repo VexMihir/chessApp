@@ -8,13 +8,13 @@ import {PrevGameQueryChildPage} from "./components/PrevQueryPage/ChildPage/PrevG
 import {SpectatorForm} from "./components/roomAssignment/JoinAsSpectator/SpectatorForm";
 import PreviousGameView from "./components/previousGameView/PreviousGameView";
 import {PlayerForm} from "./components/roomAssignment/JoinAsPlayer/PlayerForm";
+import {NOTFOUNDPAGE} from "./components/404NOTFOUND/404NOTFOUND";
 
 function ChessApp() {
   return (
       <>
         <BrowserRouter>
           <Routes>
-
                 <Route path="/" element={<RoomAssignment />}>
                     <Route path="/playerForm" element={<PlayerForm />} />
                     <Route path={"/joinAsSpectator"} element={<SpectatorForm />} />
@@ -27,8 +27,8 @@ function ChessApp() {
 
               <Route path={"/prevMoveList"} element={<PreviousGameView />} />
 
-
               <Route path="/inGameView/:id" element={<InGameView />} />
+              <Route path="/404NOTFOUND" element={<NOTFOUNDPAGE />} />
           </Routes>
         </BrowserRouter>
       </>

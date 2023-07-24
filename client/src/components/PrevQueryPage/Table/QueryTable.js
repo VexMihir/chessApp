@@ -7,7 +7,8 @@ import {Fragment} from "react";
 export function QueryTable({data}) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
- function navigateToMoveList(e, index) {
+
+    function navigateToMoveList(e, index) {
      e.preventDefault();
      dispatch(loadGameDB(index.currIndex));
      navigate("/prevMoveList", {replace: false})
@@ -37,7 +38,9 @@ export function QueryTable({data}) {
                         return (
                             <Fragment key={currIndex}>
                                 <tr key={currIndex+"row"}
-                                    onClick={(e)=>{navigateToMoveList(e, {currIndex})}}
+                                    onClick={ (e) => {
+                                         navigateToMoveList(e, {currIndex})
+                                    }}
                                     className={"text-left text-medium border-none "+ bgColor}
                                 >
                                     <td className={"py-4 pl-5"} key={row.game+currIndex}>{row.game}</td>

@@ -1,5 +1,6 @@
 import {loadDataBaseObj} from "../Action/prevGameQueryActions";
 import {gameHistoryParser} from "./DBObjParser";
+import {setERROR} from "../Action/errorAction";
 
 export function getDBObj() {
 
@@ -11,8 +12,8 @@ export function getDBObj() {
                     method: "GET"
                 }
             )
-
             if (response.status === 200) {
+                setERROR(false)
                 let result = await response.json();
                 for (let items of result) {
                 let parsedObj = gameHistoryParser(items.history);
@@ -27,9 +28,12 @@ export function getDBObj() {
                 pgnObj["result"] = items.winner
                 payload.push(pgnObj);
                 }
+                dispatch(loadDataBaseObj(payload));
+            } else if (response.status >= 400 ) {
+                dispatch(setERROR(true))
             }
-            dispatch(loadDataBaseObj(payload));
         } catch (error) {
+            dispatch(setERROR(true))
             console.log(error.message)
         }
     }
