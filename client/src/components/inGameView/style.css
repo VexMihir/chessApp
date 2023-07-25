@@ -1,5 +1,14 @@
-.chessApp__page {
+.chessApp__page-wrapper {
+  display: flex;
+  align-items: center;
   height: 100vh;
+}
+
+.chessApp__page {
+  /* height: 100vh; */
+  width: 85%;
+  min-width: 1300px;
+  margin: 0 auto;
 }
 
 .chessApp__page_theme {
@@ -45,6 +54,7 @@
 }
 
 .chessApp__main {
-  height: 90vh;
-  min-width: 1045px;
+  display: flex;
+  /* height: 90vh; */
+  /* min-width: 1045px; */
 }

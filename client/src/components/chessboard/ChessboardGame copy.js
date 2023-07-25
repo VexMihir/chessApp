@@ -8,23 +8,42 @@ import React, {useState, useEffect} from 'react'
 // import { addSAN } from '../../Redux/Action/SAN_Actions';
 import OutcomeModal from '../portals/OutcomeModal';
 import "./style.css"
-import { BLACK_CHESS_PIECE, RESULT, WHITE_CHESS_PIECE } from '../inGameView/InGameView';
+import { RESULT } from '../inGameView/InGameView';
 import { useLocation } from 'react-router-dom';
 // import { addPGN } from '../../Redux/Action/PGN_Actions';
 import { useParams, useNavigate } from 'react-router-dom';
 import io from 'socket.io-client';
 import MessageModal from '../portals/MessageModal';
 
+// Source: https://www.i2symbol.com/symbols/chess
+export const WHITE_CHESS_PIECE = {
+  KING: "♔",
+  QUEEN: "♕",
+  BISHOP: "♗",
+  KNIGHT: "♘",
+  ROOK: "♖",
+  PAWN: "♙",
+};
+
+// Source: https://www.i2symbol.com/symbols/chess
+export const BLACK_CHESS_PIECE = {
+  KING: "♚",
+  QUEEN: "♛",
+  BISHOP: "♝",
+  KNIGHT: "♞",
+  ROOK: "♜",
+  PAWN: "♟",
+};
 
 const chess = new Chess();
 
-export default function ChessboardGame({players, setPlayers, PGNList, setFullMove, setHalfMove, socket, setSocket, roomId, isGameStarted, setIsGameStarted, isModalOpen, setIsModalOpen, setResult, activePlayer, setActivePlayer}) {
+export default function ChessboardGame({socket, setSocket, roomId, isGameStarted, setIsGameStarted, isModalOpen, setIsModalOpen, setResult, activePlayer, setActivePlayer}) {
     // const FENList = useSelector((storeState) => storeState.FENReducer.FEN)
     // const SANList = useSelector((storeState) => storeState.SANReducer.SAN)
     // const PGNList = useSelector((storeState) => storeState.PGNReducer.PGN)
     
     //Source: https://chat.openai.com/share/046ed508-1fa5-43d7-94ac-87e8cb9675e4
-    // const PGNList = useSelector((storeState) => JSON.parse(storeState.PGNReducer.PGNOBJ))
+    const PGNList = useSelector((storeState) => JSON.parse(storeState.PGNReducer.PGNOBJ))
     
     
     const dispatch = useDispatch()
@@ -35,13 +54,14 @@ export default function ChessboardGame({players, setPlayers, PGNList, setFullMov
     const [fen, setFen] = useState(PGNList.prevMoveListFEN[PGNList.prevMoveListFEN.length - 1]);
     const [history, setHistory] = useState([]);
     const [header, setHeader] = useState(chess.header("White", whitePlayerName, "Black", blackPlayerName));
-    
+    const [halfMove, setHalfMove] = useState(0);
+    const [fullMove, setFullMove] = useState(1);
     const [whitePlayerTimer, setWhitePlayerTimer] = useState(300);
     const [blackPlayerTimer, setBlackPlayerTimer] = useState(300);
     const [whitePawnPromotionChoice, setWhitePawnPromotionChoice] = useState(WHITE_CHESS_PIECE.QUEEN)
     const [blackPawnPromotionChoice, setBlackPawnPromotionChoice] = useState(BLACK_CHESS_PIECE.QUEEN)
     const [sqaureStyles, setSqaureStyles] = useState()
-    // const [players, setPlayers] = useState([]);
+    const [players, setPlayers] = useState([]);
 
     const [legalPieceMoves, setLegalPieceMoves] = useState();
 
@@ -403,8 +423,18 @@ export default function ChessboardGame({players, setPlayers, PGNList, setFullMov
         </MessageModal>
         <div className='chessboard__wrapper'>
           <div className='chessboard'>
-
-          {/* <div className='chessboard__player_info'>
+          <div className='chessboard__information'>
+            <div>
+              Turn: {activePlayer.toUpperCase()}
+            </div>
+            <div>
+              Halfmove: {halfMove}
+            </div>
+            <div>
+              Fullmove: {fullMove}
+            </div>
+          </div>
+          <div className='chessboard__player_info'>
             <div>Black Player: {blackPlayerName} - Timer: {blackPlayerTimer}s</div>
             <div>Current Pawn Promotion Choice: {blackPawnPromotionChoice}</div>
             <div>Please pick pawns promotion choice: {" "}
@@ -412,14 +442,14 @@ export default function ChessboardGame({players, setPlayers, PGNList, setFullMov
               <button onClick={() => setBlackPawnPromotionChoice(BLACK_CHESS_PIECE.KNIGHT)}>{BLACK_CHESS_PIECE.KNIGHT}</button> 
               <button onClick={() => setBlackPawnPromotionChoice(BLACK_CHESS_PIECE.BISHOP)}>{BLACK_CHESS_PIECE.BISHOP}</button> 
               <button onClick={() => setBlackPawnPromotionChoice(BLACK_CHESS_PIECE.QUEEN)}>{BLACK_CHESS_PIECE.QUEEN}</button></div>
-          </div> */}
+          </div>
           <div className='chessboard__main'>
             <Chessboard 
               position={fen.split(" ")[0]}
               orientation={orientation}
               lightSquareStyle={{backgroundColor: '#eeeed2'}} 
               darkSquareStyle={{backgroundColor: '#769656'}} 
-              width={700}
+              width={500}
               draggable={true}
               onDrop={onDrop}
               onDragOverSquare={onDragOverSquare}
@@ -540,7 +570,7 @@ export default function ChessboardGame({players, setPlayers, PGNList, setFullMov
               }}
             />
           </div>
-          {/* <div className='chessboard__player_info'>
+          <div className='chessboard__player_info'>
             <div>White Player: {whitePlayerName} - Timer: {whitePlayerTimer}s</div>
             <div>Current Pawn Promotion Choice: {whitePawnPromotionChoice}</div>
             <div>Please pick pawns promottion choice: {" "}
@@ -548,7 +578,7 @@ export default function ChessboardGame({players, setPlayers, PGNList, setFullMov
               <button onClick={() => setWhitePawnPromotionChoice(WHITE_CHESS_PIECE.KNIGHT)}>{WHITE_CHESS_PIECE.KNIGHT}</button> 
               <button onClick={() => setWhitePawnPromotionChoice(WHITE_CHESS_PIECE.BISHOP)}>{WHITE_CHESS_PIECE.BISHOP}</button> 
               <button onClick={() => setWhitePawnPromotionChoice(WHITE_CHESS_PIECE.QUEEN)}>{WHITE_CHESS_PIECE.QUEEN}</button> </div>
-          </div> */}
+          </div>
           </div>
         </div>
       </>

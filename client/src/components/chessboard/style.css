@@ -87,11 +87,11 @@
 
 .chessboard__wrapper {
     color: black;
-    width: 50%;
-    display: flex;
+    /* width: 50%; */
+    /* display: flex; */
     justify-content: center;
 }
 
-.chessboard {
+/* .chessboard {
     width: 500px;
-}
+} */
