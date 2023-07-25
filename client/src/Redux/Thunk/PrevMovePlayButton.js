@@ -6,7 +6,7 @@ export function loadPageContinuously() {
                 await loading(6);
                 let flag = getState().PGNReducer.playStatus;
                 if (flag){
-                    dispatch(indiPieceUpdate(2))
+                    dispatch(indiPieceUpdate(1))
                 }
             } catch (error) {
                 console.log(error.message)
