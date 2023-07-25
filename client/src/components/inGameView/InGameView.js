@@ -6,9 +6,11 @@ import ChessboardGame from "../chessboard/ChessboardGame";
 import "./style.css";
 import Navigation from "../navigation/Navigation";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 import OutcomeModal from "../portals/OutcomeModal";
 import { useDispatch } from "react-redux";
+import io from 'socket.io-client';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 
 export const RESULT = {
   WHITE: "1-0", // black forfeits or black king is in checkmate
@@ -58,7 +60,9 @@ export default function InGameView() {
   //Source: https://stackoverflow.com/questions/66506891/useparams-hook-returns-undefined-in-react-functional-component
   const { id } = useParams();
  
-  const [roomNumber, setRoomNumber] = useState(id)
+  const [roomId, setRoomId] = useState(id)
+  const navigate = useNavigate();
+  const location = useLocation();
   // const roomNumber = useSelector(storeState=>storeState.JoinRoomReducer.roomNumber);
 
 
@@ -74,7 +78,70 @@ export default function InGameView() {
   useEffect(()=> {
     console.log("line 75");
     console.log(players);
+    console.log("line 77");
+    console.log(socket);
   }, [players])
+
+  useEffect(() => {
+    const newSocket = io('http://localhost:5001');
+    console.log("line 200");
+    setSocket(newSocket);
+    newSocket.emit('join room', roomId, getUsernameFromState());
+
+    newSocket.on('room full', () => {
+      const confirmSpectator = window.confirm('The room is full. Do you want to join as a spectator?');
+      if (confirmSpectator) {
+        newSocket.emit('join as spectator', roomId, getUsernameFromState());
+      } else {
+        navigate('/');
+      }
+    });
+
+
+    newSocket.on('player disconnected', (roomNumber) => {
+      if (roomId === roomNumber) {
+        alert('Opponent disconnected');
+        navigate('/');
+      }
+    });
+
+    newSocket.on('user list update', (userList) => {
+
+      setPlayers(userList.players);
+      console.log("line 247", userList.players);
+      if (userList.spectators.length > 0) {
+        console.log("line 249", userList.spectators);
+      }
+      if (userList.players.length === 1) {
+        console.log("line 258");
+        // setWhitePlayerName(userList.players[0].username)
+        // if (userList.players[0].color === 'black') {
+          // setOrientation('black')
+        // }
+      }
+      if (userList.players.length === 2) {
+        console.log("line 262");
+        // setBlackPlayerName(userList.players[1].username)
+        // if (userList.players[1].color === 'white') {
+          // setOrientation('black')
+        // }
+      }
+      // setSpectators(userList.spectators);
+    });
+
+    return () => {
+      newSocket.off('moveMade');
+      newSocket.disconnect();
+    };
+    
+  }, [roomId]);
+
+  const getUsernameFromState = () => {
+    const locationState = location.state;
+    console.log("line 391", locationState);
+    //Cannot change from userName to playerName because it is tied to the state name and must follow what it is called.
+    return locationState ? locationState.userName : '';
+  };
 
   return (
     <>
@@ -128,7 +195,7 @@ export default function InGameView() {
           Fullmove: {fullMove}
         </div>
         <div>
-          Room Info: {roomNumber}
+          Room Info: {roomId}
         </div>
 
         </div>
@@ -142,7 +209,7 @@ export default function InGameView() {
             setFullMove={setFullMove}
             socket={socket}
             setSocket={setSocket} 
-            roomId={roomNumber}
+            roomId={roomId}
             isGameStarted={isGameStarted} 
             setIsGameStarted={setIsGameStarted}
             activePlayer={activePlayer}
@@ -152,7 +219,7 @@ export default function InGameView() {
             setResult={setResult}
           />
           {/* <Chessboard /> */}
-          <Sideboard type="inGame" />
+          <Sideboard type="inGame" players={players} socket={socket}/>
         </div>
       </div>
       </div>

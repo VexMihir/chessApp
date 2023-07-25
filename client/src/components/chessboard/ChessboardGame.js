@@ -57,6 +57,7 @@ export default function ChessboardGame({players, setPlayers, PGNList, setFullMov
       // setMouseOverSquare(square);
       if (socket) {
         socket.emit('valid move', roomId, square);
+        
       }
     }
 
@@ -187,12 +188,13 @@ export default function ChessboardGame({players, setPlayers, PGNList, setFullMov
     }
     
     useEffect(() => {
-      const newSocket = io('http://localhost:5001');
+      // const newSocket = io('http://localhost:5001');
       console.log("line 200");
-      setSocket(newSocket);
-      newSocket.emit('join room', roomId, getUsernameFromState());
-  
-      newSocket.on('moveMade', (move, fen, validMoves, history) => {
+      // setSocket(newSocket);
+      // newSocket.emit('join room', roomId, getUsernameFromState());
+      if (socket) {
+      
+      socket.on('moveMade', (move, fen, validMoves, history) => {
         console.log("line 202--------");
         console.log("line 159", move);
         console.log("validMoves", validMoves);
@@ -208,14 +210,14 @@ export default function ChessboardGame({players, setPlayers, PGNList, setFullMov
         // setLegalMoves(legalMoves);
       });
   
-      newSocket.on('room full', () => {
-        const confirmSpectator = window.confirm('The room is full. Do you want to join as a spectator?');
-        if (confirmSpectator) {
-          newSocket.emit('join as spectator', roomId, getUsernameFromState());
-        } else {
-          navigate('/');
-        }
-      });
+      // newSocket.on('room full', () => {
+      //   const confirmSpectator = window.confirm('The room is full. Do you want to join as a spectator?');
+      //   if (confirmSpectator) {
+      //     newSocket.emit('join as spectator', roomId, getUsernameFromState());
+      //   } else {
+      //     navigate('/');
+      //   }
+      // });
 
       // newSocket.on('valid move sent', (pieceLegalMoves, pieceLegalMovesNotation) => {
       //   console.log("line 336");
@@ -228,34 +230,44 @@ export default function ChessboardGame({players, setPlayers, PGNList, setFullMov
 
       // })
 
-      newSocket.on('start game', (legalMoves) => {
+      socket.on('start game', (legalMoves) => {
         // setLegalMoves(legalMoves);
         console.log("line 234", legalMoves);
         
       })
   
-      newSocket.on('player disconnected', (roomNumber) => {
-        if (roomId === roomNumber) {
-          alert('Opponent disconnected');
-          navigate('/');
-        }
-      });
+      // newSocket.on('player disconnected', (roomNumber) => {
+      //   if (roomId === roomNumber) {
+      //     alert('Opponent disconnected');
+      //     navigate('/');
+      //   }
+      // });
   
-      newSocket.on('user list update', (userList) => {
+      // newSocket.on('user list update', (userList) => {
 
-        setPlayers(userList.players);
-        if (userList.players.length === 1) {
-          console.log("line 258");
-          setWhitePlayerName(userList.players[0].username)
-        }
-        if (userList.players.length === 2) {
-          console.log("line 262");
-          setBlackPlayerName(userList.players[1].username)
-        }
-        // setSpectators(userList.spectators);
-      });
+      //   setPlayers(userList.players);
+      //   console.log("line 247", userList.players);
+      //   if (userList.spectators.length > 0) {
+      //     console.log("line 249", userList.spectators);
+      //   }
+      //   if (userList.players.length === 1) {
+      //     console.log("line 258");
+      //     setWhitePlayerName(userList.players[0].username)
+      //     // if (userList.players[0].color === 'black') {
+      //       // setOrientation('black')
+      //     // }
+      //   }
+      //   if (userList.players.length === 2) {
+      //     console.log("line 262");
+      //     setBlackPlayerName(userList.players[1].username)
+      //     // if (userList.players[1].color === 'white') {
+      //       // setOrientation('black')
+      //     // }
+      //   }
+      //   // setSpectators(userList.spectators);
+      // });
 
-      newSocket.on('checkmate', (winningPlayerColor) => {
+      socket.on('checkmate', (winningPlayerColor) => {
 
         // setIsCheckmate(isCheckmate)
 
@@ -341,11 +353,11 @@ export default function ChessboardGame({players, setPlayers, PGNList, setFullMov
       // })
   
       return () => {
-        newSocket.off('moveMade');
-        newSocket.disconnect();
+        socket.off('moveMade');
+        socket.disconnect();
       };
-      
-    }, [roomId]);
+    }
+    }, [roomId, socket]);
 
     useEffect(() => {
       console.log("FEN:", fen);
@@ -381,11 +393,7 @@ export default function ChessboardGame({players, setPlayers, PGNList, setFullMov
 
     }, [isGameStarted, whitePlayerTimer, blackPlayerTimer])
 
-    const getUsernameFromState = () => {
-      const locationState = location.state;
-      console.log("line 391", locationState);
-      return locationState ? locationState.playerName : '';
-    };
+
   
     return (
       <>
