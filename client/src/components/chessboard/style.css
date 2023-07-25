@@ -1,3 +1,17 @@
+/* .chessboard__timer {
+    font-size: xx-large;
+}
+
+.chessboard__timer_theme {
+    border: solid 1px white;
+}
+
+.chessboard__top {
+    width: 700px;
+    display: flex;
+    font-size: xx-large;
+    justify-content: space-around;
+}
 .chessboard__main {
     display: flex;
     flex-direction: column;
@@ -37,7 +51,7 @@
     flex-direction: column;
     align-items: center;
     /* Make the tag priority higher than its parent tag */
-    position: relative;
+    /* position: relative;
     z-index: 1;
 }
 
@@ -50,4 +64,34 @@
     
 }
 
+ */ 
 
+.chessboard__information {
+    display: flex;
+    background-color: black;
+    color: white;
+    justify-content: space-around;
+    font-size: x-large;
+}
+
+.chessboard__player_info {
+    background-color: white;
+}
+
+.chessboard__main {
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    color: black;
+}
+
+.chessboard__wrapper {
+    color: black;
+    /* width: 50%; */
+    /* display: flex; */
+    justify-content: center;
+}
+
+/* .chessboard {
+    width: 500px;
+} */

@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import {  BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./ChessApp.css";
 import InGameView from "./components/inGameView/InGameView";
 import RoomAssignment from "./components/roomAssignment/RoomAssignment";
@@ -13,7 +13,7 @@ import {NOTFOUNDPAGE} from "./components/404NOTFOUND/404NOTFOUND";
 function ChessApp() {
   return (
       <>
-        <BrowserRouter>
+        <Router>
           <Routes>
                 <Route path="/" element={<RoomAssignment />}>
                     <Route path="/playerForm" element={<PlayerForm />} />
@@ -30,7 +30,7 @@ function ChessApp() {
               <Route path="/inGameView/:id" element={<InGameView />} />
               <Route path="/404NOTFOUND" element={<NOTFOUNDPAGE />} />
           </Routes>
-        </BrowserRouter>
+        </Router>
       </>
   );
 }

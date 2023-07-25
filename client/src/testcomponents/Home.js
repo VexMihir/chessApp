@@ -11,7 +11,7 @@ function Home() {
     try {
       const response = await axios.get('http://localhost:5001/createGame');
       if (response.data && response.data.roomNumber) {
-        navigate(`/${response.data.roomNumber}`, { state: { username } }); // Pass username in state
+        navigate(`/in/${response.data.roomNumber}`, { state: { username } }); // Pass username in state
       }
     } catch (error) {
       console.error(error);
@@ -19,7 +19,7 @@ function Home() {
   };
 
   const joinRoom = () => {
-    navigate(`/${roomNumber}`, { state: { username } }); // Pass username in state
+    navigate(`/in/${roomNumber}`, { state: { username } }); // Pass username in state
   };
 
   const handleRoomNumberChange = (event) => {

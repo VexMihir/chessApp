@@ -1,15 +1,24 @@
-.sideboard__main {
+.sideboard__player-info {
     display: flex;
-    flex-direction: column;
     justify-content: space-around;
+    background: white;
+    color: black;
+    font-size: x-large;
+    text-align: center;
+}
+
+.sideboard__main {
+    /* display: flex;
+    flex-direction: column;
+    justify-content: space-around; */
     width: 50%;
-    height: 100%;
-    margin: auto;
+    /* height: 100%; */
+    /* margin: auto; */
     align-items: center;
 }
 
 .sideboard__section {
-    width: 90%;
+    width: 100%;
 }
 
 .sideboard__buttonSection {
