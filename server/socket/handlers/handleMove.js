@@ -14,14 +14,17 @@ const handleNonOfferedDraw = (gameState, io, roomNumber) => {
         let drawReason;
         if (gameState.inStalemate) {
             drawReason = DRAW_REASONS.STALEMATE;
+            rooms[roomNumber].winner = "Draw by Stalemate"
         } else if (gameState.inThreefoldRepetition) {
             drawReason = DRAW_REASONS.THREEFOLD_REPETITION;
+            rooms[roomNumber].winner = "Draw by Threefold Repetition"
         } else if (gameState.inInsufficientMaterial) {
             drawReason = DRAW_REASONS.INSUFFICIENT_MATERIAL;
+            rooms[roomNumber].winner = "Draw by Insufficient Material"
         } else {
             drawReason = DRAW_REASONS.FIFTY_MOVE_RULE;
+            rooms[roomNumber].winner = "Draw by Fifty Move Rule"
         }
-        rooms[roomNumber].winner = "Draw"
         io.to(roomNumber).emit(EVENTS.GAME_OVER_DRAW, drawReason);
     }
 };
@@ -32,9 +35,16 @@ const handleCheckmate = (gameState, io, roomNumber, rooms) => {
         const currentPlayer = rooms[roomNumber].players.find(player => player.id === rooms[roomNumber].currentPlayer);
         const winningPlayerColor = currentPlayer.color === 'White' ? 'Black' : 'White';
         // For the room, set the winner to the player who is not the current player
-        rooms[roomNumber].winner = winningPlayerColor
+        rooms[roomNumber].winner = winningPlayerColor + "wins by Checkmate";
         io.to(roomNumber).emit(EVENTS.CHECKMATE, `${winningPlayerColor}`);
     }
+};
+
+const handleGameOver = (io, roomNumber, rooms, gameSchema, gameModel) => {
+    handleNonOfferedDraw(gameState, io, roomNumber);
+    handleCheckmate(gameState, io, roomNumber, rooms);
+    // this was pushHistoryToMongoAndManageDB before, changed it to pushToMongoAndManageDB -kevin
+    pushToMongoAndManageDB(rooms[roomNumber], gameSchema, gameModel);
 };
 
 const handleMove = (io, socket, rooms, gameSchema, gameModel) => (roomNumber, move) => {
@@ -81,10 +91,7 @@ const handleMove = (io, socket, rooms, gameSchema, gameModel) => (roomNumber, mo
     rooms[roomNumber].currentPlayer = rooms[roomNumber].players.find(player => player.id !== currentPlayer).id;
   
     if (gameState.gameOver) {
-        handleNonOfferedDraw(gameState, io, roomNumber);
-        handleCheckmate(gameState, io, roomNumber, rooms);
-        // this was pushHistoryToMongoAndManageDB before, changed it to pushToMongoAndManageDB -kevin
-        pushToMongoAndManageDB(rooms[roomNumber], gameSchema, gameModel);
+        handleGameOver(io, roomNumber, gameState, rooms, gameSchema, gameModel);
     }
 };
 

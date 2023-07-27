@@ -28,7 +28,7 @@ const handleAcceptDraw = (io, socket, rooms) => (roomNumber) => {
     });
 
     // Set the game result to draw
-    room.winner = "Draw";
+    room.winner = "Draw by Agreement";
 };
 
 module.exports = { handleAcceptDraw };

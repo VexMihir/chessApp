@@ -37,7 +37,7 @@ const gameSchema = new mongoose.Schema({
     playerOneData: Object,
     playerTwoData: Object,
     date: Date,
-    winner: String // "White", "Black", or "Draw"
+    result: String // "White", "Black", or "Draw"
 });
 
 const Game = mongoose.model('Games', gameSchema);
