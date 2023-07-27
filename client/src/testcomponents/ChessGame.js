@@ -52,6 +52,11 @@ const Game = () => {
       
     });
 
+    newSocket.on('timeout', (winningPlayerColor) => {
+      alert(`Game Over - Timeout! ${winningPlayerColor} wins!`);
+      // Additional logic for handling the game-over state, if needed.
+    });
+
     newSocket.on('checkmate', (winningPlayerColor) => {
       alert(`Game Over - Checkmate! ${winningPlayerColor} wins!`);
     });

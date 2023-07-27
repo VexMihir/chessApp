@@ -29,6 +29,14 @@ const handleJoinRoom = (io, socket, rooms) => (roomNumber, username) => {
           const currentPlayer = rooms[roomNumber].currentPlayer;
           rooms[roomNumber].timers[currentPlayer]--;
           io.to(roomNumber).emit('time update', rooms[roomNumber].timers);
+
+        // Check if a player's timer has run out
+        if (rooms[roomNumber].timers[currentPlayer] <= 0) {
+          const winningColor = currentPlayer === rooms[roomNumber].players[0].id ? rooms[roomNumber].players[1].color : rooms[roomNumber].players[0].color;
+          io.to(roomNumber).emit('timeout', winningColor);
+          clearInterval(rooms[roomNumber].timer);
+        }
+      // Emit a socket event to notify the clients that the game is over
         }, 1000);
       
         rooms[roomNumber].timer = timer;
