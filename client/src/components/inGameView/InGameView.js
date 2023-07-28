@@ -46,15 +46,22 @@ export default function InGameView() {
   const [activePlayer, setActivePlayer] = useState('w')
 
   const [socket, setSocket] = useState(null)
+  const [isSocketSpectator, setIsSocketSpectator] = useState(false)
 
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [haveTwoPlayers, setHaveTwoPLayers] = useState(false)
   const [result, setResult] = useState(RESULT.UNFINISHED) // default
 
-  const PGNList = useSelector((storeState) => JSON.parse(storeState.PGNReducer.PGNOBJ))
+  // const PGNList = useSelector((storeState) => storeState.PGNReducer)
   const [halfMove, setHalfMove] = useState(0);
   const [fullMove, setFullMove] = useState(1);
 
   const [players, setPlayers] = useState([]);
+  const [spectators, setSpectators] = useState([]);
+  
+  const [history, setHistory] = useState();
+
+  const [timer, setTimer] = useState()
 
   //Source: https://chat.openai.com/share/82b7f010-6aa8-420c-b6f3-89e66744d516
   //Source: https://stackoverflow.com/questions/66506891/useparams-hook-returns-undefined-in-react-functional-component
@@ -80,7 +87,21 @@ export default function InGameView() {
     console.log(players);
     console.log("line 77");
     console.log(socket);
+
+    if (players.length === 2) {
+      //if there is 2 players, then we also make sure the sockets are alive.
+      setHaveTwoPLayers(true)
+    }
+
   }, [players])
+
+  useEffect(()=> {
+    for (let i = 0; i < spectators.length; i++) {
+      if (socket.id === spectators[i].id) {
+        setIsSocketSpectator(true)
+      }
+    }
+  }, [spectators])
 
   useEffect(() => {
     const newSocket = io('http://localhost:5001');
@@ -101,16 +122,18 @@ export default function InGameView() {
     newSocket.on('player disconnected', (roomNumber) => {
       if (roomId === roomNumber) {
         alert('Opponent disconnected');
-        navigate('/');
+        // navigate('/');
       }
     });
 
     newSocket.on('user list update', (userList) => {
 
       setPlayers(userList.players);
+
       console.log("line 247", userList.players);
       if (userList.spectators.length > 0) {
         console.log("line 249", userList.spectators);
+        setSpectators(userList.spectators)
       }
       if (userList.players.length === 1) {
         console.log("line 258");
@@ -128,6 +151,12 @@ export default function InGameView() {
       }
       // setSpectators(userList.spectators);
     });
+
+    // io.to(roomNumber).emit('time update', rooms[roomNumber].timers);
+
+    newSocket.on('time update', (timer)=>{
+      setTimer(timer)
+    }) 
 
     return () => {
       newSocket.off('moveMade');
@@ -159,30 +188,10 @@ export default function InGameView() {
 
       <div className="chessApp__page-wrapper">
       <div className="chessApp__page chessApp__page_theme">
-        {/* <nav className="chessApp__nav chessApp__nav_theme">
-          <ul className="chessApp__ul">
-            <div className="chessApp__threeBar">
-              <li onClick={handleClose}>≡</li>
-            </div>
-            <div className="chessApp__title">JAMDK Chess App</div>
-            <div className="chessApp__timer chessApp__timer_theme">
-              <li>Timer: 15:00</li>
-            </div>
-            <div className="chessApp__roomInfo">
-              <li>Room Info: {roomNumber}</li>
-            </div>
-          </ul>
-        </nav> */}
 
-        {/* <div className="grid grid-cols-[1fr_100fr]"> */}
-        {/* <div className="text-4xl">
-          ≡
-        </div> */}
         <div className="text-center text-4xl">
           In-Game Systen
         </div>
-        {/* </div> */}
-
 
         <div className='chessboard__information'>
         <div>
@@ -202,13 +211,14 @@ export default function InGameView() {
 
         <div className="chessApp__main ">
           <ChessboardGame 
-            PGNList={PGNList}
+            // PGNList={PGNList}
+            haveTwoPlayers={haveTwoPlayers}
             players={players}
-            setPlayers={setPlayers}
+            setHistory={setHistory}
+            isSocketSpectator={isSocketSpectator}
             setHalfMove={setHalfMove}
             setFullMove={setFullMove}
             socket={socket}
-            setSocket={setSocket} 
             roomId={roomId}
             isGameStarted={isGameStarted} 
             setIsGameStarted={setIsGameStarted}
@@ -218,12 +228,10 @@ export default function InGameView() {
             setIsModalOpen={setIsModalOpen}
             setResult={setResult}
           />
-          {/* <Chessboard /> */}
-          <Sideboard type="inGame" players={players} socket={socket}/>
+          <Sideboard type="inGame" history={history} players={players} timer={timer} socket={socket}/>
         </div>
       </div>
       </div>
-      {/* </div> */}
     </>
   );
 }

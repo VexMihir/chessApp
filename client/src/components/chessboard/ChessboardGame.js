@@ -4,44 +4,46 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import React, {useState, useEffect} from 'react'
 
+
 // import { addFEN } from "../../Redux/Action/FEN_Actions";
 // import { addSAN } from '../../Redux/Action/SAN_Actions';
 import OutcomeModal from '../portals/OutcomeModal';
 import "./style.css"
 import { BLACK_CHESS_PIECE, RESULT, WHITE_CHESS_PIECE } from '../inGameView/InGameView';
-import { useLocation } from 'react-router-dom';
 // import { addPGN } from '../../Redux/Action/PGN_Actions';
-import { useParams, useNavigate } from 'react-router-dom';
-import io from 'socket.io-client';
+
 import MessageModal from '../portals/MessageModal';
+import { addPGN } from '../../Redux/Action/pgnAction';
+import { postPGNObj } from '../../Redux/Thunk/PGNDB';
+
+
 
 //test
 const chess = new Chess();
 
-export default function ChessboardGame({players, setPlayers, PGNList, setFullMove, setHalfMove, socket, setSocket, roomId, isGameStarted, setIsGameStarted, isModalOpen, setIsModalOpen, setResult, activePlayer, setActivePlayer}) {
+export default function ChessboardGame({haveTwoPlayers, setHistory, players, isSocketSpectator, setFullMove, setHalfMove, socket, roomId, isGameStarted, setIsGameStarted, isModalOpen, setIsModalOpen, setResult, activePlayer, setActivePlayer}) {
     // const FENList = useSelector((storeState) => storeState.FENReducer.FEN)
     // const SANList = useSelector((storeState) => storeState.SANReducer.SAN)
     // const PGNList = useSelector((storeState) => storeState.PGNReducer.PGN)
     
     //Source: https://chat.openai.com/share/046ed508-1fa5-43d7-94ac-87e8cb9675e4
     // const PGNList = useSelector((storeState) => JSON.parse(storeState.PGNReducer.PGNOBJ))
-    
-    
+        
     const dispatch = useDispatch()
-    const location = useLocation();
-    const [blackPlayerName, setBlackPlayerName] = useState("")
-    const [whitePlayerName, setWhitePlayerName] = useState("")
 
-    const [fen, setFen] = useState(PGNList.prevMoveListFEN[PGNList.prevMoveListFEN.length - 1]);
-    const [history, setHistory] = useState([]);
-    const [header, setHeader] = useState(chess.header("White", whitePlayerName, "Black", blackPlayerName));
+
+    // console.log("line30");
+    // console.log(PGNList.prevMoveListFEN);
+
+    // const [fen, setFen] = useState(PGNList.prevMoveListFEN[PGNList.prevMoveListFEN.length - 1]);
+    const [fen, setFen] = useState("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
+    // const [history, setHistory] = useState([]);
     
     const [whitePlayerTimer, setWhitePlayerTimer] = useState(300);
     const [blackPlayerTimer, setBlackPlayerTimer] = useState(300);
     const [whitePawnPromotionChoice, setWhitePawnPromotionChoice] = useState(WHITE_CHESS_PIECE.QUEEN)
     const [blackPawnPromotionChoice, setBlackPawnPromotionChoice] = useState(BLACK_CHESS_PIECE.QUEEN)
     const [sqaureStyles, setSqaureStyles] = useState()
-    // const [players, setPlayers] = useState([]);
 
     const [legalPieceMoves, setLegalPieceMoves] = useState();
 
@@ -49,13 +51,10 @@ export default function ChessboardGame({players, setPlayers, PGNList, setFullMov
 
     const [orientation, setOrientation] = useState('white')
 
-    const [isCheckmate, setIsCheckmate] = useState(false);
-
-    const navigate = useNavigate();
-
     function onMouseOverSquare(square) {
       // setMouseOverSquare(square);
-      if (socket) {
+      if (socket && !isSocketSpectator && isGameStarted) {
+        // console.log("line47");
         socket.emit('valid move', roomId, square);
         
       }
@@ -63,9 +62,9 @@ export default function ChessboardGame({players, setPlayers, PGNList, setFullMov
 
     function onSquareClick(square) {
 
-      let currentPlayer = null;
+      if (socket && !isSocketSpectator && players.length === 2){// && isGameStarted) { 
+        let currentPlayer = null;
 
-      // if (currentPlayer) {
         for (let i = 0; i < players.length; i++) {
           if (socket.id === players[i].id) {
             currentPlayer = players[i]
@@ -105,13 +104,15 @@ export default function ChessboardGame({players, setPlayers, PGNList, setFullMov
         
         setSqaureStyles(styles);
       }
-    // }
+    }
+
     }
 
     function onDrop({sourceSquare, targetSquare}) {
       
-      if (socket) {
+      if (socket && !isSocketSpectator && isGameStarted) {
         console.log("line 134");
+        console.log(chess.history()); //
         
         const validMoves = chess.moves({square: sourceSquare, verbose: true})
 
@@ -131,8 +132,8 @@ export default function ChessboardGame({players, setPlayers, PGNList, setFullMov
           // socket.emit('move', roomId, result)
           console.log("line 144");
           socket.emit('move', roomId, result);
-          socket.emit('history', roomId)
-          socket.emit('pgn', roomId)
+          // socket.emit('history', roomId)
+          // socket.emit('pgn', roomId)
         }
         setSqaureStyles('');
       }
@@ -178,20 +179,22 @@ export default function ChessboardGame({players, setPlayers, PGNList, setFullMov
 
     }
 
+    // Not reasonable because second player has no idea how long the first player would get started by dragging over the square.  
     function onDragOverSquare(square) {
-      if (players.length === 2) {
-        if (whitePlayerTimer === 300 && blackPlayerTimer === 300 && !isModalOpen && !isGameStarted) {
-          setIsGameStarted(true);
+      if (socket && !isSocketSpectator && players.length === 2 && !isGameStarted) {
+        if (whitePlayerTimer === 300 && blackPlayerTimer === 300 && !isModalOpen) {
+         
           socket.emit('game start', roomId)
         }
       }
     }
+
     
     useEffect(() => {
       // const newSocket = io('http://localhost:5001');
       console.log("line 200");
       // setSocket(newSocket);
-      // newSocket.emit('join room', roomId, getUsernameFromState());
+      // socket.emit('join room', roomId, getUsernameFromState());
       if (socket) {
       
       socket.on('moveMade', (move, fen, validMoves, history) => {
@@ -202,71 +205,26 @@ export default function ChessboardGame({players, setPlayers, PGNList, setFullMov
 
         // Here you can handle updates of the game state
         setFen(fen); // Update FEN state
-        chess.load(fen);
+        setHistory(history)
+        chess.load(fen); // it reset the history.
         // dispatch(addFEN(fen));
+        // dispatch(addFEN(fen))
         setActivePlayer(fen.split(" ")[1])
         setHalfMove(fen.split(" ")[4])
         setFullMove(fen.split(" ")[5]);
         // setLegalMoves(legalMoves);
       });
-  
-      // newSocket.on('room full', () => {
-      //   const confirmSpectator = window.confirm('The room is full. Do you want to join as a spectator?');
-      //   if (confirmSpectator) {
-      //     newSocket.emit('join as spectator', roomId, getUsernameFromState());
-      //   } else {
-      //     navigate('/');
-      //   }
-      // });
-
-      // newSocket.on('valid move sent', (pieceLegalMoves, pieceLegalMovesNotation) => {
-      //   console.log("line 336");
-      //   console.log("line 334", pieceLegalMoves);
-      //   console.log("line 338");
-
-      //   setLegalPieceMoves(pieceLegalMoves);
-      //   setLegalPieceMovesNotation(pieceLegalMovesNotation);
-        
-
-      // })
 
       socket.on('start game', (legalMoves) => {
         // setLegalMoves(legalMoves);
         console.log("line 234", legalMoves);
+        console.log("players line215", players);
+
+        setIsGameStarted(true);
+
         
       })
   
-      // newSocket.on('player disconnected', (roomNumber) => {
-      //   if (roomId === roomNumber) {
-      //     alert('Opponent disconnected');
-      //     navigate('/');
-      //   }
-      // });
-  
-      // newSocket.on('user list update', (userList) => {
-
-      //   setPlayers(userList.players);
-      //   console.log("line 247", userList.players);
-      //   if (userList.spectators.length > 0) {
-      //     console.log("line 249", userList.spectators);
-      //   }
-      //   if (userList.players.length === 1) {
-      //     console.log("line 258");
-      //     setWhitePlayerName(userList.players[0].username)
-      //     // if (userList.players[0].color === 'black') {
-      //       // setOrientation('black')
-      //     // }
-      //   }
-      //   if (userList.players.length === 2) {
-      //     console.log("line 262");
-      //     setBlackPlayerName(userList.players[1].username)
-      //     // if (userList.players[1].color === 'white') {
-      //       // setOrientation('black')
-      //     // }
-      //   }
-      //   // setSpectators(userList.spectators);
-      // });
-
       socket.on('checkmate', (winningPlayerColor) => {
 
         // setIsCheckmate(isCheckmate)
@@ -274,23 +232,38 @@ export default function ChessboardGame({players, setPlayers, PGNList, setFullMov
         console.log("line 282", winningPlayerColor);
 
         setResult(winningPlayerColor)
+        // let winner = "None"
 
         if (winningPlayerColor === "White") {
           setResult(RESULT.WHITE)
+          // winner = "White"
         } else if (winningPlayerColor === 'Black'){
           setResult(RESULT.BLACK)
+          // winner = "black"
         }
+
+        console.log("players 235", players);
+
+        // dispatch(postPGNObj({
+        //   history: gameHistory,
+        //   playerOne: players[0],
+        //   playerTwo: players[1],
+        //   date: new Date(),
+        //   winner: winningPlayerColor
+        // }))
 
         setIsGameStarted(false)
         setIsModalOpen(true)
         // chess.reset()
       })
 
-      // newSocket.on('game over draw', (drawReason) => {
-      //   // setResult(RESULT.DRAW);
-      //   setIsGameStarted(false)
-      //   setIsModalOpen(true)
-      // })
+      socket.on('game over draw', (drawReason) => {
+        // drawReason displays the 50 rules???
+        setResult(RESULT.DRAW)
+        setIsGameStarted(false)
+        setIsModalOpen(true)
+
+      })
 
       // newSocket.on('history sent', (history) => {
       //   setHistory(history);
@@ -352,18 +325,18 @@ export default function ChessboardGame({players, setPlayers, PGNList, setFullMov
       //     // dispatch(addPGN(pgn))
       // })
   
-      return () => {
-        socket.off('moveMade');
-        socket.disconnect();
-      };
+
     }
     }, [roomId, socket]);
+    // [haveTwoPlayers]);
+    // [roomId, socket, haveTwoPlayers]); 
+    //[roomId, socket]);
 
     useEffect(() => {
       console.log("FEN:", fen);
-      console.log("History", history);
+      // console.log("History", history);
       // console.log("SAN", SANList);
-      console.log("header", header, chess.header());
+      // console.log("header", header, chess.header());
 
       // Store the FEN in Redux
       if (isGameStarted) {
@@ -412,15 +385,7 @@ export default function ChessboardGame({players, setPlayers, PGNList, setFullMov
         <div className='chessboard__wrapper'>
           <div className='chessboard'>
 
-          {/* <div className='chessboard__player_info'>
-            <div>Black Player: {blackPlayerName} - Timer: {blackPlayerTimer}s</div>
-            <div>Current Pawn Promotion Choice: {blackPawnPromotionChoice}</div>
-            <div>Please pick pawns promotion choice: {" "}
-              <button onClick={() => setBlackPawnPromotionChoice(BLACK_CHESS_PIECE.ROOK)}>{BLACK_CHESS_PIECE.ROOK}</button>
-              <button onClick={() => setBlackPawnPromotionChoice(BLACK_CHESS_PIECE.KNIGHT)}>{BLACK_CHESS_PIECE.KNIGHT}</button> 
-              <button onClick={() => setBlackPawnPromotionChoice(BLACK_CHESS_PIECE.BISHOP)}>{BLACK_CHESS_PIECE.BISHOP}</button> 
-              <button onClick={() => setBlackPawnPromotionChoice(BLACK_CHESS_PIECE.QUEEN)}>{BLACK_CHESS_PIECE.QUEEN}</button></div>
-          </div> */}
+
           <div className='chessboard__main'>
             <Chessboard 
               position={fen.split(" ")[0]}
@@ -548,15 +513,7 @@ export default function ChessboardGame({players, setPlayers, PGNList, setFullMov
               }}
             />
           </div>
-          {/* <div className='chessboard__player_info'>
-            <div>White Player: {whitePlayerName} - Timer: {whitePlayerTimer}s</div>
-            <div>Current Pawn Promotion Choice: {whitePawnPromotionChoice}</div>
-            <div>Please pick pawns promottion choice: {" "}
-              <button onClick={() => setWhitePawnPromotionChoice(WHITE_CHESS_PIECE.ROOK)}>{WHITE_CHESS_PIECE.ROOK}</button> 
-              <button onClick={() => setWhitePawnPromotionChoice(WHITE_CHESS_PIECE.KNIGHT)}>{WHITE_CHESS_PIECE.KNIGHT}</button> 
-              <button onClick={() => setWhitePawnPromotionChoice(WHITE_CHESS_PIECE.BISHOP)}>{WHITE_CHESS_PIECE.BISHOP}</button> 
-              <button onClick={() => setWhitePawnPromotionChoice(WHITE_CHESS_PIECE.QUEEN)}>{WHITE_CHESS_PIECE.QUEEN}</button> </div>
-          </div> */}
+
           </div>
         </div>
       </>

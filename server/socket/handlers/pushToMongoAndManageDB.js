@@ -1,6 +1,6 @@
 const { MongoClient } = require("mongodb");
 
-const MAX_ELEMENT_LIMIT = 5;
+const MAX_ELEMENT_LIMIT = 100;
 
 async function pushToMongoAndManageDB(gameRoom, gameSchema, Game) {
   console.log("PUSHING TO MONGO")

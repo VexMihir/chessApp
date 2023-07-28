@@ -7,7 +7,7 @@ import {
     STARTINGPOINT
 } from "../String/prevGameViewInit";
 
-export const pgnReducers = (state = PrevGameViewInit, action) => {
+export const prevGameViewReducer = (state = PrevGameViewInit, action) => { // should be called the previousMovesNavigatorReducer
 
     switch (action.type) {
         case INDIPIECEUPDATE: return {
@@ -16,7 +16,7 @@ export const pgnReducers = (state = PrevGameViewInit, action) => {
         }
         case STARTINGPOINT: return {
             ...state,
-            currIdx: 1,
+            currIdx: 0,
         }
         case ENDINGPOINT: {
             const PGNObj = JSON.parse(state.PGNOBJ)
@@ -41,6 +41,8 @@ export const pgnReducers = (state = PrevGameViewInit, action) => {
                 PGNOBJ: action.payload
             }
         }
+
+        
         default: return state
     }
 }

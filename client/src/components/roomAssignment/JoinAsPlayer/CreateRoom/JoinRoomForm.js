@@ -1,10 +1,16 @@
-import {NavLink} from "react-router-dom";
-import {useRef, useState} from "react";
+import {NavLink, useLocation} from "react-router-dom";
+import {useEffect, useRef, useState} from "react";
 
-export function JoinRoomForm() {
+export function JoinRoomForm({socket}) {
     const refInput = useRef(null)
     const [userName, setUserName] = useState(null);
     const [userNameError, setuserNameError] = useState(false);
+
+    // let {state} = useLocation();
+
+    // useEffect(() => {
+    //     console.log("line 12", state);
+    // }, [])
 
     const handleOnChange = (e) => {
         checkEmptyUserName(e)

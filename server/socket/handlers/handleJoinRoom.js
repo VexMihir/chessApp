@@ -46,13 +46,19 @@ const handleJoinRoom = (io, socket, rooms) => (roomNumber, username) => {
             if (rooms[roomNumber].players.length === 2) {
               rooms[roomNumber].currentPlayer = rooms[roomNumber].players[0].color == WHITE ? rooms[roomNumber].players[0].id :rooms[roomNumber].players[1].id;
               timers = rooms[roomNumber].timers
+
+
               // set both players' timers to 5 minutes
               timers[rooms[roomNumber].players[0].id] = 300;
               timers[rooms[roomNumber].players[1].id] = 300;
               io.to(roomNumber).emit(EVENTS.START_GAME);
               startTimer(roomNumber);
+              // Once the ROOM is full, the server will notify the client and client will update the room's status
+              // but the client must have a list of room numbers to check against it
+              // socket.emit(EVENTS.ROOM_FULL, roomNumber);
             }
         } else {
+            // it could be a function that avoids the users attemp entering a room by pasting it on URL
             socket.emit(EVENTS.ROOM_FULL, roomNumber);
             console.log(`User ${socket.id} attempted to join room ${roomNumber}, which is full`);
         }

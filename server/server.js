@@ -5,13 +5,14 @@ const cors = require('cors');
 const ChessGame = require('./game/game.js');
 const socketHandlers = require('./socket/socketHandlers.js');
 const mongoose = require('mongoose');
+const { instrument } = require("@socket.io/admin-ui");
 require('dotenv').config();
 
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: ["http://localhost:3000", "https://admin.socket.io"],
     methods: ["GET", "POST"],
     allowedHeaders: ["my-custom-header"],
     credentials: true
@@ -62,8 +63,14 @@ app.get('/createGame', (req, res) => {
     currentPlayer: null,
     drawOffer: null
   }
+  
   res.send({ roomNumber });
 });
+
+app.get('/rooms', (req, res) => {
+  // return rooms
+  res.send(rooms)
+})
 
 app.get('/games', async (req, res) => {
     const uuid = req.query.uuid;
@@ -85,8 +92,68 @@ app.get('/games', async (req, res) => {
     }
 });
 
+// app.post('/games', async (req, res, next) => {
+//   console.log("line 89");
+//   // console.log("line 89", req.body);
+
+
+//   var newGame = new Game(req.body).save()
+//   res.status(200).send('Successful')
+//   // res.send("")
+  
+
+//   // var newGame = new Game({
+
+//   //   history: [
+//   //     {
+//   //       color: "w",
+//   //       piece: "p",
+//   //       from: "f2",
+//   //       to: "f4",
+//   //       san: "f4",
+//   //       flags: "b",
+//   //       lan: "f2f4",
+//   //       before: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+//   //       after: "rnbqkbnr/pppppppp/8/8/5P2/8/PPPPP1PP/RNBQKBNR b KQkq - 0 1"
+//   //     },
+//   //     {
+//   //       color: "b",
+//   //       piece: "p",
+//   //       from: "e7",
+//   //       to: "e5",
+//   //       san: "e5",
+//   //       flags: "b",
+//   //       lan: "e7e5",
+//   //       before: "rnbqkbnr/pppppppp/8/8/5P2/8/PPPPP1PP/RNBQKBNR b KQkq - 0 1",
+//   //       after: "rnbqkbnr/pppp1ppp/8/4p3/5P2/8/PPPPP1PP/RNBQKBNR w KQkq - 0 2"
+//   //     }
+//   //   ],
+//   //   playerOneData: {
+//   //     //Socket id
+//   //     id: "1234",
+//   //     username: "Dan",
+//   //     color: "black"
+//   //   },
+//   //   playerTwoData: {
+//   //     id: "2342",
+//   //     username: "Jason",
+//   //     color: "white"
+//   //   },
+//   //   date: new Date(),
+//   //   winner: "Dan" // "White", "Black", or "Draw"
+
+//   // }).save()
+//   // console.log("line 89", newGame);
+//   // res.send(newGame)
+// })
+
 server.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
+});
+
+instrument(io, {
+  auth: false,
+  mode: "development",
 });
 
 module.exports = app; // for testing purposes

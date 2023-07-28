@@ -9,7 +9,7 @@ const checkRoomExists = (rooms, roomNumber) => {
     return true;
 };
 
-const handleNonOfferedDraw = (gameState, io, roomNumber) => {
+const handleNonOfferedDraw = (gameState, io, roomNumber, rooms) => {
     if (gameState.inDraw) {
         let drawReason;
         if (gameState.inStalemate) {
@@ -21,7 +21,8 @@ const handleNonOfferedDraw = (gameState, io, roomNumber) => {
         } else {
             drawReason = DRAW_REASONS.FIFTY_MOVE_RULE;
         }
-        rooms[roomNumber].winner = "Draw"
+        
+        rooms[roomNumber].winner = "None"
         io.to(roomNumber).emit(EVENTS.GAME_OVER_DRAW, drawReason);
     }
 };
@@ -32,6 +33,7 @@ const handleCheckmate = (gameState, io, roomNumber, rooms) => {
         const currentPlayer = rooms[roomNumber].players.find(player => player.id === rooms[roomNumber].currentPlayer);
         const winningPlayerColor = currentPlayer.color === 'White' ? 'Black' : 'White';
         // For the room, set the winner to the player who is not the current player
+        
         rooms[roomNumber].winner = winningPlayerColor
         io.to(roomNumber).emit(EVENTS.CHECKMATE, `${winningPlayerColor}`);
     }
@@ -81,8 +83,9 @@ const handleMove = (io, socket, rooms, gameSchema, gameModel) => (roomNumber, mo
     rooms[roomNumber].currentPlayer = rooms[roomNumber].players.find(player => player.id !== currentPlayer).id;
   
     if (gameState.gameOver) {
-        handleNonOfferedDraw(gameState, io, roomNumber);
+        handleNonOfferedDraw(gameState, io, roomNumber, rooms);
         handleCheckmate(gameState, io, roomNumber, rooms);
+        console.log("line 86 - storing the data to database");
         // this was pushHistoryToMongoAndManageDB before, changed it to pushToMongoAndManageDB -kevin
         pushToMongoAndManageDB(rooms[roomNumber], gameSchema, gameModel);
     }

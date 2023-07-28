@@ -6,7 +6,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 export function PrevMoveNextButton() {
     const dispatch = useDispatch();
-    const state = useSelector(state=>state.PGNReducer)
+    const state = useSelector(state=>state.PrevGameViewReducer)
     const currIdx = state.currIdx;
     const [nextDisability, setNextDisability] = useState(true);
     const prevMoveListObj = JSON.parse(state.PGNOBJ).prevMoveListFEN

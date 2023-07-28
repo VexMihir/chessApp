@@ -1,13 +1,19 @@
 import {NavLink} from "react-router-dom";
-import {useRef, useState} from "react";
+import {useContext, useEffect, useRef, useState} from "react";
+import { SocketContext } from "../../../../ChessApp";
 
-export function FindRoomForm() {
+
+export function FindRoomForm() { //{socket}) {
     const refInput = useRef(null);
     const refRoom = useRef(null);
     const [userName, setUserName] = useState(null);
     const [roomNumber, setRoomNumber] = useState(null);
     const [userNameError, setuserNameError] = useState(false);
     const [roomEror, setRoomNumberError] = useState(false);
+
+    // const [isRoomFull, setIsRoomFull] = useState(false);
+
+    // const socket = useContext(SocketContext);
 
     const handleOnChange = (e) => {
         checkEmptyUserName(e)
@@ -45,6 +51,40 @@ export function FindRoomForm() {
             window.alert("ROOM NUMBER IS INVALID")
         }
     }
+
+    // useEffect(() => {
+    // //     console.log("line 53 findRoomForm", socket);
+
+    //     if(socket) {
+
+    //     // }
+
+    //         //
+    //         //
+
+    //     socket.on('room full', () => {
+    //         setIsRoomFull(true)
+    //     //   const confirmSpectator = window.confirm('The room is full. Do you want to join as a spectator??');
+    //     //   if (confirmSpectator) {
+    //         // socket.emit('join as spectator', roomNumber, userName);
+    //     //   } else {
+    //         // navigate('/');
+    //     //   }
+    //     });
+    //     }
+        
+    
+
+    // }, [socket])
+
+    // const getUsernameFromState = () => {
+    //     const locationState = location.state;
+    //     console.log("line 391", locationState);
+    //     //Cannot change from userName to playerName because it is tied to the state name and must follow what it is called.
+    //     return locationState ? locationState.userName : '';
+    //   };
+    
+
 
     return (
         <div className={"w-[50%] h-[100%] flex flex-col mb-1"}>
@@ -91,7 +131,15 @@ export function FindRoomForm() {
                         "text-white font-bold rounded " +
                         "shadow shadow-md shadow-white " +
                         ""}
-                onClick={(e)=>{finalCheck(e)}}
+                onClick={(e)=>{
+                    // console.log("line 123");
+                    // if (!isRoomFull) {
+                        // socket.emit('join room', roomNumber, userName);
+                        finalCheck(e)
+                    // } else {
+                        // window.confirm('The room is full.')
+                    // }
+                }}
                 to={"/inGameView/"+ roomNumber}
                 state={{userName: userName}}
             >Join Room</NavLink>

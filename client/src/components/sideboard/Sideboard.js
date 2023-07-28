@@ -4,19 +4,42 @@ import { PrevMovePrevButton } from "./PrevMoveList/MainPanel/Buttons/PrevMovePre
 // import "./style.css";
 import { BLACK_CHESS_PIECE, WHITE_CHESS_PIECE } from "../inGameView/InGameView";
 // import { PrevMoveList } from "./PrevMoveList/PrevMoveList";
-import { PrevMovePannel } from "./PrevMoveList/PrevMovePannel";
+import { InGamePrevMovePannel } from "./PrevMoveList/InGamePrevMovePannel";
 export default function Sideboard(props) {
 
   const socket = props.socket;
   const players = props.players;
+  const history = props.history;
+  const timer = props.timer;
   const [self, setSelf] = useState()
   const [challenger, setChallenger] = useState()
   const [spectators, setSpectators] = useState()
 
-  console.log("line 15", socket);
-  console.log("line 16", players);
+  const [selfTimer, setSelfTimer] = useState()
+  const [challengerTimer, setChallengerTimer] = useState()
+
+  // console.log("line 15", socket);
+  // console.log("line 16", players);
+
+
+  useEffect(()=> {
+    if (socket !== undefined && socket !== null && players !== undefined && players !== null) {
+      // console.log('line23', timer);
+      if (players.length === 2) {
+        if (socket.id === players[0].id) {
+          setSelfTimer(timer[players[0].id])
+          setChallengerTimer(timer[players[1].id])
+        } else if (socket.id === players[1].id) {
+          setSelfTimer(timer[players[1].id])
+          setChallengerTimer(timer[players[0].id])
+        }
+      }
+    }
+  }, [timer])
 
   useEffect(() => {
+
+
     if (socket !== undefined && socket !== null && players !== undefined && players !== null) {
       if (players.length === 1) {
         if (socket.id === players[0].id) {
@@ -68,7 +91,7 @@ export default function Sideboard(props) {
                   </div>
                   <div className="flex px-2">
                     <div>Timer:</div>
-                    <div className="text-center w-full">300</div>
+                    <div className="text-center w-full">{selfTimer}</div>
                   </div>
                 </div>
 
@@ -84,7 +107,7 @@ export default function Sideboard(props) {
                   </div>
                   <div className="flex px-2">
                     <div>Timer:</div>
-                    <div className="text-center w-full">300</div>
+                    <div className="text-center w-full">{challengerTimer}</div>
                   </div>
                 </div>
               </div>
@@ -119,7 +142,7 @@ export default function Sideboard(props) {
             <div className="text-center text-white text-3xl bg-slate-500">
               Previous Moves
             </div>
-            <PrevMovePannel />
+            <InGamePrevMovePannel history={history}/>
             <div>
               <div className="text-3xl bg-white text-black text-center">
                 <div className="text-3xl text-white text-center bg-slate-500">

@@ -8,7 +8,7 @@ import {PrevMovePrevButton} from "./MainPanel/Buttons/PrevMovePrevButtons";
 import {PrevMoveNextButton} from "./MainPanel/Buttons/PrevMoveNextButton";
 import {InfoPanel} from "./MainPanel/InfoPanel/InfoPanel";
 export function PrevMoveList() {
-  const pgnObj = JSON.parse(useSelector(state=>state.PGNReducer.PGNOBJ));
+  const pgnObj = JSON.parse(useSelector(state=>state.PrevGameViewReducer.PGNOBJ));
   const LANMoveList = pgnObj.prevMoveListLAN;
   const infoObj = {
       playerOne: pgnObj.playerOne,
