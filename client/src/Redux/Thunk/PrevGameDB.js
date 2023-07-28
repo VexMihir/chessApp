@@ -6,7 +6,7 @@ export function getDBObj() {
     return async (dispatch, getState) => {
         try {
             let payload = []
-            const response = await fetch("http://localhost:5001/games",
+            const response = await fetch("https://jamdk-chess-backend.onrender.com/games",
                 {
                     method: "GET"
                 }
