@@ -1,6 +1,7 @@
 const { EVENTS, OFFERED_DRAW_STATES } = require('../aliases');
+const {pushToMongoAndManageDB} = require('./pushToMongoAndManageDB');
 
-const handleAcceptDraw = (io, socket, rooms) => (roomNumber) => {
+const handleAcceptDraw = (io, socket, rooms, gameModel, gameSchema) => (roomNumber) => {
     if (!rooms[roomNumber]) {
         console.log(`Room ${roomNumber} does not exist`);
         socket.emit(EVENTS.ERROR, `Error accepting draw: room ${roomNumber} does not exist`);
@@ -23,6 +24,7 @@ const handleAcceptDraw = (io, socket, rooms) => (roomNumber) => {
 
     room.drawOffer.status = OFFERED_DRAW_STATES.ACCEPTED;
     clearInterval(rooms[roomNumber].timer);
+    pushToMongoAndManageDB(rooms[roomNumber], gameSchema, gameModel);
 
     room.players.forEach(player => {
         io.to(player.id).emit(EVENTS.DRAW_ACCEPTED);

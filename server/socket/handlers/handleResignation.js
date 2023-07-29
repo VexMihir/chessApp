@@ -1,6 +1,7 @@
 const { EVENTS } = require('../aliases');
+const {pushToMongoAndManageDB} = require('./pushToMongoAndManageDB');
 
-const handleResignation = (io, socket, rooms) => (roomNumber) => {
+const handleResignation = (io, socket, rooms, gameModel, gameSchema) => (roomNumber) => {
     if (!rooms[roomNumber]) {
         console.log(`Room ${roomNumber} does not exist`);
         socket.emit(EVENTS.ERROR, `Error resigning: room ${roomNumber} does not exist`);
@@ -24,8 +25,9 @@ const handleResignation = (io, socket, rooms) => (roomNumber) => {
         return;
     }
 
-    room.winner = winningPlayer.color + "wins by Resignation"; // other player wins
+    room.winner = winningPlayer.color + " wins by Resignation"; // other player wins
     clearInterval(rooms[roomNumber].timer);
+    pushToMongoAndManageDB(rooms[roomNumber], gameSchema, gameModel);
     room.players.forEach(player => {
         io.to(player.id).emit(EVENTS.RESIGNATION, resigningPlayer.username);
     });

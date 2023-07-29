@@ -75,19 +75,14 @@ const handleMove = (io, socket, rooms, gameSchema, gameModel) => (roomNumber, fr
         } else {
             const pieceMove = game.movePiece2(from, to)
         }
-        console.log("line 59");
         const currentFen = game.getCurrentFEN();
-        console.log("line 61");
         const validMoves = game.validMoves();
-        console.log("line 63");
         const history = game.getGameHistory();
-        console.log("line 65");
         io.to(roomNumber).emit(EVENTS.MOVE_MADE, to, currentFen, validMoves, history);
         console.log("move", to);
         console.log("currentFen", currentFen);
         console.log("validMoves", validMoves);
         console.log("history", history);
-        console.log("line 67");
     } catch (error) {
         io.to(roomNumber).emit(EVENTS.ERROR_MOVING, `Error moving: ${error}`);
         console.log(`Error moving: ${error}`)

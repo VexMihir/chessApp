@@ -20,10 +20,10 @@ const init = (io, roomInstance, gameSchema, gameModel) => {
         socket.on(EVENTS.JOIN_AS_SPECTATOR, handleJoinAsSpectator(io, socket, rooms));
         socket.on(EVENTS.MOVE, handleMove(io, socket, rooms, gameSchema, gameModel));
         socket.on(EVENTS.DRAW_OFFERED, handleOfferedDraw(io, socket, rooms));
-        socket.on(EVENTS.DRAW_ACCEPTED, handleAcceptDraw(io, socket, rooms));
+        socket.on(EVENTS.DRAW_ACCEPTED, handleAcceptDraw(io, socket, rooms, gameModel, gameSchema));
         socket.on(EVENTS.DRAW_RESCINDED, handleRescindDraw(io, socket, rooms));
         socket.on(EVENTS.DRAW_DECLINED, handleDeclineDraw(io, socket, rooms));
-        socket.on(EVENTS.RESIGNATION, handleResignation(io, socket, rooms));
+        socket.on(EVENTS.RESIGNATION, handleResignation(io, socket, rooms, gameModel, gameSchema));
         socket.on(EVENTS.DISCONNECT, handleDisconnect(io, socket, rooms));
     });
 };

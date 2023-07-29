@@ -36,7 +36,7 @@ const handleJoinRoom = (io, socket, rooms, gameModel, gameSchema) => (roomNumber
         if (rooms[roomNumber].timers[currentPlayer] <= 0 && rooms[roomNumber].players.length === 2) {
           const winningColor = currentPlayer === rooms[roomNumber].players[0].id ? rooms[roomNumber].players[1].color : rooms[roomNumber].players[0].color;
           io.to(roomNumber).emit('timeout', winningColor);
-          rooms[roomNumber].winner = winningColor + "wins by Timeout"; // other player wins
+          rooms[roomNumber].winner = winningColor + " wins by Timeout"; // other player wins
           pushToMongoAndManageDB(rooms[roomNumber], gameSchema, gameModel);
           clearInterval(rooms[roomNumber].timer);
         }
