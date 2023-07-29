@@ -99,7 +99,7 @@ export default function RoomAssignment() {
                     style={{
                         textShadow: "1px 1px 10px purple"
                     }}
-                >JAMDK CHESS</h1>
+                >Chess Rumble</h1>
             </div>
             {/*<div className={"h-[70%] w-[50%] mt-auto shrink-0 block ml-5" +*/}
             <div className={"h-[70%] mt-auto shrink-0"} >
