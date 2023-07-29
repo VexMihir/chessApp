@@ -10,7 +10,7 @@ import {mainStore} from "./Redux/Store/mainStore";
 
 // playground environment
 
-// const socket = io(process.env.BACKEND_URL || 'http://localhost:5001');
+// const socket = io(process.env.REACT_APP_BACKEND_URL || 'http://localhost:5001');
 
 // socket.on('connect', function() {
 //   console.log('Connected to server');

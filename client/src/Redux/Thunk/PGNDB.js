@@ -30,7 +30,7 @@ export function postPGNObj(PGNObj) {
     return async (dispatch, getState) => {
     //     try {
     //         let payload = []
-    //         const response = await fetch("http://localhost:5001/games",
+    //         const response = await fetch(REACT_APP_BACKEND_URL || "http://localhost:5001/games",
     //             {
     //                 method: "POST",
     //                 headers: {
