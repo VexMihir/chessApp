@@ -1,53 +1,16 @@
 import {Chess} from 'chess.js'
 import Chessboard from 'chessboardjsx'
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
 import React, {useState, useEffect} from 'react'
-
-
-// import { addFEN } from "../../Redux/Action/FEN_Actions";
-// import { addSAN } from '../../Redux/Action/SAN_Actions';
-import OutcomeModal from '../portals/OutcomeModal';
-import "./style.css"
 import { BLACK_CHESS_PIECE, RESULT, WHITE_CHESS_PIECE } from '../inGameView/InGameView';
-// import { addPGN } from '../../Redux/Action/PGN_Actions';
 
-import MessageModal from '../portals/MessageModal';
-import { addPGN } from '../../Redux/Action/pgnAction';
-import { postPGNObj } from '../../Redux/Thunk/PGNDB';
-
-
-
-//test
 const chess = new Chess();
 
-export default function ChessboardGame({haveTwoPlayers, setHistory, players, isSocketSpectator, setFullMove, setHalfMove, socket, roomId, isGameStarted, setIsGameStarted, isModalOpen, setIsModalOpen, setResult, activePlayer, setActivePlayer}) {
-    // const FENList = useSelector((storeState) => storeState.FENReducer.FEN)
-    // const SANList = useSelector((storeState) => storeState.SANReducer.SAN)
-    // const PGNList = useSelector((storeState) => storeState.PGNReducer.PGN)
+export default function ChessboardGame({haveTwoPlayers, pawnPromotionChoice, setHistory, players, isSocketSpectator, setFullMove, setHalfMove, socket, roomId, isGameStarted, setIsGameStarted, isModalOpen, setIsModalOpen, setResult, activePlayer, setActivePlayer}) {
+
     
-    //Source: https://chat.openai.com/share/046ed508-1fa5-43d7-94ac-87e8cb9675e4
-    // const PGNList = useSelector((storeState) => JSON.parse(storeState.PGNReducer.PGNOBJ))
-        
-    const dispatch = useDispatch()
-
-
-    // console.log("line30");
-    // console.log(PGNList.prevMoveListFEN);
-
-    // const [fen, setFen] = useState(PGNList.prevMoveListFEN[PGNList.prevMoveListFEN.length - 1]);
     const [fen, setFen] = useState("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
-    // const [history, setHistory] = useState([]);
     
-    const [whitePlayerTimer, setWhitePlayerTimer] = useState(300);
-    const [blackPlayerTimer, setBlackPlayerTimer] = useState(300);
-    const [whitePawnPromotionChoice, setWhitePawnPromotionChoice] = useState(WHITE_CHESS_PIECE.QUEEN)
-    const [blackPawnPromotionChoice, setBlackPawnPromotionChoice] = useState(BLACK_CHESS_PIECE.QUEEN)
     const [sqaureStyles, setSqaureStyles] = useState()
-
-    const [legalPieceMoves, setLegalPieceMoves] = useState();
-
-    const [isMessageModalOpen, setIsMessageModalOpen] = useState(false)
 
     const [orientation, setOrientation] = useState('white')
 
@@ -112,7 +75,7 @@ export default function ChessboardGame({haveTwoPlayers, setHistory, players, isS
       
       if (socket && !isSocketSpectator && isGameStarted) {
         console.log("line 134");
-        console.log(chess.history()); //
+        console.log(chess.history()); 
         
         const validMoves = chess.moves({square: sourceSquare, verbose: true})
 
@@ -126,75 +89,35 @@ export default function ChessboardGame({haveTwoPlayers, setHistory, players, isS
           }
         }
         console.log("line 142");
-        // socket.emit('move', roomId, result, sourceSquare);
-        
+
         if (result !== "" && sourceSquare !== targetSquare) {
-          // socket.emit('move', roomId, result)
           console.log("line 144");
-          socket.emit('move', roomId, result);
-          // socket.emit('history', roomId)
-          // socket.emit('pgn', roomId)
+          // socket.emit('move', roomId, result);
+          if (pawnPromotionChoice === BLACK_CHESS_PIECE.ROOK || pawnPromotionChoice === WHITE_CHESS_PIECE.ROOK) {
+            socket.emit('move', roomId, sourceSquare, targetSquare, 'r')
+          } else if (pawnPromotionChoice === BLACK_CHESS_PIECE.BISHOP || pawnPromotionChoice === WHITE_CHESS_PIECE.BISHOP) {
+            socket.emit('move', roomId, sourceSquare, targetSquare, 'b')
+          } else if (pawnPromotionChoice === BLACK_CHESS_PIECE.KNIGHT || pawnPromotionChoice === WHITE_CHESS_PIECE.KNIGHT) {
+            socket.emit('move', roomId, sourceSquare, targetSquare, 'n')
+          } else if (pawnPromotionChoice === BLACK_CHESS_PIECE.QUEEN || pawnPromotionChoice === WHITE_CHESS_PIECE.QUEEN) {
+            socket.emit('move', roomId, sourceSquare, targetSquare, 'q')
+          } else {
+            socket.emit('move', roomId, sourceSquare, targetSquare, 'q')
+          }
         }
         setSqaureStyles('');
       }
-
-      // let move = null;
-      // let promotionChoice = 'q';
-      // if (chess.turn() === "w") {
-      //   if(whitePawnPromotionChoice === WHITE_CHESS_PIECE.ROOK) {
-      //     promotionChoice = 'r'
-      //   } else if (whitePawnPromotionChoice === WHITE_CHESS_PIECE.KNIGHT) {
-      //     promotionChoice = 'n'
-      //   } else if (whitePawnPromotionChoice === WHITE_CHESS_PIECE.BISHOP) {
-      //     promotionChoice = 'b'
-      //   } else if (whitePawnPromotionChoice === WHITE_CHESS_PIECE.QUEEN) {
-      //     promotionChoice = 'q'
-      //   }
-      // } else if (chess.turn() === 'b') {
-      //   if(blackPawnPromotionChoice === BLACK_CHESS_PIECE.ROOK) {
-      //     promotionChoice = 'r'
-      //   } else if (blackPawnPromotionChoice === BLACK_CHESS_PIECE.KNIGHT) {
-      //     promotionChoice = 'n'
-      //   } else if (blackPawnPromotionChoice === BLACK_CHESS_PIECE.BISHOP) {
-      //     promotionChoice = 'b'
-      //   } else if (blackPawnPromotionChoice === BLACK_CHESS_PIECE.QUEEN) {
-      //     promotionChoice = 'q'
-      //   }
-      // }
-      // try {
-      //     move = chess.move({
-      //     from: sourceSquare,
-      //     to: targetSquare,
-      //     // promotion: promotionChoice
-      //   })
-      // } catch(error) {
-      //   console.log(error);
-      // }
-  
-      // if (move === null) {
-      //   return;
-      // }
-      // setFen(chess.fen());
-      // setHistory(chess.history({verbose: true}));
 
     }
 
     // Not reasonable because second player has no idea how long the first player would get started by dragging over the square.  
     function onDragOverSquare(square) {
       if (socket && !isSocketSpectator && players.length === 2 && !isGameStarted) {
-        if (whitePlayerTimer === 300 && blackPlayerTimer === 300 && !isModalOpen) {
-         
-          socket.emit('game start', roomId)
-        }
+        socket.emit('game start', roomId)
       }
     }
-
     
     useEffect(() => {
-      // const newSocket = io('http://localhost:5001');
-      console.log("line 200");
-      // setSocket(newSocket);
-      // socket.emit('join room', roomId, getUsernameFromState());
       if (socket) {
       
       socket.on('moveMade', (move, fen, validMoves, history) => {
@@ -207,12 +130,10 @@ export default function ChessboardGame({haveTwoPlayers, setHistory, players, isS
         setFen(fen); // Update FEN state
         setHistory(history)
         chess.load(fen); // it reset the history.
-        // dispatch(addFEN(fen));
-        // dispatch(addFEN(fen))
         setActivePlayer(fen.split(" ")[1])
         setHalfMove(fen.split(" ")[4])
         setFullMove(fen.split(" ")[5]);
-        // setLegalMoves(legalMoves);
+
       });
 
       socket.on('start game', (legalMoves) => {
@@ -221,28 +142,15 @@ export default function ChessboardGame({haveTwoPlayers, setHistory, players, isS
         console.log("players line215", players);
 
         setIsGameStarted(true);
-
-        
       })
   
       socket.on('checkmate', (winningPlayerColor) => {
-
-        // setIsCheckmate(isCheckmate)
-
-        console.log("line 282", winningPlayerColor);
-
         setResult(winningPlayerColor)
-        // let winner = "None"
-
         if (winningPlayerColor === "White") {
           setResult(RESULT.WHITE)
-          // winner = "White"
         } else if (winningPlayerColor === 'Black'){
           setResult(RESULT.BLACK)
-          // winner = "black"
         }
-
-        console.log("players 235", players);
 
         // dispatch(postPGNObj({
         //   history: gameHistory,
@@ -251,10 +159,8 @@ export default function ChessboardGame({haveTwoPlayers, setHistory, players, isS
         //   date: new Date(),
         //   winner: winningPlayerColor
         // }))
-
         setIsGameStarted(false)
         setIsModalOpen(true)
-        // chess.reset()
       })
 
       socket.on('game over draw', (drawReason) => {
@@ -265,66 +171,25 @@ export default function ChessboardGame({haveTwoPlayers, setHistory, players, isS
 
       })
 
-      // newSocket.on('history sent', (history) => {
-      //   setHistory(history);
-      //   // dispatch(addSAN(history));
-      // })
+      socket.on('timeout', (winningPlayerColor) => {
 
-      // // server should emit this event when there is 2 players and the game gets started.
-      // newSocket.on('time update', (timerValues, userList) => {
-      //   setWhitePlayerTimer(timerValues[userList[0].id])
-      //   setBlackPlayerTimer(timerValues[userList[1].id])
-  
-      // });
+        console.log("line 270 time out", winningPlayerColor);
 
-      // newSocket.on('forfeit sent', (activePlayer) => {
-      //   console.log("line 21...", activePlayer);
-        
-      //   setIsGameStarted(false)
-      //   if (activePlayer === 'w') {
-      //     setResult("0-1")
-      //   } else if (activePlayer === 'b') {
-      //     setResult("1-0")
-      //   }
-      //   setIsModalOpen(true)
-        
-      // });
+        setResult(winningPlayerColor)
 
-      // newSocket.on('offer draw sent', (activePlayers, socketId) => {
-      //   console.log("line 21...", activePlayers);
-      //   console.log(socketId, activePlayers[0].id)
-      //   console.log(socketId, activePlayers[1].id);
-      //   // setIsGameStarted(false)
-      //   // if (activePlayers === 'w') {
-      //     if (socketId === activePlayers[0].id || socketId === activePlayers[1].id) {
-      //       console.log("line 303");
-      //       setIsMessageModalOpen(true)
-      //     // }
-      //     }
-          
-      // });
+        if (winningPlayerColor === "white") {
+          setResult(RESULT.WHITE)
+          // winner = "White"
+        } else if (winningPlayerColor === 'black'){
+          setResult(RESULT.BLACK)
+          // winner = "black"
+        }
 
-      // newSocket.on('draw sent', () => {
-      //     setIsGameStarted(false)
-      //     //Show dialog and would relate to socket.io
-      //     setResult("1/2-1/2")
+        setIsGameStarted(false)
+        setIsModalOpen(true)
 
-      //     setIsModalOpen(true)
-      //     setIsMessageModalOpen(false)
-      // })
+      })
 
-      // newSocket.on('pgn sent', (history) => {
-      //     const pgn = {PGN: {
-      //       history: history, //chess.history({verbose: true}),
-      //       player1: blackPlayerName,
-      //       player2: whitePlayerName,
-      //       date: new Date(),
-      //       winner: true// if no winner, draw, unfinished
-      //     }
-      //   }
-      //     // dispatch(addPGN(pgn))
-      // })
-  
 
     }
     }, [roomId, socket]);
@@ -332,61 +197,10 @@ export default function ChessboardGame({haveTwoPlayers, setHistory, players, isS
     // [roomId, socket, haveTwoPlayers]); 
     //[roomId, socket]);
 
-    useEffect(() => {
-      console.log("FEN:", fen);
-      // console.log("History", history);
-      // console.log("SAN", SANList);
-      // console.log("header", header, chess.header());
-
-      // Store the FEN in Redux
-      if (isGameStarted) {
-        // dispatch(addFEN(fen));
-        // dispatch(addSAN(chess.history()));
-
-
-      }
-
-
-    }, [fen])
-
-    useEffect(() => {
-      if (isGameStarted) {
-        if(blackPlayerTimer === 0) {
-          // setResult(RESULT.WHITE)
-          setIsGameStarted(false)
-          setIsModalOpen(true)
-        }
-        
-        if(whitePlayerTimer === 0) {
-          // setResult(RESULT.BLACK)
-          setIsGameStarted(false)
-          setIsModalOpen(true)
-        }
-      }
-
-    }, [isGameStarted, whitePlayerTimer, blackPlayerTimer])
-
-
-  
     return (
       <>
-        <MessageModal isOpen={isMessageModalOpen} onClose={()=>setIsMessageModalOpen(false)}
-          onOutcomeModalOpen={()=> {
-
-            socket.emit('draw', roomId);
-
-          
-        }}> 
-          {activePlayer === "w"? 
-          "Do you want to accept the draw offer from white player?" : 
-          "Do you want to accept the draw offer from black player?"
-          }
-        </MessageModal>
-        <div className='chessboard__wrapper'>
-          <div className='chessboard'>
-
-
-          <div className='chessboard__main'>
+        <div className='text-black'>
+          <div className='bg-white flex justify-center text-black'>
             <Chessboard 
               position={fen.split(" ")[0]}
               orientation={orientation}
@@ -397,7 +211,6 @@ export default function ChessboardGame({haveTwoPlayers, setHistory, players, isS
               onDrop={onDrop}
               onDragOverSquare={onDragOverSquare}
               squareStyles={sqaureStyles}
-              // onPieceClick={onPieceClick}
               onSquareClick={onSquareClick}
               onMouseOverSquare={onMouseOverSquare}
               //Source: https://codesandbox.io/s/21r26yw13j?from-embed=&file=/src/integrations/CustomBoard.js
@@ -512,8 +325,6 @@ export default function ChessboardGame({haveTwoPlayers, setHistory, players, isS
                 )
               }}
             />
-          </div>
-
           </div>
         </div>
       </>

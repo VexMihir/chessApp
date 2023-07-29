@@ -14,12 +14,16 @@ const handleNonOfferedDraw = (gameState, io, roomNumber, rooms) => {
         let drawReason;
         if (gameState.inStalemate) {
             drawReason = DRAW_REASONS.STALEMATE;
+            rooms[roomNumber].winner = "Draw by Stalemate"
         } else if (gameState.inThreefoldRepetition) {
             drawReason = DRAW_REASONS.THREEFOLD_REPETITION;
+            rooms[roomNumber].winner = "Draw by Threefold Repetition"
         } else if (gameState.inInsufficientMaterial) {
             drawReason = DRAW_REASONS.INSUFFICIENT_MATERIAL;
+            rooms[roomNumber].winner = "Draw by Insufficient Material"
         } else {
             drawReason = DRAW_REASONS.FIFTY_MOVE_RULE;
+            rooms[roomNumber].winner = "Draw by Fifty Move Rule"
         }
         
         rooms[roomNumber].winner = "None"
@@ -39,7 +43,14 @@ const handleCheckmate = (gameState, io, roomNumber, rooms) => {
     }
 };
 
-const handleMove = (io, socket, rooms, gameSchema, gameModel) => (roomNumber, move) => {
+const handleGameOver = (io, roomNumber, rooms, gameState, gameSchema, gameModel) => {
+    handleNonOfferedDraw(gameState, io, roomNumber, rooms);
+    handleCheckmate(gameState, io, roomNumber, rooms);
+    // this was pushHistoryToMongoAndManageDB before, changed it to pushToMongoAndManageDB -kevin
+    pushToMongoAndManageDB(rooms[roomNumber], gameSchema, gameModel);
+};
+
+const handleMove = (io, socket, rooms, gameSchema, gameModel) => (roomNumber, from, to, promotionChoice) => {
 
     if (!checkRoomExists(rooms, roomNumber)) {
         socket.emit('error', `Error moving: room ${roomNumber} does not exist`);
@@ -56,8 +67,13 @@ const handleMove = (io, socket, rooms, gameSchema, gameModel) => (roomNumber, mo
 
     console.log("line 55");
     try {
-        console.log("line 57", roomNumber, move);
-        const pieceMove = game.movePiece(move);
+        // console.log("line 57", roomNumber, move);
+        // const pieceMove = game.movePiece(move);
+        if (promotionChoice) {
+            const pieceMove = game.movePiece2(from, to, promotionChoice)
+        } else {
+            const pieceMove = game.movePiece2(from, to)
+        }
         console.log("line 59");
         const currentFen = game.getCurrentFEN();
         console.log("line 61");
@@ -65,8 +81,8 @@ const handleMove = (io, socket, rooms, gameSchema, gameModel) => (roomNumber, mo
         console.log("line 63");
         const history = game.getGameHistory();
         console.log("line 65");
-        io.to(roomNumber).emit(EVENTS.MOVE_MADE, move, currentFen, validMoves, history);
-        console.log("move", move);
+        io.to(roomNumber).emit(EVENTS.MOVE_MADE, to, currentFen, validMoves, history);
+        console.log("move", to);
         console.log("currentFen", currentFen);
         console.log("validMoves", validMoves);
         console.log("history", history);
@@ -83,11 +99,10 @@ const handleMove = (io, socket, rooms, gameSchema, gameModel) => (roomNumber, mo
     rooms[roomNumber].currentPlayer = rooms[roomNumber].players.find(player => player.id !== currentPlayer).id;
   
     if (gameState.gameOver) {
-        handleNonOfferedDraw(gameState, io, roomNumber, rooms);
-        handleCheckmate(gameState, io, roomNumber, rooms);
-        console.log("line 86 - storing the data to database");
-        // this was pushHistoryToMongoAndManageDB before, changed it to pushToMongoAndManageDB -kevin
-        pushToMongoAndManageDB(rooms[roomNumber], gameSchema, gameModel);
+
+        handleGameOver(io, roomNumber, rooms, gameState, gameSchema, gameModel) 
+
+        clearInterval(rooms[roomNumber].timer);
     }
 };
 

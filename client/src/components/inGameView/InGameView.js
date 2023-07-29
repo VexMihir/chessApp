@@ -1,16 +1,11 @@
 import React, { useEffect, useState } from "react";
-import Chessboard from "../chessboard/Chessboard";
 import Sideboard from "../sideboard/Sideboard";
 import ChessboardGame from "../chessboard/ChessboardGame";
 
-import "./style.css";
-import Navigation from "../navigation/Navigation";
-import { useSelector } from "react-redux";
-// import { useParams } from "react-router-dom";
 import OutcomeModal from "../portals/OutcomeModal";
-import { useDispatch } from "react-redux";
 import io from 'socket.io-client';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import MessageModal from "../portals/MessageModal";
 
 export const RESULT = {
   WHITE: "1-0", // black forfeits or black king is in checkmate
@@ -41,14 +36,18 @@ export const BLACK_CHESS_PIECE = {
 
 export default function InGameView() {
 
-  const [isNavigationClose, setIsNavigationClose] = useState(true);
+  // const [isNavigationClose, setIsNavigationClose] = useState(true);
   const [isGameStarted, setIsGameStarted] = useState(false);
   const [activePlayer, setActivePlayer] = useState('w')
 
+  const [selfColor, setSelfColor] = useState('white')
+
   const [socket, setSocket] = useState(null)
   const [isSocketSpectator, setIsSocketSpectator] = useState(false)
+  const [pawnPromotionChoice, setPawnPromotionChoice] = useState(WHITE_CHESS_PIECE.KNIGHT)
 
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isMessageModalOpen, setIsMessageModalOpen] = useState(false)
   const [haveTwoPlayers, setHaveTwoPLayers] = useState(false)
   const [result, setResult] = useState(RESULT.UNFINISHED) // default
 
@@ -66,21 +65,13 @@ export default function InGameView() {
   //Source: https://chat.openai.com/share/82b7f010-6aa8-420c-b6f3-89e66744d516
   //Source: https://stackoverflow.com/questions/66506891/useparams-hook-returns-undefined-in-react-functional-component
   const { id } = useParams();
+
  
   const [roomId, setRoomId] = useState(id)
   const navigate = useNavigate();
   const location = useLocation();
   // const roomNumber = useSelector(storeState=>storeState.JoinRoomReducer.roomNumber);
 
-
-  function handleClose() {
-    console.log("line 11");
-    if (isNavigationClose) {
-      setIsNavigationClose(false);
-    } else {
-      setIsNavigationClose(true);
-    }
-  }
 
   useEffect(()=> {
     console.log("line 75");
@@ -99,9 +90,30 @@ export default function InGameView() {
     for (let i = 0; i < spectators.length; i++) {
       if (socket.id === spectators[i].id) {
         setIsSocketSpectator(true)
+        break
       }
     }
   }, [spectators])
+
+  // useEffect(()=> {
+  //   for (let i = 0; i < players.length; i++) {
+  //     if (players.length === 1) {
+  //       if (socket.id === players[0].id) {
+  //         setIsSocketPlayerOne(true)
+  //         setIsSocketPlayerTwo(false)  
+  //       }
+  //     } else if (players.length === 2) {
+  //       if (socket.id === players[0].id) {
+  //         setIsSocketPlayerOne(true)
+  //         setIsSocketPlayerTwo(false)
+  //       } else if (socket.id === players[1].id) {
+  //         setIsSocketPlayerOne(false)
+  //         setIsSocketPlayerTwo(true)
+  //       }
+  //     }
+  //   }
+  // }, [players])
+
 
   useEffect(() => {
     const newSocket = io('http://localhost:5001');
@@ -114,7 +126,7 @@ export default function InGameView() {
       if (confirmSpectator) {
         newSocket.emit('join as spectator', roomId, getUsernameFromState());
       } else {
-        navigate('/');
+        // navigate('/');
       }
     });
 
@@ -136,6 +148,10 @@ export default function InGameView() {
         setSpectators(userList.spectators)
       }
       if (userList.players.length === 1) {
+        if (newSocket.id === userList.players[0].id) {
+          setSelfColor(userList.players[0].color)
+        }
+
         console.log("line 258");
         // setWhitePlayerName(userList.players[0].username)
         // if (userList.players[0].color === 'black') {
@@ -144,6 +160,10 @@ export default function InGameView() {
       }
       if (userList.players.length === 2) {
         console.log("line 262");
+        if (newSocket.id === userList.players[1].id) {
+          setSelfColor(userList.players[1].color)
+        }
+
         // setBlackPlayerName(userList.players[1].username)
         // if (userList.players[1].color === 'white') {
           // setOrientation('black')
@@ -155,8 +175,44 @@ export default function InGameView() {
     // io.to(roomNumber).emit('time update', rooms[roomNumber].timers);
 
     newSocket.on('time update', (timer)=>{
+      console.log("Line 158 timer", timer);
+
       setTimer(timer)
     }) 
+
+    // Forfeit
+    newSocket.on('resignation', (resigningPlayer)=> {
+      console.log("line 270 time out", resigningPlayer);
+
+      setResult(resigningPlayer)
+
+      if (resigningPlayer === "white") {
+        setResult(RESULT.WHITE)
+        // winner = "White"
+      } else if (resigningPlayer === 'black'){
+        setResult(RESULT.BLACK)
+        // winner = "black"
+      }
+
+      setIsGameStarted(false)
+      setIsModalOpen(true)
+    })
+
+
+      newSocket.on('drawOffered', (socketId) => {
+        console.log("Offer event line 184");
+        setIsMessageModalOpen(true)
+      });
+
+      newSocket.on('drawAccepted', () => {
+          setIsGameStarted(false)
+          //Show dialog and would relate to socket.io
+          setResult("1/2-1/2")
+
+          setIsModalOpen(true)
+          setIsMessageModalOpen(false)
+      })
+
 
     return () => {
       newSocket.off('moveMade');
@@ -172,28 +228,42 @@ export default function InGameView() {
     return locationState ? locationState.userName : '';
   };
 
+  const getCurrentPlayerSocketId = (socketId) => {
+    for (let i = 0; i < players.length; i++) {
+      if (players[i].id === socketId) {
+        return players[i]
+      }
+    }
+  }
+
   return (
     <>
-      {isNavigationClose && (
-        <>
-          {/* <Navigation onClose={handleClose} /> */}
-        </>
-      )}
+
+        <MessageModal isOpen={isMessageModalOpen} onClose={()=>setIsMessageModalOpen(false)}
+          onOutcomeModalOpen={()=> {
+
+            socket.emit('drawAccepted', roomId);
+
+          
+        }}> 
+          {
+          selfColor === 'white' ? 
+          "Do you want to accept the draw offer from black player?":
+          "Do you want to accept the draw offer from white player?"  
+          }
+        </MessageModal>
+
       <OutcomeModal isOpen={isModalOpen} result={result} /> 
 
-      {/* <div className="grid grid-cols-[1fr_100fr]"> */}
-      <div className="text-6xl absolute left-4 top-1">
-        ≡ 
-      </div>
 
-      <div className="chessApp__page-wrapper">
-      <div className="chessApp__page chessApp__page_theme">
+      <div className="flex items-center h-[100vh]">
+      <div className="w-[85%] min-w-[1300px] m-[0_auto] bg-[#5928ed] text-[#fff]">
 
         <div className="text-center text-4xl">
           In-Game Systen
         </div>
 
-        <div className='chessboard__information'>
+        <div className='flex bg-black text-white justify-around text-xl'>
         <div>
           Turn: {activePlayer.toUpperCase()}
         </div>
@@ -209,9 +279,9 @@ export default function InGameView() {
 
         </div>
 
-        <div className="chessApp__main ">
+        <div className="flex">
           <ChessboardGame 
-            // PGNList={PGNList}
+            pawnPromotionChoice={pawnPromotionChoice}
             haveTwoPlayers={haveTwoPlayers}
             players={players}
             setHistory={setHistory}
@@ -228,7 +298,12 @@ export default function InGameView() {
             setIsModalOpen={setIsModalOpen}
             setResult={setResult}
           />
-          <Sideboard type="inGame" history={history} players={players} timer={timer} socket={socket}/>
+          <Sideboard
+          pawnPromotionChoice={pawnPromotionChoice}
+          setPawnPromotionChoice={setPawnPromotionChoice}
+          history={history} socket={socket} players={players} timer={timer} isSocketSpectator={isSocketSpectator} 
+          roomId={roomId} spectators={spectators}/>
+
         </div>
       </div>
       </div>

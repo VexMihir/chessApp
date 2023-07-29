@@ -1,6 +1,8 @@
 const { EVENTS } = require('../aliases');
+const {pushToMongoAndManageDB} = require('./pushToMongoAndManageDB');
 
-const handleJoinRoom = (io, socket, rooms) => (roomNumber, username) => {
+
+const handleJoinRoom = (io, socket, rooms, gameModel, gameSchema) => (roomNumber, username) => {
 
     console.log("line 5", roomNumber, username);
 
@@ -29,6 +31,16 @@ const handleJoinRoom = (io, socket, rooms) => (roomNumber, username) => {
           const currentPlayer = rooms[roomNumber].currentPlayer;
           rooms[roomNumber].timers[currentPlayer]--;
           io.to(roomNumber).emit('time update', rooms[roomNumber].timers);
+
+        // Check if a player's timer has run out
+        if (rooms[roomNumber].timers[currentPlayer] <= 0) {
+          const winningColor = currentPlayer === rooms[roomNumber].players[0].id ? rooms[roomNumber].players[1].color : rooms[roomNumber].players[0].color;
+          io.to(roomNumber).emit('timeout', winningColor);
+          rooms[roomNumber].winner = winningColor + "wins by Timeout"; // other player wins
+          pushToMongoAndManageDB(rooms[roomNumber], gameSchema, gameModel);
+          clearInterval(rooms[roomNumber].timer);
+        }
+      // Emit a socket event to notify the clients that the game is over
         }, 1000);
       
         rooms[roomNumber].timer = timer;
@@ -53,12 +65,9 @@ const handleJoinRoom = (io, socket, rooms) => (roomNumber, username) => {
               timers[rooms[roomNumber].players[1].id] = 300;
               io.to(roomNumber).emit(EVENTS.START_GAME);
               startTimer(roomNumber);
-              // Once the ROOM is full, the server will notify the client and client will update the room's status
-              // but the client must have a list of room numbers to check against it
-              // socket.emit(EVENTS.ROOM_FULL, roomNumber);
+
             }
         } else {
-            // it could be a function that avoids the users attemp entering a room by pasting it on URL
             socket.emit(EVENTS.ROOM_FULL, roomNumber);
             console.log(`User ${socket.id} attempted to join room ${roomNumber}, which is full`);
         }

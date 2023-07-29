@@ -9,7 +9,7 @@ async function pushToMongoAndManageDB(gameRoom, gameSchema, Game) {
       playerOneData: gameRoom.players[0],
       playerTwoData: gameRoom.players[1],
       date: new Date(),
-      winner: gameRoom.winner
+      result: gameRoom.winner
   });
 
   console.log(newGame.history)

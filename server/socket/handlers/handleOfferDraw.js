@@ -1,6 +1,7 @@
 const { EVENTS, OFFERED_DRAW_STATES } = require('../aliases');
 
 const handleOfferDraw = (io, socket, rooms) => (roomNumber) => {
+
     if (!rooms[roomNumber]) {
         console.log(`Room ${roomNumber} does not exist`);
         socket.emit(EVENTS.ERROR, `Error offering draw: room ${roomNumber} does not exist`);

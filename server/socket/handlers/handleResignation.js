@@ -24,8 +24,8 @@ const handleResignation = (io, socket, rooms) => (roomNumber) => {
         return;
     }
 
-    room.winner = winningPlayer.color; // other player wins
-
+    room.winner = winningPlayer.color + "wins by Resignation"; // other player wins
+    clearInterval(rooms[roomNumber].timer);
     room.players.forEach(player => {
         io.to(player.id).emit(EVENTS.RESIGNATION, resigningPlayer.username);
     });
