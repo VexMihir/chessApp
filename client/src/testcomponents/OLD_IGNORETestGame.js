@@ -14,7 +14,7 @@ const Game = () => {
   const location = useLocation();
 
   useEffect(() => {
-    const newSocket = io('http://localhost:5001');
+    const newSocket = io(process.env.BACKEND_URL || 'http://localhost:5001');
     setSocket(newSocket);
 
     newSocket.emit('join room', roomId, getUsernameFromState());

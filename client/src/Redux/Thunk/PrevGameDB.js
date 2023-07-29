@@ -7,7 +7,7 @@ export function getDBObj() {
     return async (dispatch, getState) => {
         try {
             let payload = []
-            const response = await fetch("http://localhost:5001/games",
+            const response = await fetch((process.env.BACKEND_URL || 'http://localhost:5001') + "/games",
                 {
                     method: "GET"
                 }

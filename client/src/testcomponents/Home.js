@@ -9,7 +9,7 @@ function Home() {
 
   const createRoom = async () => {
     try {
-      const response = await axios.get('http://localhost:5001/createGame');
+      const response = await axios.get((process.env.BACKEND_URL || 'http://localhost:5001') + '/createGame');
       if (response.data && response.data.roomNumber) {
         navigate(`/in/${response.data.roomNumber}`, { state: { username } }); // Pass username in state
       }

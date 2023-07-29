@@ -11,7 +11,7 @@ export default function RoomAssignment() {
     // const [socket, setSocket] = useState(null)
 
     // useEffect(() => {
-        // const newSocket = io('http://localhost:5001');
+        // const newSocket = io(process.env.BACKEND_URL || 'http://localhost:5001');
     //     console.log("line 200");
         // setSocket(newSocket);
     //     // newSocket.emit('join room', roomId, getUsernameFromState());
