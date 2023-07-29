@@ -1,6 +1,6 @@
 const { MongoClient } = require("mongodb");
 
-const MAX_ELEMENT_LIMIT = 5;
+const MAX_ELEMENT_LIMIT = 100;
 
 async function pushToMongoAndManageDB(gameRoom, gameSchema, Game) {
   console.log("PUSHING TO MONGO")
@@ -9,7 +9,7 @@ async function pushToMongoAndManageDB(gameRoom, gameSchema, Game) {
       playerOneData: gameRoom.players[0],
       playerTwoData: gameRoom.players[1],
       date: new Date(),
-      winner: gameRoom.winner
+      result: gameRoom.winner
   });
 
   console.log(newGame.history)

@@ -4,7 +4,7 @@ const initArr = {
     databaseArr: []
 }
 
-export function prevGameQueryReducer(state = initArr, action) {
+export function prevGameQueryReducer(state = initArr, action) {// should be called the pgnObj 
     switch (action.type) {
         case LOADOBJDATABASE: {
             return {

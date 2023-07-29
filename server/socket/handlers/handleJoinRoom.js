@@ -1,6 +1,8 @@
 const { EVENTS } = require('../aliases');
+const {pushToMongoAndManageDB} = require('./pushToMongoAndManageDB');
 
-const handleJoinRoom = (io, socket, rooms) => (roomNumber, username) => {
+
+const handleJoinRoom = (io, socket, rooms, gameModel, gameSchema) => (roomNumber, username) => {
 
     console.log("line 5", roomNumber, username);
 
@@ -31,9 +33,11 @@ const handleJoinRoom = (io, socket, rooms) => (roomNumber, username) => {
           io.to(roomNumber).emit('time update', rooms[roomNumber].timers);
 
         // Check if a player's timer has run out
-        if (rooms[roomNumber].timers[currentPlayer] <= 0) {
+        if (rooms[roomNumber].timers[currentPlayer] <= 0 && rooms[roomNumber].players.length === 2) {
           const winningColor = currentPlayer === rooms[roomNumber].players[0].id ? rooms[roomNumber].players[1].color : rooms[roomNumber].players[0].color;
           io.to(roomNumber).emit('timeout', winningColor);
+          rooms[roomNumber].winner = winningColor + "wins by Timeout"; // other player wins
+          pushToMongoAndManageDB(rooms[roomNumber], gameSchema, gameModel);
           clearInterval(rooms[roomNumber].timer);
         }
       // Emit a socket event to notify the clients that the game is over
@@ -54,11 +58,14 @@ const handleJoinRoom = (io, socket, rooms) => (roomNumber, username) => {
             if (rooms[roomNumber].players.length === 2) {
               rooms[roomNumber].currentPlayer = rooms[roomNumber].players[0].color == WHITE ? rooms[roomNumber].players[0].id :rooms[roomNumber].players[1].id;
               timers = rooms[roomNumber].timers
+
+
               // set both players' timers to 5 minutes
               timers[rooms[roomNumber].players[0].id] = 300;
               timers[rooms[roomNumber].players[1].id] = 300;
               io.to(roomNumber).emit(EVENTS.START_GAME);
               startTimer(roomNumber);
+
             }
         } else {
             socket.emit(EVENTS.ROOM_FULL, roomNumber);
@@ -68,10 +75,16 @@ const handleJoinRoom = (io, socket, rooms) => (roomNumber, username) => {
         console.log(`Room ${roomNumber} does not exist`);
     }
 
-    const userList = {
-        players: rooms[roomNumber].players,
-        spectators: rooms[roomNumber].spectators
-    };
+    let userList = {}
+    if (rooms[roomNumber] !== undefined && rooms[roomNumber].players !== undefined && rooms[roomNumber].spectators !== undefined) { 
+      userList = {
+          players: rooms[roomNumber].players,
+          spectators: rooms[roomNumber].spectators
+      };
+    } else {
+      // error handling...
+      // room does not exist
+    }
     io.to(roomNumber).emit(EVENTS.USER_LIST_UPDATE, userList);
 }
 

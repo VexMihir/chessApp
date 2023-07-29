@@ -45,6 +45,21 @@ function ChessGame() {
         return {move: temp.san, FEN: this.getCurrentFEN(), validMoves: validMoves};
     };
 
+    this.movePiece2 = function(from , to, promotionChoice) {
+        let temp = null;
+        if (promotionChoice) {
+            temp = this.game.move({from: from, to: to, promotion: promotionChoice})
+        } else {
+            temp = this.game.move({from: from, to: to})
+        }
+
+        if (temp === null) {
+            throw new Error(`Invalid move: ${move}`)
+        }
+        let validMoves = this.validMoves('-1');
+        return {move: temp.san, FEN: this.getCurrentFEN(), validMoves: validMoves}
+    }
+
     // testing function
     this.showBoard = function() {
         console.log(this.game.ascii());

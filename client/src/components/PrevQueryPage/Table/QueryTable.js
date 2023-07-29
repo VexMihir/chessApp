@@ -10,6 +10,7 @@ export function QueryTable({data}) {
 
     function navigateToMoveList(e, index) {
      e.preventDefault();
+     console.log("line 13 query table", index);
      dispatch(loadGameDB(index.currIndex));
      navigate("/prevMoveList", {replace: false})
  }

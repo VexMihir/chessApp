@@ -6,23 +6,20 @@ import {PrevMoveStartButton} from "./MainPanel/Buttons/PrevMoveStartButton";
 import {PrevMoveEndButton} from "./MainPanel/Buttons/PrevMoveEndButton";
 import {PrevMovePrevButton} from "./MainPanel/Buttons/PrevMovePrevButtons";
 import {PrevMoveNextButton} from "./MainPanel/Buttons/PrevMoveNextButton";
-import "./PrevMoveList.css"
 import {InfoPanel} from "./MainPanel/InfoPanel/InfoPanel";
 export function PrevMoveList() {
-  const pgnObj = JSON.parse(useSelector(state=>state.PGNReducer.PGNOBJ));
+  const pgnObj = JSON.parse(useSelector(state=>state.PrevGameViewReducer.PGNOBJ));
   const LANMoveList = pgnObj.prevMoveListLAN;
   const infoObj = {
       playerOne: pgnObj.playerOne,
       playerTwo: pgnObj.playerTwo,
       date: pgnObj.date,
-      numberOfMoves: LANMoveList.length,
+      numberOfMoves: LANMoveList.length - 1,
       result: pgnObj.result
   }
 
-
-
   return (
-    <div className={"PrevMoveListWhole"}>
+    <div className={"flex flex-col justify-items-center items-stretch rounded-[0.3rem] h-fit bg-[rgba(12,12,54,.63)] p-8 text-white"}>
         <PrevMoveListPannel
             prop={
             {
@@ -31,7 +28,7 @@ export function PrevMoveList() {
         }
            />
         <InfoPanel prop={infoObj} />
-        <div className={"ButtonPanel"} id={"ButtonPanel"}>
+        <div className={"m-[1rem_1rem_1rem_0rem] decoration-white [&>*]:m-[0.20rem_0.20rem] [&>*]:bg-transparent [&>*]:text-white [&>*]:text-xl [&>*]:p-4"} id={"ButtonPanel"}>
             <PrevMovePlayButton/>
             <PrevMovePausetButton/>
             <PrevMoveStartButton/>

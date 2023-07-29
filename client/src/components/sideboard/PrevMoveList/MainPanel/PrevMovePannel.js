@@ -4,7 +4,7 @@ import {useSelector} from "react-redux";
 export function PrevMoveListPannel({ prop }) {
 
   let LANArr = prop.LANMoveList;
-  let currIndex = useSelector(state=>state.PGNReducer.currIdx);
+  let currIndex = useSelector(state=>state.PrevGameViewReducer.currIdx);
   let indexArr = [];
   let i = 1;
   let currInCre = 0
