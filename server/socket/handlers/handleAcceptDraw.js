@@ -22,6 +22,7 @@ const handleAcceptDraw = (io, socket, rooms) => (roomNumber) => {
     }
 
     room.drawOffer.status = OFFERED_DRAW_STATES.ACCEPTED;
+    clearInterval(rooms[roomNumber].timer);
 
     room.players.forEach(player => {
         io.to(player.id).emit(EVENTS.DRAW_ACCEPTED);

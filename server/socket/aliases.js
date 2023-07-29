@@ -31,6 +31,6 @@ module.exports = {
         THREEFOLD_REPETITION: 'threefold repetition',
         INSUFFICIENT_MATERIAL: 'insufficient material',
         FIFTY_MOVE_RULE: 'fifty move rule',
-        DRAW_ACCEPTED: 'draw accepted'
+        DRAW_ACCEPTED: 'draw accepted' 
     }
 };

@@ -38,6 +38,7 @@ const handleCheckmate = (gameState, io, roomNumber, rooms) => {
         const winningPlayerColor = currentPlayer.color === 'White' ? 'Black' : 'White';
         // For the room, set the winner to the player who is not the current player
         
+        // Wrong Variable name???
         rooms[roomNumber].winner = winningPlayerColor
         io.to(roomNumber).emit(EVENTS.CHECKMATE, `${winningPlayerColor}`);
     }
