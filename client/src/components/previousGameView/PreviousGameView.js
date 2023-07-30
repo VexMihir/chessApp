@@ -5,8 +5,8 @@ import {PrevMoveList} from "../sideboard/PrevMoveList/PrevMoveList";
 
 export default function PreviousGameView() {
 
-    const currIndx = useSelector(state=>state.PrevGameViewReducer.currIdx);
-    const currPGNObj =  JSON.parse(useSelector(state=> state.PrevGameViewReducer.PGNOBJ))
+    const currIndx = useSelector(state=>state.PrevGameView.currIdx);
+    const currPGNObj =  JSON.parse(useSelector(state=> state.PrevGameView.PGNOBJ))
     const positionFENStr = currPGNObj.prevMoveListFEN[currIndx];
     let squareStyle = {};
     if (currIndx !== 0)   {

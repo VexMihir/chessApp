@@ -8,7 +8,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 export function PrevMovePlayButton() {
     const dispatch = useDispatch()
     const [setPlay, setPlayState] = useState(false);
-    const currState = useSelector((state) => state.PrevGameViewReducer);
+    const currState = useSelector((state) => state.PrevGameView);
     const currPGNOBj = JSON.parse(currState.PGNOBJ)
     let currIndx = JSON.parse(currState.currIdx)
 

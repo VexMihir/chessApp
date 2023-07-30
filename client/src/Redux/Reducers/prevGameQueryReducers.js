@@ -11,7 +11,7 @@ export function prevGameQueryReducer(state = initArr, action) {// should be call
                 ...state,
                 flag: true,
                 databaseArr: [
-                    ...state.databaseArr,
+                    ...state.databaseArr.slice(0, 0),
                     ...action.payload
                 ]
             }

@@ -9,12 +9,14 @@ export function PrevGameQueryPage() {
     const navigate = useNavigate()
     const errorPage = useSelector(state=>(state.SetError));
 
+    let initial = false
     let flag = false;
 
 
     useEffect( () => {
         if (flag) return;
         dispatch(getDBObj());
+        initial = true
         return (
             () => {
                 flag = true;
@@ -25,7 +27,7 @@ export function PrevGameQueryPage() {
     useEffect(() => {
         if (!errorPage) {
             navigate("/previousGameView/1");
-        } else {
+        } else if(errorPage && flag) {
             navigate("/404NOTFOUND");
         }
     }, [errorPage])

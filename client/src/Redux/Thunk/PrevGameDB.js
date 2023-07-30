@@ -13,7 +13,7 @@ export function getDBObj() {
                 }
             )
             if (response.status === 200) {
-                setERROR(false)
+                dispatch(setERROR(false))
                 let result = await response.json();
                 for (let items of result) {
                 let parsedObj = gameHistoryParser(items.history);
@@ -25,7 +25,7 @@ export function getDBObj() {
                 pgnObj["playerOne"] = items.playerOneData.username + "(" +items.playerOneData.color + ")";
                 pgnObj["playerTwo"] = items.playerTwoData.username + "(" +items.playerTwoData.color + ")";
                 pgnObj["date"] = items.date;
-                pgnObj["result"] = items.winner
+                pgnObj["result"] = items.result;
                 payload.push(pgnObj);
                 }
                 dispatch(loadDataBaseObj(payload));
