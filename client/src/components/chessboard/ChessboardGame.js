@@ -33,6 +33,8 @@ export default function ChessboardGame({
   // make the bottom of the chessboard the player where it is you?
   const [orientation, setOrientation] = useState("white");
 
+  const [playerColor, setPlayerColor] = useState(null);
+
   function onMouseOverSquare(square) {
     if (socket && !isSocketSpectator && isGameStarted) {
       socket.emit("valid move", roomId, square);
@@ -166,9 +168,26 @@ export default function ChessboardGame({
       });
     }
   }, [roomId, socket]);
-  // [haveTwoPlayers]);
-  // [roomId, socket, haveTwoPlayers]);
-  //[roomId, socket]);
+
+    useEffect(() => {
+    // Find the player's color once the players array is set
+    if (players.length === 2) {
+      const currentPlayer = players.find((player) => player.id === socket.id);
+      if (currentPlayer) {
+        setPlayerColor(currentPlayer.color);
+      }
+    }
+  }, [players, socket]);
+
+
+  useEffect(() => {
+    // Update orientation based on player's color
+    if (playerColor === "white") {
+      setOrientation("white");
+    } else if (playerColor === "black") {
+      setOrientation("black");
+    }
+  }, [playerColor]);
 
   return (
     <>
