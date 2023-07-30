@@ -239,7 +239,7 @@ export default function InGameView() {
       setScore("1/2-1/2");
       setResult("Draw");
       setWinnerName("None");
-      setReason("It is draw due to " + gameOverDrawReason);
+      setReason("Draw by " + gameOverDrawReason);
     }
   }, [gameOverDrawReason]);
 

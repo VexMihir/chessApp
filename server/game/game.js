@@ -19,7 +19,7 @@ function ChessGame() {
             inDraw: this.game.isDraw(),
             drewByStalemate: this.game.isStalemate(),
             drewByThreefoldRepetition: this.game.isThreefoldRepetition(),
-            drewByInsufficientMaterial: this.game.isInsufficientMaterial(),
+            drewByInsufficientMaterial: this.game.isInsufficientMaterial()
         };
     };
 

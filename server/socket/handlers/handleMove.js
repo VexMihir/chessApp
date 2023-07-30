@@ -12,21 +12,20 @@ const checkRoomExists = (rooms, roomNumber) => {
 const handleNonOfferedDraw = (gameState, io, roomNumber, rooms) => {
     if (gameState.inDraw) {
         let drawReason;
-        if (gameState.inStalemate) {
+        if (gameState.drewByStalemate) {
             drawReason = DRAW_REASONS.STALEMATE;
             rooms[roomNumber].winner = "Draw by Stalemate"
-        } else if (gameState.inThreefoldRepetition) {
+        } else if (gameState.drewByThreefoldRepetition) {
             drawReason = DRAW_REASONS.THREEFOLD_REPETITION;
             rooms[roomNumber].winner = "Draw by Threefold Repetition"
-        } else if (gameState.inInsufficientMaterial) {
+        } else if (gameState.drewByInsufficientMaterial) {
             drawReason = DRAW_REASONS.INSUFFICIENT_MATERIAL;
             rooms[roomNumber].winner = "Draw by Insufficient Material"
-        } else {
+        } else if (gameState.drewByInsufficientMaterial) {
             drawReason = DRAW_REASONS.FIFTY_MOVE_RULE;
             rooms[roomNumber].winner = "Draw by Fifty Move Rule"
         }
-        
-        rooms[roomNumber].winner = "None"
+
         io.to(roomNumber).emit(EVENTS.GAME_OVER_DRAW, drawReason);
     }
 };
