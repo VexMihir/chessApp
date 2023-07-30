@@ -4,9 +4,8 @@ import Chessboard from "chessboardjsx";
 import {PrevMoveList} from "../sideboard/PrevMoveList/PrevMoveList";
 
 export default function PreviousGameView() {
-
     const currIndx = useSelector(state=>state.PrevGameView.currIdx);
-    const currPGNObj =  JSON.parse(useSelector(state=> state.PrevGameView.PGNOBJ))
+    const currPGNObj =  JSON.parse(useSelector(state=> state.PrevGameView.PGNOBJ));
     const positionFENStr = currPGNObj.prevMoveListFEN[currIndx];
     let squareStyle = {};
     if (currIndx !== 0)   {

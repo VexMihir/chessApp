@@ -1,5 +1,5 @@
-import {NavLink, useLocation} from "react-router-dom";
-import {useRef, useState} from "react";
+import {NavLink} from "react-router-dom";
+import {useState} from "react";
 
 export function SpectatorForm() {//{socket}) {
     const [userName, setUserName] = useState(null);
@@ -7,9 +7,6 @@ export function SpectatorForm() {//{socket}) {
     const [userNameError, setuserNameError] = useState(false);
     const [roomEror, setRoomNumberError] = useState(false);
 
-    // let {state} = useLocation();
-
-    // console.log("line 12", state);
 
     const handleOnChange = (e) => {
         checkEmptyUserName(e)
@@ -99,7 +96,6 @@ export function SpectatorForm() {//{socket}) {
                     to={"/inGameView/"+ roomNumber}
                     state={{userName: userName}}
                     onClick={(e)=>{
-                        // socket.emit('join as spectator', roomNumber, userName);
                         finalCheck(e)
                     }}
                 >Join As Spectator</NavLink>

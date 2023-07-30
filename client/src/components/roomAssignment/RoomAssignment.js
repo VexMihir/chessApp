@@ -1,77 +1,8 @@
-import React, { useEffect, useState } from "react";
-import {NavLink, Outlet, useLocation, useNavigate} from "react-router-dom";
-import io from 'socket.io-client';
+import React from "react";
+import {NavLink, Outlet} from "react-router-dom";
 
 
 export default function RoomAssignment() {
-
-    const navigate = useNavigate();
-    const location = useLocation();
-
-    // const [socket, setSocket] = useState(null)
-
-    // useEffect(() => {
-        // const newSocket = io(process.env.REACT_APP_BACKEND_URL || 'http://localhost:5001');
-    //     console.log("line 200");
-        // setSocket(newSocket);
-    //     // newSocket.emit('join room', roomId, getUsernameFromState());
-    
-    //     // newSocket.on('room full', () => {
-    //     //   const confirmSpectator = window.confirm('The room is full. Do you want to join as a spectator?');
-    //     //   if (confirmSpectator) {
-    //     //     newSocket.emit('join as spectator', roomId, getUsernameFromState());
-    //     //   } else {
-    //     //     navigate('/');
-    //     //   }
-    //     // });
-    
-    
-    //     // newSocket.on('player disconnected', (roomNumber) => {
-    //     //   if (roomId === roomNumber) {
-    //     //     // alert('Opponent disconnected');
-    //     //     // navigate('/');
-    //     //   }
-    //     // });
-    
-    //     // newSocket.on('user list update', (userList) => {
-    
-    //     //   setPlayers(userList.players);
-    
-    //     //   console.log("line 247", userList.players);
-    //     //   if (userList.spectators.length > 0) {
-    //     //     console.log("line 249", userList.spectators);
-    //     //     setSpectators(userList.spectators)
-    //     //   }
-    //     //   if (userList.players.length === 1) {
-    //     //     console.log("line 258");
-    //     //     // setWhitePlayerName(userList.players[0].username)
-    //     //     // if (userList.players[0].color === 'black') {
-    //     //       // setOrientation('black')
-    //     //     // }
-    //     //   }
-    //     //   if (userList.players.length === 2) {
-    //     //     console.log("line 262");
-    //     //     // setBlackPlayerName(userList.players[1].username)
-    //     //     // if (userList.players[1].color === 'white') {
-    //     //       // setOrientation('black')
-    //     //     // }
-    //     //   }
-    //     //   // setSpectators(userList.spectators);
-    //     // });
-    
-        // return () => {
-        //   newSocket.off('moveMade');
-        //   newSocket.disconnect();
-        // };
-        
-    //   }, []);
-    
-      const getUsernameFromState = () => {
-        const locationState = location.state;
-        console.log("line 391", locationState);
-        //Cannot change from userName to playerName because it is tied to the state name and must follow what it is called.
-        return locationState ? locationState.userName : '';
-      };
 
     return (
         <div className={
@@ -101,7 +32,6 @@ export default function RoomAssignment() {
                     }}
                 >Chess Rumble</h1>
             </div>
-            {/*<div className={"h-[70%] w-[50%] mt-auto shrink-0 block ml-5" +*/}
             <div className={"h-[70%] mt-auto shrink-0"} >
                 <div
                     className={"grid grid-rows-[5rem_80%] shadow" +

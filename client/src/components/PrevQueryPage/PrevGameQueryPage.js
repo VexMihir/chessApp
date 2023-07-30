@@ -1,6 +1,6 @@
 import {Outlet, useNavigate} from "react-router-dom";
 import {Pagination} from "./Pagnination/Pagination";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {getDBObj} from "../../Redux/Thunk/PrevGameDB";
 
