@@ -6,6 +6,8 @@ import {
   RESULT,
   WHITE_CHESS_PIECE,
 } from "../inGameView/InGameView";
+import { CUSTOM_CHESS_PIECES } from "../../constants/CustomChessPieces";
+import { DARK_SQUARE_STYLE, LIGHT_SQUARE_STYLE } from "../../constants/CustomChessSquareColor";
 
 const chess = new Chess();
 
@@ -56,7 +58,8 @@ export default function ChessboardGame({
       console.log("line 90", currentPlayer);
       console.log("line 91", activePlayer);
 
-      if (activePlayer === currentPlayer.color[0]) {
+      // activePlayer always = w or b
+      if (activePlayer === currentPlayer.color[0].toLowerCase()) {
         const validMovesIncludingSelf = chess.moves({
           square: square,
           verbose: true,
@@ -174,6 +177,7 @@ export default function ChessboardGame({
     if (players.length === 2) {
       const currentPlayer = players.find((player) => player.id === socket.id);
       if (currentPlayer) {
+        console.log("linr 178", currentPlayer.color);
         setPlayerColor(currentPlayer.color);
       }
     }
@@ -196,8 +200,6 @@ export default function ChessboardGame({
           <Chessboard
             position={fen.split(" ")[0]}
             orientation={orientation}
-            lightSquareStyle={{ backgroundColor: "#eeeed2" }}
-            darkSquareStyle={{ backgroundColor: "#769656" }}
             width={700}
             draggable={true}
             onDrop={onDrop}
@@ -205,165 +207,10 @@ export default function ChessboardGame({
             squareStyles={sqaureStyles}
             onSquareClick={onSquareClick}
             onMouseOverSquare={onMouseOverSquare}
+            lightSquareStyle={LIGHT_SQUARE_STYLE}
+            darkSquareStyle={DARK_SQUARE_STYLE}
             //Source: https://codesandbox.io/s/21r26yw13j?from-embed=&file=/src/integrations/CustomBoard.js
-            pieces={{
-              wK: () => (
-                <div
-                  style={{
-                    display: "flex",
-                    height: "100%",
-                    width: "100%",
-                    alignItems: "center",
-                    fontSize: "xxx-large",
-                  }}
-                >
-                  {WHITE_CHESS_PIECE.KING}
-                </div>
-              ),
-              wR: () => (
-                <div
-                  style={{
-                    display: "flex",
-                    height: "100%",
-                    width: "100%",
-                    alignItems: "center",
-                    fontSize: "xxx-large",
-                  }}
-                >
-                  {WHITE_CHESS_PIECE.ROOK}
-                </div>
-              ),
-              wN: () => (
-                <div
-                  style={{
-                    display: "flex",
-                    height: "100%",
-                    width: "100%",
-                    alignItems: "center",
-                    fontSize: "xxx-large",
-                  }}
-                >
-                  {WHITE_CHESS_PIECE.KNIGHT}
-                </div>
-              ),
-              wB: () => (
-                <div
-                  style={{
-                    display: "flex",
-                    height: "100%",
-                    width: "100%",
-                    alignItems: "center",
-                    fontSize: "xxx-large",
-                  }}
-                >
-                  {WHITE_CHESS_PIECE.BISHOP}
-                </div>
-              ),
-              wQ: () => (
-                <div
-                  style={{
-                    display: "flex",
-                    height: "100%",
-                    width: "100%",
-                    alignItems: "center",
-                    fontSize: "xxx-large",
-                  }}
-                >
-                  {WHITE_CHESS_PIECE.QUEEN}
-                </div>
-              ),
-              wP: () => (
-                <div
-                  style={{
-                    display: "flex",
-                    height: "100%",
-                    width: "100%",
-                    alignItems: "center",
-                    fontSize: "xxx-large",
-                  }}
-                >
-                  {WHITE_CHESS_PIECE.PAWN}
-                </div>
-              ),
-              bK: () => (
-                <div
-                  style={{
-                    display: "flex",
-                    height: "100%",
-                    width: "100%",
-                    alignItems: "center",
-                    fontSize: "xxx-large",
-                  }}
-                >
-                  {BLACK_CHESS_PIECE.KING}
-                </div>
-              ),
-              bR: () => (
-                <div
-                  style={{
-                    display: "flex",
-                    height: "100%",
-                    width: "100%",
-                    alignItems: "center",
-                    fontSize: "xxx-large",
-                  }}
-                >
-                  {BLACK_CHESS_PIECE.ROOK}
-                </div>
-              ),
-              bN: () => (
-                <div
-                  style={{
-                    display: "flex",
-                    height: "100%",
-                    width: "100%",
-                    alignItems: "center",
-                    fontSize: "xxx-large",
-                  }}
-                >
-                  {BLACK_CHESS_PIECE.KNIGHT}
-                </div>
-              ),
-              bB: () => (
-                <div
-                  style={{
-                    display: "flex",
-                    height: "100%",
-                    width: "100%",
-                    alignItems: "center",
-                    fontSize: "xxx-large",
-                  }}
-                >
-                  {BLACK_CHESS_PIECE.BISHOP}
-                </div>
-              ),
-              bQ: () => (
-                <div
-                  style={{
-                    display: "flex",
-                    height: "100%",
-                    width: "100%",
-                    alignItems: "center",
-                    fontSize: "xxx-large",
-                  }}
-                >
-                  {BLACK_CHESS_PIECE.QUEEN}
-                </div>
-              ),
-              bP: () => (
-                <div
-                  style={{
-                    display: "flex",
-                    height: "100%",
-                    width: "100%",
-                    alignItems: "center",
-                    fontSize: "xxx-large",
-                  }}
-                >
-                  {BLACK_CHESS_PIECE.PAWN}
-                </div>
-              ),
-            }}
+            pieces={CUSTOM_CHESS_PIECES}
           />
         </div>
       </div>
