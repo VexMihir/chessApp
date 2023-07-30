@@ -49,6 +49,7 @@ const handleGameOver = (io, roomNumber, rooms, gameState, gameSchema, gameModel)
     handleCheckmate(gameState, io, roomNumber, rooms);
     // this was pushHistoryToMongoAndManageDB before, changed it to pushToMongoAndManageDB -kevin
     pushToMongoAndManageDB(rooms[roomNumber], gameSchema, gameModel);
+    clearInterval(rooms[roomNumber].timer);
 };
 
 const handleMove = (io, socket, rooms, gameSchema, gameModel) => (roomNumber, from, to, promotionChoice) => {
@@ -71,9 +72,9 @@ const handleMove = (io, socket, rooms, gameSchema, gameModel) => (roomNumber, fr
         // console.log("line 57", roomNumber, move);
         // const pieceMove = game.movePiece(move);
         if (promotionChoice) {
-            const pieceMove = game.movePiece2(from, to, promotionChoice)
+            const pieceMove = game.movePieceWithPromotion(from, to, promotionChoice)
         } else {
-            const pieceMove = game.movePiece2(from, to)
+            const pieceMove = game.movePieceWithPromotion(from, to)
         }
         const currentFen = game.getCurrentFEN();
         const validMoves = game.validMoves();
@@ -95,10 +96,7 @@ const handleMove = (io, socket, rooms, gameSchema, gameModel) => (roomNumber, fr
     rooms[roomNumber].currentPlayer = rooms[roomNumber].players.find(player => player.id !== currentPlayer).id;
   
     if (gameState.gameOver) {
-
         handleGameOver(io, roomNumber, rooms, gameState, gameSchema, gameModel) 
-
-        clearInterval(rooms[roomNumber].timer);
     }
 };
 

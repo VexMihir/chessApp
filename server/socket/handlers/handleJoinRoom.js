@@ -6,8 +6,8 @@ const handleJoinRoom = (io, socket, rooms, gameModel, gameSchema) => (roomNumber
 
     console.log("line 5", roomNumber, username);
 
-    const WHITE = "white";
-    const BLACK = "black";
+    const WHITE = "White";
+    const BLACK = "Black";
 
     const startingColor = () => {
         const randomizer = Math.floor(Math.random() * 2);
@@ -33,7 +33,7 @@ const handleJoinRoom = (io, socket, rooms, gameModel, gameSchema) => (roomNumber
           io.to(roomNumber).emit('time update', rooms[roomNumber].timers);
 
         // Check if a player's timer has run out
-        if (rooms[roomNumber].timers[currentPlayer] <= 0 && rooms[roomNumber].players.length === 2) {
+        if (rooms[roomNumber].timers[currentPlayer] == 0 && rooms[roomNumber].players.length === 2) {
           const winningColor = currentPlayer === rooms[roomNumber].players[0].id ? rooms[roomNumber].players[1].color : rooms[roomNumber].players[0].color;
           io.to(roomNumber).emit('timeout', winningColor);
           rooms[roomNumber].winner = winningColor + " wins by Timeout"; // other player wins

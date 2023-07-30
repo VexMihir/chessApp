@@ -27,6 +27,7 @@ const handleResignation = (io, socket, rooms, gameModel, gameSchema) => (roomNum
 
     room.winner = winningPlayer.color + " wins by Resignation"; // other player wins
     clearInterval(rooms[roomNumber].timer);
+    rooms[roomNumber].timer = null;
     pushToMongoAndManageDB(rooms[roomNumber], gameSchema, gameModel);
     room.players.forEach(player => {
         io.to(player.id).emit(EVENTS.RESIGNATION, resigningPlayer.username);

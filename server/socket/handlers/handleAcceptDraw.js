@@ -24,7 +24,7 @@ const handleAcceptDraw = (io, socket, rooms, gameModel, gameSchema) => (roomNumb
 
     room.drawOffer.status = OFFERED_DRAW_STATES.ACCEPTED;
     clearInterval(rooms[roomNumber].timer);
-    pushToMongoAndManageDB(rooms[roomNumber], gameSchema, gameModel);
+    rooms[roomNumber].timer = null;
 
     room.players.forEach(player => {
         io.to(player.id).emit(EVENTS.DRAW_ACCEPTED);
@@ -32,6 +32,7 @@ const handleAcceptDraw = (io, socket, rooms, gameModel, gameSchema) => (roomNumb
 
     // Set the game result to draw
     room.winner = "Draw by Agreement";
+    pushToMongoAndManageDB(rooms[roomNumber], gameSchema, gameModel);
 };
 
 module.exports = { handleAcceptDraw };

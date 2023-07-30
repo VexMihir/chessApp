@@ -45,7 +45,7 @@ function ChessGame() {
         return {move: temp.san, FEN: this.getCurrentFEN(), validMoves: validMoves};
     };
 
-    this.movePiece2 = function(from , to, promotionChoice) {
+    this.movePieceWithPromotion = function(from , to, promotionChoice) {
         let temp = null;
         if (promotionChoice) {
             temp = this.game.move({from: from, to: to, promotion: promotionChoice})
