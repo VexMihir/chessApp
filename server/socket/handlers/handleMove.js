@@ -37,8 +37,7 @@ const handleCheckmate = (gameState, io, roomNumber, rooms) => {
         const winningPlayerColor = currentPlayer.color === 'White' ? 'Black' : 'White';
         // For the room, set the winner to the player who is not the current player
         
-        // Wrong Variable name???
-        rooms[roomNumber].winner = winningPlayerColor
+        rooms[roomNumber].winner = winningPlayerColor + " wins by Checkmate";
         io.to(roomNumber).emit(EVENTS.CHECKMATE, `${winningPlayerColor}`);
     }
 };
@@ -46,13 +45,11 @@ const handleCheckmate = (gameState, io, roomNumber, rooms) => {
 const handleGameOver = (io, roomNumber, rooms, gameState, gameSchema, gameModel) => {
     handleNonOfferedDraw(gameState, io, roomNumber, rooms);
     handleCheckmate(gameState, io, roomNumber, rooms);
-    // this was pushHistoryToMongoAndManageDB before, changed it to pushToMongoAndManageDB -kevin
     pushToMongoAndManageDB(rooms[roomNumber], gameSchema, gameModel);
     clearInterval(rooms[roomNumber].timer);
 };
 
 const handleMove = (io, socket, rooms, gameSchema, gameModel) => (roomNumber, from, to, promotionChoice) => {
-
     if (!checkRoomExists(rooms, roomNumber)) {
         socket.emit('error', `Error moving: room ${roomNumber} does not exist`);
         return;

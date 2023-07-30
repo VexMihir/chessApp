@@ -182,9 +182,9 @@ export default function ChessboardGame({
 
   useEffect(() => {
     // Update orientation based on player's color
-    if (playerColor === "white") {
+    if (playerColor === "White") {
       setOrientation("white");
-    } else if (playerColor === "black") {
+    } else if (playerColor === "Black") {
       setOrientation("black");
     }
   }, [playerColor]);
