@@ -75,7 +75,17 @@ const handleMove = (io, socket, rooms, gameSchema, gameModel) => (roomNumber, fr
         const currentFen = game.getCurrentFEN();
         const validMoves = game.validMoves();
         const history = game.getGameHistory();
-        io.to(roomNumber).emit(EVENTS.MOVE_MADE, to, currentFen, validMoves, history);
+        // io.to(roomNumber).emit(EVENTS.MOVE_MADE, to, currentFen, validMoves, history);
+
+        const room = rooms[roomNumber];
+        // this one will be executed twice
+        room.players.forEach(player => {
+            io.to(player.id).emit('moveMade', to, currentFen, validMoves, history);
+        });
+        room.spectators.forEach(spectator => {
+            io.to(spectator.id).emit('moveMade', to, currentFen, validMoves, history);
+        });
+
         console.log("move", to);
         console.log("currentFen", currentFen);
         console.log("validMoves", validMoves);

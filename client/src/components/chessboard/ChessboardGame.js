@@ -3,7 +3,6 @@ import Chessboard from "chessboardjsx";
 import React, { useState, useEffect } from "react";
 import {
   BLACK_CHESS_PIECE,
-  RESULT,
   WHITE_CHESS_PIECE,
 } from "../inGameView/InGameView";
 import { CUSTOM_CHESS_PIECES } from "../../constants/CustomChessPieces";
@@ -12,7 +11,6 @@ import { DARK_SQUARE_STYLE, LIGHT_SQUARE_STYLE } from "../../constants/CustomChe
 const chess = new Chess();
 
 export default function ChessboardGame({
-  haveTwoPlayers,
   pawnPromotionChoice,
   setHistory,
   players,
@@ -22,18 +20,16 @@ export default function ChessboardGame({
   socket,
   roomId,
   isGameStarted,
-  setIsGameStarted,
   activePlayer,
   setActivePlayer,
+  orientation,
+  setOrientation
 }) {
   const [fen, setFen] = useState(
     "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
   );
 
   const [sqaureStyles, setSqaureStyles] = useState();
-
-  // make the bottom of the chessboard the player where it is you?
-  const [orientation, setOrientation] = useState("white");
 
   const [playerColor, setPlayerColor] = useState(null);
 
@@ -42,6 +38,7 @@ export default function ChessboardGame({
       socket.emit("valid move", roomId, square);
     }
   }
+
 
   function onSquareClick(square) {
     if (socket && !isSocketSpectator && players.length === 2) {
@@ -54,9 +51,6 @@ export default function ChessboardGame({
           break;
         }
       }
-      console.log("line 97", players);
-      console.log("line 90", currentPlayer);
-      console.log("line 91", activePlayer);
 
       // activePlayer always = w or b
       if (activePlayer === currentPlayer.color[0].toLowerCase()) {
@@ -85,8 +79,6 @@ export default function ChessboardGame({
           };
         }
 
-        console.log("line 114", validMovesExclusingSelf);
-
         setSqaureStyles(styles);
       }
     }
@@ -94,12 +86,8 @@ export default function ChessboardGame({
 
   function onDrop({ sourceSquare, targetSquare }) {
     if (socket && !isSocketSpectator && isGameStarted) {
-      console.log("line 134");
-      console.log(chess.history());
 
       const validMoves = chess.moves({ square: sourceSquare, verbose: true });
-
-      console.log("line 139", validMoves);
 
       let result = "";
       for (let i = 0; i < validMoves.length; i++) {
@@ -108,11 +96,8 @@ export default function ChessboardGame({
           break;
         }
       }
-      console.log("line 142");
 
       if (result !== "" && sourceSquare !== targetSquare) {
-        console.log("line 144");
-        // socket.emit('move', roomId, result);
         if (
           pawnPromotionChoice === BLACK_CHESS_PIECE.ROOK ||
           pawnPromotionChoice === WHITE_CHESS_PIECE.ROOK
@@ -177,7 +162,6 @@ export default function ChessboardGame({
     if (players.length === 2) {
       const currentPlayer = players.find((player) => player.id === socket.id);
       if (currentPlayer) {
-        console.log("linr 178", currentPlayer.color);
         setPlayerColor(currentPlayer.color);
       }
     }

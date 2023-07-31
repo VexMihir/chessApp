@@ -9,12 +9,22 @@ import PreviousGameView from "./components/previousGameView/PreviousGameView";
 import {PlayerForm} from "./components/roomAssignment/JoinAsPlayer/PlayerForm";
 import {NOTFOUNDPAGE} from "./components/404NOTFOUND/404NOTFOUND";
 
-import React from "react";
+import React, {useContext, useEffect} from "react";
+import { SocketContext, socket } from "./context/socket";
 
 function ChessApp() {
+  // const socket = useContext(SocketContext)
+
+  // useEffect(() => {
+  //   return () => {
+  //       // socket.off("moveMade");
+  //       socket.disconnect();
+  //     };
+  // }, [])
 
   return (
       <>
+        <SocketContext.Provider value={socket}>
         <Router>
           <Routes>
                 <Route path="/" element={<RoomAssignment />}>
@@ -33,6 +43,7 @@ function ChessApp() {
               <Route path="/404NOTFOUND" element={<NOTFOUNDPAGE />} />
           </Routes>
         </Router>
+        </SocketContext.Provider>
       </>
   );
 }

@@ -3,7 +3,20 @@ const { EVENTS } = require('../aliases');
 const handleJoinAsSpectator = (io, socket, rooms) => (roomNumber, username) => {
     if (rooms[roomNumber]) {
         socket.join(roomNumber);
-        rooms[roomNumber].spectators.push({ id: socket.id, username });
+        // 
+        let isSpectatorsFound = false
+        for (let i = 0; i < rooms[roomNumber].spectators.length; i++) {
+            if (socket.id === rooms[roomNumber].spectators[i].id) {
+                isSpectatorsFound = true
+                break;
+            }
+        } 
+        if (!isSpectatorsFound) {
+            rooms[roomNumber].spectators.push({ id: socket.id, username });
+        } else {
+            socket.emit('error', `Error: User ${socket.id} already joined the room as a spectator in room ${roomNumber}`);
+        }
+
         console.log(`User ${socket.id} joined as a spectator in room ${roomNumber}`);
 
         const userList = {

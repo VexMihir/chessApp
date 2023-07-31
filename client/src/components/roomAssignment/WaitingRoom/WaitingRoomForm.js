@@ -1,7 +1,8 @@
-import {useEffect} from "react";
+import {useContext, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {getRoomNumberAsync} from "../../../Redux/Thunk/getRoomNoAsync";
 import {Link, NavLink, useLocation, useNavigate} from "react-router-dom";
+import { SocketContext } from "../../../context/socket";
 
 export function WaitingRoomForm () {//({socket}) {
     const dispatch = useDispatch();
@@ -11,21 +12,12 @@ export function WaitingRoomForm () {//({socket}) {
 
     let {state} = useLocation();
 
+    const socket = useContext(SocketContext)
+
     useEffect(()=> {
         // here create a random number using RESTful API, does it actually touch the socket.io? Yes after the GET function is executed the object is created
         dispatch(getRoomNumberAsync(state.userName))
-
-        // if (socket) {
-        // }
-
     }, [])
-
-    // useEffect(() => {
-    //     // socket.emit("join room",roomNumber, state.userName) // it can recognize it...        
-    //     console.log("Waiting Room FOrm line 18", socket);
-    //     console.log(roomNumber, state.userName);
-
-    // }, [roomNumber, socket])
 
     useEffect(() => {
         if (errorPage) {
@@ -45,10 +37,9 @@ export function WaitingRoomForm () {//({socket}) {
                         "m-auto"}
                 to={"/inGameView/"+ roomNumber}
                 state={{userName: state.userName}}
-                // onClick={async ()=>{
-                    // await socket.emit("join room",roomNumber, state.userName)
-                    // console.log("line 40 waiting room form");
-                // }}
+                onClick={()=>{
+                    socket.emit("join room",roomNumber, state.userName, () => {})
+                }}
                 >Start Game</NavLink>
         </div>
     )

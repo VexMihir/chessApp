@@ -2,7 +2,7 @@ const { EVENTS } = require('../aliases');
 const {pushToMongoAndManageDB} = require('./pushToMongoAndManageDB');
 
 
-const handleJoinRoom = (io, socket, rooms, gameModel, gameSchema) => (roomNumber, username) => {
+const handleJoinRoom = (io, socket, rooms, gameModel, gameSchema) => (roomNumber, username, callback) => {
 
     console.log("line 5", roomNumber, username);
 
@@ -54,7 +54,20 @@ const handleJoinRoom = (io, socket, rooms, gameModel, gameSchema) => (roomNumber
                 firstPlayerColor = rooms[roomNumber].players[0].color;
                 color = getOppositeColor(firstPlayerColor);
             }
-            rooms[roomNumber].players.push({ id: socket.id, username: username, color: color });
+
+            let isPlayersFound = false
+            for (let i = 0; i < rooms[roomNumber].players.length; i++) {
+              if (socket.id === rooms[roomNumber].players[i].id) {
+                isPlayersFound = true
+                break;
+              }
+            } 
+            if (!isPlayersFound) {
+              rooms[roomNumber].players.push({ id: socket.id, username: username, color: color });
+            } else {
+              socket.emit('error', `Error: User ${socket.id} already joined the room as a player in room ${roomNumber}`);
+            }
+
             if (rooms[roomNumber].players.length === 2) {
               rooms[roomNumber].currentPlayer = rooms[roomNumber].players[0].color == WHITE ? rooms[roomNumber].players[0].id :rooms[roomNumber].players[1].id;
               timers = rooms[roomNumber].timers
@@ -67,7 +80,15 @@ const handleJoinRoom = (io, socket, rooms, gameModel, gameSchema) => (roomNumber
               startTimer(roomNumber);
 
             }
+            callback({
+              status: 'room not full'
+            })
+            // Source: https://chat.openai.com/share/555afdd9-5894-43a2-a8f2-81e9103d5855
+            socket.emit('room not full', roomNumber)
         } else {
+            callback({
+              status: 'room full'
+            })
             socket.emit(EVENTS.ROOM_FULL, roomNumber);
             console.log(`User ${socket.id} attempted to join room ${roomNumber}, which is full`);
         }

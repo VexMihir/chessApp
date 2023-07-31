@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Sideboard from "../sideboard/Sideboard";
 import ChessboardGame from "../chessboard/ChessboardGame";
 
 import OutcomeModal from "../portals/OutcomeModal";
-import io from "socket.io-client";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import MessageModal from "../portals/MessageModal";
+import { SocketContext } from "../../context/socket";
 
 export const RESULT = {
   WHITE: "1-0", // black forfeits or black king is in checkmate
@@ -40,7 +40,7 @@ export default function InGameView() {
 
   const [selfColor, setSelfColor] = useState("white");
 
-  const [socket, setSocket] = useState(null);
+  const socket = useContext(SocketContext)
   const [isSocketSpectator, setIsSocketSpectator] = useState(false);
   const [pawnPromotionChoice, setPawnPromotionChoice] = useState(
     WHITE_CHESS_PIECE.KNIGHT
@@ -48,13 +48,14 @@ export default function InGameView() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMessageModalOpen, setIsMessageModalOpen] = useState(false);
-  const [haveTwoPlayers, setHaveTwoPLayers] = useState(false);
 
   const [halfMove, setHalfMove] = useState(0);
   const [fullMove, setFullMove] = useState(1);
 
   const [players, setPlayers] = useState([]);
   const [spectators, setSpectators] = useState([]);
+
+  const [orientation, setOrientation] = useState("white");
 
   const [history, setHistory] = useState();
 
@@ -81,20 +82,6 @@ export default function InGameView() {
   //Source: https://stackoverflow.com/questions/66506891/useparams-hook-returns-undefined-in-react-functional-component
   const { id } = useParams();
   const [roomId, setRoomId] = useState(id);
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  useEffect(() => {
-    console.log("line 75");
-    console.log(players);
-    console.log("line 77");
-    console.log(socket);
-
-    if (players.length === 2) {
-      //if there is 2 players, then we also make sure the sockets are alive.
-      setHaveTwoPLayers(true);
-    }
-  }, [players]);
 
   useEffect(() => {
     for (let i = 0; i < spectators.length; i++) {
@@ -244,30 +231,15 @@ export default function InGameView() {
   }, [gameOverDrawReason]);
 
   useEffect(() => {
-    const newSocket = io(process.env.REACT_APP_BACKEND_URL || 'http://localhost:5001');
-    // console.log("line 200");
-    setSocket(newSocket);
-    newSocket.emit("join room", roomId, getUsernameFromState());
 
-    newSocket.on("room full", () => {
-      const confirmSpectator = window.confirm(
-        "The room is full. Do you want to join as a spectator?"
-      );
-      if (confirmSpectator) {
-        newSocket.emit("join as spectator", roomId, getUsernameFromState());
-      } else {
-        // navigate('/');
-      }
-    });
-
-    newSocket.on("player disconnected", (roomNumber) => {
+    socket.on("player disconnected", (roomNumber) => {
       if (roomId === roomNumber) {
         alert("Opponent disconnected");
         // navigate('/');
       }
     });
 
-    newSocket.on("user list update", (userList) => {
+    socket.on("user list update", (userList) => {
       setPlayers(userList.players);
       // console.log("line 247", userList.players);
       if (userList.spectators.length > 0) {
@@ -275,27 +247,27 @@ export default function InGameView() {
         setSpectators(userList.spectators);
       }
       if (userList.players.length === 1) {
-        if (newSocket.id === userList.players[0].id) {
+        if (socket.id === userList.players[0].id) {
           setSelfColor(userList.players[0].color);
         }
       }
       if (userList.players.length === 2) {
-        if (newSocket.id === userList.players[1].id) {
+        if (socket.id === userList.players[1].id) {
           setSelfColor(userList.players[1].color);
         }
       }
     });
 
-    newSocket.on("start game", () => {
+    socket.on("start game", () => {
       setIsGameStarted(true);
     });
 
-    newSocket.on("time update", (timer) => {
+    socket.on("time update", (timer) => {
       // console.log("Line 158 timer", timer);
       setTimer(timer);
     });
 
-    newSocket.on("checkmate", (checkmatedPlayerColor) => {
+    socket.on("checkmate", (checkmatedPlayerColor) => {
       // dispatch(postPGNObj({
       //   history: gameHistory,
       //   playerOne: players[0],
@@ -308,7 +280,7 @@ export default function InGameView() {
       setIsModalOpen(true);
     });
 
-    newSocket.on("game over draw", (drawReason) => {
+    socket.on("game over draw", (drawReason) => {
       // drawReason displays the 50 rules???
       setGameOverDrawReason(drawReason);
       setIsGameStarted(false);
@@ -316,39 +288,39 @@ export default function InGameView() {
     });
 
     // Forfeit
-    newSocket.on("resignation", (resigningPlayer) => {
+    socket.on("resignation", (resigningPlayer) => {
       console.log("line 270 time out", resigningPlayer);
       setResigningPlayer(resigningPlayer);
       setIsGameStarted(false);
       setIsModalOpen(true);
     });
 
-    newSocket.on("drawOffered", (socketId) => {
+    socket.on("drawOffered", (socketId) => {
       console.log("Offer event line 184");
       setIsMessageModalOpen(true);
     });
 
-    newSocket.on("drawAccepted", () => {
+    socket.on("drawAccepted", () => {
       setIsDrawAccepted(true);
       setIsGameStarted(false);
       setIsModalOpen(true);
       setIsMessageModalOpen(false);
     });
 
-    newSocket.on("drawDeclined", () => {
+    socket.on("drawDeclined", () => {
       console.log("line 335 player declined your draw offer");
       setIsDrawDeclined(true);
       setIsMessageModalOpen(true);
     });
 
     // drawRescinded
-    newSocket.on("drawRescinded", () => {
+    socket.on("drawRescinded", () => {
       console.log("line 335 player rescined your draw offer");
       setIsDrawRescined(true);
       setIsMessageModalOpen(true);
     });
 
-    newSocket.on("timeout", (winningPlayerColor) => {
+    socket.on("timeout", (winningPlayerColor) => {
       if (winningPlayerColor === "white") {
         setTimeoutColor("black");
       } else if (winningPlayerColor === "black") {
@@ -358,18 +330,12 @@ export default function InGameView() {
       setIsModalOpen(true);
     });
 
-    return () => {
-      newSocket.off("moveMade");
-      newSocket.disconnect();
-    };
+    // return () => {
+    //   // socket.off("moveMade");
+    //   socket.disconnect();
+    // };
   }, [roomId]);
 
-  const getUsernameFromState = () => {
-    const locationState = location.state;
-    console.log("line 391", locationState);
-    //Cannot change from userName to playerName because it is tied to the state name and must follow what it is called.
-    return locationState ? locationState.userName : "";
-  };
 
   return (
     <>
@@ -445,7 +411,6 @@ export default function InGameView() {
           <div className="flex">
             <ChessboardGame
               pawnPromotionChoice={pawnPromotionChoice}
-              haveTwoPlayers={haveTwoPlayers}
               players={players}
               setHistory={setHistory}
               isSocketSpectator={isSocketSpectator}
@@ -457,6 +422,8 @@ export default function InGameView() {
               setIsGameStarted={setIsGameStarted}
               activePlayer={activePlayer}
               setActivePlayer={setActivePlayer}
+              orientation={orientation}
+              setOrientation={setOrientation}
             />
             <Sideboard
               pawnPromotionChoice={pawnPromotionChoice}
@@ -468,6 +435,8 @@ export default function InGameView() {
               isSocketSpectator={isSocketSpectator}
               roomId={roomId}
               spectators={spectators}
+              orientation={orientation}
+              setOrientation={setOrientation}
             />
           </div>
         </div>

@@ -1,9 +1,8 @@
-import {NavLink} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 import {useContext, useEffect, useRef, useState} from "react";
-import { SocketContext } from "../../../../ChessApp";
+import { SocketContext } from "../../../../context/socket";
 
-
-export function FindRoomForm() { //{socket}) {
+export function FindRoomForm() { 
     const refInput = useRef(null);
     const refRoom = useRef(null);
     const [userName, setUserName] = useState(null);
@@ -11,9 +10,9 @@ export function FindRoomForm() { //{socket}) {
     const [userNameError, setuserNameError] = useState(false);
     const [roomEror, setRoomNumberError] = useState(false);
 
-    // const [isRoomFull, setIsRoomFull] = useState(false);
+    const [isRoomFull, setIsRoomFull] = useState('');
 
-    // const socket = useContext(SocketContext);
+    const socket = useContext(SocketContext);
 
     const handleOnChange = (e) => {
         checkEmptyUserName(e)
@@ -49,41 +48,28 @@ export function FindRoomForm() { //{socket}) {
         } else if (!roomNumber || roomNumber < 0 || roomNumber > 1000000) {
             e.preventDefault();
             window.alert("ROOM NUMBER IS INVALID")
+        } else if (isRoomFull) {
+            e.preventDefault();
+            window.alert("The room is full. If you want to join the room, you can join as a spectator by clicking the Join As Spectator tab.");
+        } else {
+            socket.emit('join room', roomNumber, userName, (response) => {
+
+            });
+
         }
+
     }
 
-    // useEffect(() => {
-    // //     console.log("line 53 findRoomForm", socket);
+    useEffect(() => {
 
-    //     if(socket) {
+        socket.emit('is room full', roomNumber);
 
-    //     // }
+        socket.on('is room full', (isRoomFull) => {
+            console.log("line 87 room full");
+            setIsRoomFull(isRoomFull)
+        })
 
-    //         //
-    //         //
-
-    //     socket.on('room full', () => {
-    //         setIsRoomFull(true)
-    //     //   const confirmSpectator = window.confirm('The room is full. Do you want to join as a spectator??');
-    //     //   if (confirmSpectator) {
-    //         // socket.emit('join as spectator', roomNumber, userName);
-    //     //   } else {
-    //         // navigate('/');
-    //     //   }
-    //     });
-    //     }
-        
-    
-
-    // }, [socket])
-
-    // const getUsernameFromState = () => {
-    //     const locationState = location.state;
-    //     console.log("line 391", locationState);
-    //     //Cannot change from userName to playerName because it is tied to the state name and must follow what it is called.
-    //     return locationState ? locationState.userName : '';
-    //   };
-    
+    }, [roomNumber]) 
 
 
     return (
@@ -94,6 +80,15 @@ export function FindRoomForm() { //{socket}) {
                 <legend className={"rounded-2xl text-white"}>Find Room</legend>
                 <label>Enter room number</label>
                 <br/>
+
+                {/* Source: https://www.w3schools.com/tags/tag_option.asp */}
+                <select id="rooms">
+                    <option value="">123456</option>
+                    <option value="">123457</option>
+                    <option value="">123458</option>
+                    <option value="">123459</option>
+                </select>
+
                 <input  required
                         min={0}
                         max={1000000}
@@ -101,7 +96,7 @@ export function FindRoomForm() { //{socket}) {
                         ref={refRoom}
                         onChange={(e)=>(handleRoomNumber(e))}
                         className={"peer/Num rounded-md text-white px-0.5 border-none m-1 bg-violet-900/30 w-[90%]"}
-                        onBlur={(e)=>{checkInvalid(e)}}
+                        // onBlur={(e)=>{checkInvalid(e)}}
                 />
                 {
                     roomEror?  <p className="mb-1 text-pink-700  text-sm">
@@ -115,7 +110,7 @@ export function FindRoomForm() { //{socket}) {
                 <input required
                        ref={refInput}
                        onChange={(e)=>(handleOnChange(e))}
-                       onBlur={(e)=>{checkEmptyUserName(e)}}
+                    //    onBlur={(e)=>{checkEmptyUserName(e)}}
                        className={"peer/Text rounded-md text-white  px-0.5 border-none m-1 bg-violet-900/30 w-[90%]"}
                 />
                 {
@@ -131,14 +126,8 @@ export function FindRoomForm() { //{socket}) {
                         "text-white font-bold rounded " +
                         "shadow shadow-md shadow-white " +
                         ""}
-                onClick={(e)=>{
-                    // console.log("line 123");
-                    // if (!isRoomFull) {
-                        // socket.emit('join room', roomNumber, userName);
-                        finalCheck(e)
-                    // } else {
-                        // window.confirm('The room is full.')
-                    // }
+                onClick={(e)=> {
+                    finalCheck(e)
                 }}
                 to={"/inGameView/"+ roomNumber}
                 state={{userName: userName}}

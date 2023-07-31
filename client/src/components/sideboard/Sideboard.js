@@ -14,6 +14,9 @@ export default function Sideboard(props) {
 
   const isSocketSpectator = props.isSocketSpectator;
 
+  const orientation = props.orientation;
+  const setOrientation = props.setOrientation;
+
   const [self, setSelf] = useState();
   const [challenger, setChallenger] = useState();
 
@@ -324,8 +327,17 @@ export default function Sideboard(props) {
             <div className="text-center text-white text-3xl bg-slate-500">
               Previous Moves
             </div>
-            <div className="h-[25.6rem]">
+            <div className="h-[20.65rem]">
               <InGamePrevMovePannel history={history} />
+            </div>
+            <div className="text-center text-white text-3xl bg-slate-500">Orientation</div>
+            <div>
+            {/* Source: https://chat.openai.com/share/74c6ed80-6104-4787-903d-ab0de1dd408e */}
+            <button className={orientation==="white" ?  "font-bold bg-black text-white text-2xl w-1/2 p-1" : "font-bold bg-gray-300 text-2xl w-1/2 p-1"}
+            onClick={() => setOrientation("white")}>White</button>
+            {/* Source: https://chat.openai.com/share/74c6ed80-6104-4787-903d-ab0de1dd408e */}
+            <button className={orientation==="black" ? "font-bold bg-black text-white text-2xl w-1/2 p-1" : "font-bold bg-gray-300 text-2xl w-1/2 p-1"}
+            onClick={() => setOrientation("black")}>Black</button>
             </div>
           </div>
         </div>

@@ -7,6 +7,7 @@ const { handleAcceptDraw } = require('./handlers/handleAcceptDraw');
 const { handleRescindDraw } = require('./handlers/handleRescindDraw');
 const { handleDeclineDraw } = require('./handlers/handleDeclineDraw');
 const { handleResignation } = require('./handlers/handleResignation')
+const { handleCheckRoomFull } = require('./handlers/handleCheckRoomFull')
 
 const { EVENTS } = require('./aliases');
 
@@ -25,6 +26,7 @@ const init = (io, roomInstance, gameSchema, gameModel) => {
         socket.on(EVENTS.DRAW_DECLINED, handleDeclineDraw(io, socket, rooms));
         socket.on(EVENTS.RESIGNATION, handleResignation(io, socket, rooms, gameModel, gameSchema));
         socket.on(EVENTS.DISCONNECT, handleDisconnect(io, socket, rooms));
+        socket.on("is room full", handleCheckRoomFull(io, socket, rooms));
     });
 };
 
