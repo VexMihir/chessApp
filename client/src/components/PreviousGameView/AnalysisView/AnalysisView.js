@@ -1,6 +1,6 @@
 import {useSelector} from "react-redux";
 import {PrevMoveList} from "../PrevMoveList/PrevMoveList";
-import {EvaluationBar} from "../EvaluationBar/EvaluationBar";
+import {EvaluationBar} from "../EvalBar/EvaluationBar";
 
 export function AnalysisView() {
 

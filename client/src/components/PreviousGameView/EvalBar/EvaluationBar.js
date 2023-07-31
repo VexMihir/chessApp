@@ -1,16 +1,17 @@
 import {LinearProgress, linearProgressClasses, styled} from "@mui/material";
 
 export function EvaluationBar({prop}) {
+    //
     const percentage = prop.percentage;
     const color = prop.color;
     const VerticalLinearProgress = styled(LinearProgress)(() => ({
         width: "30px",
         height: "100%",
         [`& .${linearProgressClasses.bar}`]: {
-            backgroundColor: color
+            backgroundColor: "#583a86"
         },
         [`&.${linearProgressClasses.colorSecondary}`]: {
-            backgroundColor: "#eb82bf"
+            backgroundColor: color
         }
     }));
 
