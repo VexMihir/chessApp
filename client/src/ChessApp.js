@@ -11,6 +11,9 @@ import {NOTFOUNDPAGE} from "./components/404NOTFOUND/404NOTFOUND";
 
 import React, {useContext, useEffect} from "react";
 import { SocketContext, socket } from "./context/socket";
+import {PrevMoveList} from "./components/sideboard/PrevMoveList/PrevMoveList";
+import {analysisView, normalView, playBackView} from "./RouteString/RouteString";
+import {AnalyisView} from "./components/previousGameView/AnalysisView/analyisView";
 
 function ChessApp() {
   // const socket = useContext(SocketContext)
@@ -37,7 +40,10 @@ function ChessApp() {
                   <Route path="/previousGameView/:pageNum" element={<PrevGameQueryChildPage />} />
                 </Route>
 
-              <Route path={"/prevMoveList"} element={<PreviousGameView />} />
+              <Route path={playBackView} element={<PreviousGameView />} >
+                  <Route path={normalView} element={<PrevMoveList />} />
+                  <Route path={analysisView} element={<AnalyisView />} />
+              </Route>
 
               <Route path="/inGameView/:id" element={<InGameView/>}/> 
               <Route path="/404NOTFOUND" element={<NOTFOUNDPAGE />} />

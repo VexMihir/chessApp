@@ -15,7 +15,6 @@ export function WaitingRoomForm () {//({socket}) {
     const socket = useContext(SocketContext)
 
     useEffect(()=> {
-        // here create a random number using RESTful API, does it actually touch the socket.io? Yes after the GET function is executed the object is created
         dispatch(getRoomNumberAsync(state.userName))
     }, [])
 

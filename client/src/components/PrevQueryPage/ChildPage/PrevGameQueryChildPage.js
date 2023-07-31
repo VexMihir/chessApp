@@ -5,12 +5,13 @@ import {useSelector} from "react-redux";
 export function PrevGameQueryChildPage() {
 
     const pgnData = useSelector((state)=>state.PrevGameQuery.databaseArr);
-    const CARDPERPAGE = 5;
+    const OFFSET = 1
+    const CARDSPERPAGE = 5;
 
     let {pageNum} = useParams();
     pageNum = Number(pageNum);
-    let startIndex = (pageNum - 1)*CARDPERPAGE;
-    let endIndex = (startIndex + 5)
+    let startIndex = (pageNum - OFFSET)*CARDSPERPAGE;
+    let endIndex = (startIndex + CARDSPERPAGE)
 
 
     const subArr = [...pgnData.slice(startIndex, endIndex)]
@@ -28,7 +29,6 @@ export function PrevGameQueryChildPage() {
             newObj["date"] = items["date"];
             newObj["result"] = items.result
             newObj["numberOfMoves"] = items.transition.length;
-            //newObj["lastFenStr"] = items.prevMoveListFEN[items.prevMoveListFEN.length - 1]
             ret.push(newObj)
         }
         return ret;
@@ -39,7 +39,12 @@ export function PrevGameQueryChildPage() {
 
     return (
         <div className={"flex justify-center w-[90%] h-[90%] m-auto"}>
-            <QueryTable data={data} />
+            <QueryTable prop={
+                {
+                    data,
+                    pageNum
+                }
+            } />
         </div>
     )
 }

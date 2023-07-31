@@ -8,7 +8,7 @@ import {analysisReducer} from "../Reducers/AnalysisReducer";
 export const rootReducer = combineReducers(
     {
         JoinRoomReducer: joinRoomReducer,
-            PrevGameView: prevGameViewReducer,
+        PrevGameView: prevGameViewReducer,
         PrevGameQuery: prevGameQueryReducer,
         SetError: setErrorReducer,
         AnalyisReducer: analysisReducer

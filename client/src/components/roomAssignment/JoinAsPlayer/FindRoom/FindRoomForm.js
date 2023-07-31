@@ -1,8 +1,9 @@
-import {NavLink, useNavigate} from "react-router-dom";
-import {useContext, useEffect, useRef, useState} from "react";
+import {useContext, useEffect} from "react";
 import { SocketContext } from "../../../../context/socket";
+import {NavLink} from "react-router-dom";
+import {useRef, useState} from "react";
 
-export function FindRoomForm() { 
+export function FindRoomForm() {
     const refInput = useRef(null);
     const refRoom = useRef(null);
     const [userName, setUserName] = useState(null);
@@ -42,7 +43,7 @@ export function FindRoomForm() {
         }
     }
     const finalCheck = (e) => {
-        if (!userName || userName.length === 0 ) {
+        if (!userName || userName.length === 0) {
             e.preventDefault();
             window.alert("USERNAME CANNOT BE EMPTY")
         } else if (!roomNumber || roomNumber < 0 || roomNumber > 1000000) {

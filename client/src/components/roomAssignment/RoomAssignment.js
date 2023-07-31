@@ -32,7 +32,6 @@ export default function RoomAssignment() {
                     }}
                 >Chess Rumble</h1>
             </div>
-            {/*<div className={"h-[70%] w-[50%] mt-auto shrink-0 block ml-5" +*/}
             <div className={"h-[70%] mt-auto shrink-0"} >
                 <div
                     className={"grid grid-rows-[5rem_80%] shadow" +

@@ -1,5 +1,5 @@
 import {NavLink, useLocation} from "react-router-dom";
-import {useContext, useRef, useState} from "react";
+import {useContext, useState} from "react";
 import { SocketContext } from "../../../context/socket";
 
 export function SpectatorForm() {
