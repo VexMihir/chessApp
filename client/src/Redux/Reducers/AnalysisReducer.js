@@ -10,12 +10,26 @@ const initState = {
 export function analysisReducer(state=initState, action) {
     switch (action.type) {
         case GETANALYSIS: {
+
             return  {
                 ...state,
-                bestMoves: action.payload.bestMoves,
-                displayScore: action.payload.displayScore,
-                rawScore: action.payload.rawScore,
-                label: action.payload.label
+                bestMoves: [
+                    ...state.bestMoves.slice(0, 0),
+                    ...action.payload.bestMoves
+                ],
+                displayScore: [
+                    ...state.displayScore.slice(0, 0),
+                    ...action.payload.displayScore
+                ],
+                rawScore: [
+                    ...state.displayScore.slice(0, 0),
+                    ...action.payload.rawScore
+                ],
+                label: [
+                    ...state.displayScore.slice(0, 0),
+                    ...action.payload.label
+                ]
+
             }
         }
         default: return state

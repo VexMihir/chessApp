@@ -2,17 +2,18 @@ import {useDispatch} from "react-redux";
 import {loadGameDB} from "../../../Redux/Action/prevGamViewActions";
 import {useNavigate} from "react-router-dom";
 import {Fragment} from "react";
+import {playBackView} from "../../../RouteString/RouteString";
 
 
-export function QueryTable({data}) {
+export function QueryTable({prop}) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
+    const CARDSPERPAGE = 5
+    const OFFSET = CARDSPERPAGE * (prop.pageNum - 1)
     function navigateToMoveList(e, index) {
      e.preventDefault();
-     console.log("line 13 query table", index);
-     dispatch(loadGameDB(index.currIndex));
-     navigate("/prevMoveList", {replace: false})
+     dispatch(loadGameDB(index.currIndex + OFFSET));
+     navigate(playBackView)
  }
 
     return (
@@ -29,7 +30,7 @@ export function QueryTable({data}) {
                 </tr>
                 </thead>
                 <tbody key={"mainTableBody"}>
-                {data.map((row, currIndex)=>
+                {prop.data.map((row, currIndex)=>
                     {
                         let bgColor = "bg-purple-900"
 
