@@ -1,6 +1,7 @@
 import {LinearProgress, linearProgressClasses, styled} from "@mui/material";
 
 export function EvaluationBar({prop}) {
+    //
     const percentage = prop.percentage;
     const color = prop.color;
     const VerticalLinearProgress = styled(LinearProgress)(() => ({
