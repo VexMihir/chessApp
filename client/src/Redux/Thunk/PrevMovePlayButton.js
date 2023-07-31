@@ -3,8 +3,8 @@ import {indiPieceUpdate} from "../Action/prevGamViewActions";
 export function loadPageContinuously() {
     return async (dispatch, getState) => {
             try {
-                await loading(6);
-                let flag = getState().PrevGameViewReducer.playStatus;
+                await loading(7);
+                let flag = getState().PrevGameView.playStatus;
                 if (flag){
                     dispatch(indiPieceUpdate(1))
                 }

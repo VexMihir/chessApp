@@ -5,14 +5,14 @@ import {PrevGameQueryPage} from "./components/PrevQueryPage/PrevGameQueryPage";
 import {WaitingRoomForm} from "./components/roomAssignment/WaitingRoom/WaitingRoomForm";
 import {PrevGameQueryChildPage} from "./components/PrevQueryPage/ChildPage/PrevGameQueryChildPage";
 import {SpectatorForm} from "./components/roomAssignment/JoinAsSpectator/SpectatorForm";
-import PreviousGameView from "./components/previousGameView/PreviousGameView";
+import PreviousGameView from "./components/PreviousGameView/PreviousGameView";
 import {PlayerForm} from "./components/roomAssignment/JoinAsPlayer/PlayerForm";
 import {NOTFOUNDPAGE} from "./components/404NOTFOUND/404NOTFOUND";
 
 import React from "react";
-import {PrevMoveList} from "./components/sideboard/PrevMoveList/PrevMoveList";
+import {PrevMoveList} from "./components/PreviousGameView/PrevMoveList/PrevMoveList";
 import {analysisView, normalView, playBackView} from "./RouteString/RouteString";
-import {AnalyisView} from "./components/previousGameView/AnalysisView/analyisView";
+import {AnalysisView} from "./components/PreviousGameView/AnalysisView/AnalysisView";
 
 function ChessApp() {
 
@@ -32,7 +32,7 @@ function ChessApp() {
 
               <Route path={playBackView} element={<PreviousGameView />} >
                   <Route path={normalView} element={<PrevMoveList />} />
-                  <Route path={analysisView} element={<AnalyisView />} />
+                  <Route path={analysisView} element={<AnalysisView />} />
               </Route>
 
               <Route path="/inGameView/:id" element={<InGameView/>}/> 
