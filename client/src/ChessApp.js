@@ -12,7 +12,7 @@ import {NOTFOUNDPAGE} from "./components/404NOTFOUND/404NOTFOUND";
 import React from "react";
 import {PrevMoveList} from "./components/sideboard/PrevMoveList/PrevMoveList";
 import {analysisView, normalView, playBackView} from "./RouteString/RouteString";
-import {AnalyisView} from "./components/previousGameView/testAI/analyisView";
+import {AnalyisView} from "./components/previousGameView/AnalysisView/analyisView";
 
 function ChessApp() {
 

@@ -40,7 +40,6 @@ export default function PreviousGameView() {
                       draggable={false}
                       squareStyles={squareStyle} />
           <div>
-              {progressBar ? <LinearProgress /> : ""}
               <NavLink
                   className={(state)=> state.isActive ?  "text-white no-underline font-bold text-lg " +
                       "flex justify-center items-center " +
@@ -74,6 +73,7 @@ export default function PreviousGameView() {
                       await handleAnalysisView(e)
                   }}
                   to={analysisView}>Analysis View</NavLink>
+              {progressBar ? <LinearProgress /> : ""}
               <Outlet />
           </div>
       </div>
