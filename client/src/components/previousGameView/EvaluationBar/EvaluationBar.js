@@ -10,7 +10,7 @@ export function EvaluationBar({prop}) {
             backgroundColor: color
         },
         [`&.${linearProgressClasses.colorSecondary}`]: {
-            backgroundColor: "#eb82bf"
+            backgroundColor: "#583a86"
         }
     }));
 

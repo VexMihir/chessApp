@@ -5,14 +5,13 @@ import {PrevGameQueryPage} from "./components/PrevQueryPage/PrevGameQueryPage";
 import {WaitingRoomForm} from "./components/roomAssignment/WaitingRoom/WaitingRoomForm";
 import {PrevGameQueryChildPage} from "./components/PrevQueryPage/ChildPage/PrevGameQueryChildPage";
 import {SpectatorForm} from "./components/roomAssignment/JoinAsSpectator/SpectatorForm";
-import PreviousGameView from "./components/PreviousGameView/PreviousGameView";
 import {PlayerForm} from "./components/roomAssignment/JoinAsPlayer/PlayerForm";
 import {NOTFOUNDPAGE} from "./components/404NOTFOUND/404NOTFOUND";
-
 import React from "react";
-import {PrevMoveList} from "./components/PreviousGameView/PrevMoveList/PrevMoveList";
 import {analysisView, normalView, playBackView} from "./RouteString/RouteString";
-import {AnalysisView} from "./components/PreviousGameView/AnalysisView/AnalysisView";
+import {AnalysisView} from "./components/previousGameView/AnalysisView/AnalysisView";
+import PreviousGameView from "./components/previousGameView/PreviousGameView";
+import {PrevMoveList} from "./components/previousGameView/PrevMoveList/PrevMoveList";
 
 function ChessApp() {
 
