@@ -40,7 +40,7 @@ export const loadAnalysisObj = store => next => async action => {
                 ret.displayScore.push(percentScore);
                 ret.label.push(label)
             } else if (!isNaN(ret.mateIn[index])) {
-                ret.displayScore = Math.sign(ret.rawScore);
+                ret.displayScore = Math.sign(ret.rawScore) * 8;
                 let label = labelingHelper(ret.rawScore, ret.mateIn);
                 ret.label.push(label)
             }
