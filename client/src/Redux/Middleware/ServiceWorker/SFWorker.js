@@ -1,4 +1,6 @@
-
+/*
+The code block bellow has referenced materials from https://github.com/paulo9mv/chess with retrieving in the helper functions
+ */
 export async function getAnalysisScore(fenStr, index) {
     const OFFSET = -1;
     let worker = new Worker("/stockfish.js");
@@ -32,6 +34,7 @@ export async function getAnalysisScore(fenStr, index) {
 
             /* Helper functions
              */
+
 
             const onBestMove = (data) => {
                 const bestMove = data.match(/(?<=bestmove\s+).*?(?=\s+ponder)/gs)
