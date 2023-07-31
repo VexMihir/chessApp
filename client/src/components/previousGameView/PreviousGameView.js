@@ -73,7 +73,6 @@ export default function PreviousGameView() {
                       await handleAnalysisView(e)
                   }}
                   to={analysisView}>Analysis View</NavLink>
-              {progressBar ? <LinearProgress /> : ""}
               <Outlet />
           </div>
       </div>
