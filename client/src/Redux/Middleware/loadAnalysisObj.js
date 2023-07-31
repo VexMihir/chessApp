@@ -1,51 +1,49 @@
 import {GETANALYSIS} from "../String/analysis";
 import {getAnalysisScore} from "./ServiceWorker/SFWorker";
-const ret = {
-    loaded: false,
-    offsetScore: [],
-    mateIn: [],
-    displayScore: [],
-    bestMoves: [],
-    rawScore: [],
-    label: []
-}
 
 export const loadAnalysisObj = store => next => async action => {
-    let arr = []
-
     if (action.type === GETANALYSIS) {
+        let newRet  = {
+            loaded: false,
+            offsetScore: [],
+            mateIn: [],
+            displayScore: [],
+            bestMoves: [],
+            rawScore: [],
+            label: []
+        };
 
         //if (store.getState().AnalyisReducer.currIndex === action.payload) return;
-
+        let arr = [];
         const fenStrArr = JSON.parse(store.getState().PrevGameView.PGNOBJ).prevMoveListFEN
         for (let index in fenStrArr) {
             arr.push(getAnalysisScore(fenStrArr[index], index))
         }
         arr = await Promise.all(arr);
         for (let items of arr) {
-            ret.bestMoves.push(items.bestMove);
-            ret.rawScore.push(items.rawScore)
-            ret.mateIn.push(items.mateIn)
-            ret.offsetScore.push(items.offsetScore)
+            newRet.bestMoves.push(items.bestMove);
+            newRet.rawScore.push(items.rawScore)
+            newRet.mateIn.push(items.mateIn)
+            newRet.offsetScore.push(items.offsetScore)
         }
 
-        for (let index in ret.rawScore) {
+        for (let index in newRet.rawScore) {
             if (Number(index) === 0) {
-                ret.displayScore.push(0);
-                ret.label.push("OK");
+                newRet.displayScore.push(0);
+                newRet.label.push("OK");
                 continue;
-            } else if (!isNaN(ret.rawScore[index]) && ret.rawScore[index] !== Infinity && ret.rawScore[index] !== - Infinity) {
-                let percentScore = calculatePercentageScore(ret.offsetScore, index);
+            } else if (!isNaN(newRet.rawScore[index]) && newRet.rawScore[index] !== Infinity && newRet.rawScore[index] !== - Infinity) {
+                let percentScore = calculatePercentageScore(newRet.offsetScore, index);
                 let label = labelingHelper(percentScore);
-                ret.displayScore.push(percentScore);
-                ret.label.push(label)
-            } else if (!isNaN(ret.mateIn[index])) {
-                ret.displayScore = Math.sign(ret.rawScore) * 8;
-                let label = labelingHelper(ret.rawScore, ret.mateIn);
-                ret.label.push(label)
+                newRet.displayScore.push(percentScore);
+                newRet.label.push(label)
+            } else if (!isNaN(newRet.mateIn[index])) {
+                newRet.displayScore = Math.sign(newRet.rawScore) * 8;
+                let label = labelingHelper(newRet.rawScore, newRet.mateIn);
+                newRet.label.push(label)
             }
         }
-        action.payload = ret;
+        action.payload = newRet;
         return next(action)
     }
     return next(action)
