@@ -4,7 +4,6 @@ import Chessboard from "chessboardjsx";
 import {NavLink, Outlet, useNavigate} from "react-router-dom";
 import {analysisView, normalView} from "../../RouteString/RouteString";
 import {getAnalysis} from "../../Redux/Action/Analysis";
-import {LinearProgress} from "@mui/material";
 
 export default function PreviousGameView() {
     const dispatch = useDispatch()
