@@ -20,11 +20,23 @@ export const loadAnalysisObj = store => next => async action => {
             arr.push(getAnalysisScore(fenStrArr[index], index))
         }
         arr = await Promise.all(arr);
+        //race-condition guard
+        arr.sort((a, b) => {
+            if (Number(a.index) > Number(b.index)) {
+                return 1;
+            } else if (Number(a.index) < Number(b.index)) {
+                return -1
+            } else {
+                return 0;
+            }
+        });
+
         for (let items of arr) {
             newRet.bestMoves.push(items.bestMove);
             newRet.rawScore.push(items.rawScore)
             newRet.mateIn.push(items.mateIn)
             newRet.offsetScore.push(items.offsetScore)
+            items.worker.terminate();
         }
 
         for (let index in newRet.rawScore) {
