@@ -5,6 +5,9 @@ import {NavLink, Outlet, useNavigate} from "react-router-dom";
 import {analysisView, normalView} from "../../RouteString/RouteString";
 import {getAnalysis} from "../../Redux/Action/Analysis";
 
+import { CUSTOM_CHESS_PIECES } from "../../constants/CustomChessPieces";
+import { DARK_SQUARE_STYLE, LIGHT_SQUARE_STYLE } from "../../constants/CustomChessSquareColor";
+
 export default function PreviousGameView() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -37,7 +40,12 @@ export default function PreviousGameView() {
       <div className="flex flex-row justify-center items-end gap-y-[5rem] space-x-[5rem] text-black">
           <Chessboard position={positionFENStr}
                       draggable={false}
-                      squareStyles={squareStyle} />
+                      squareStyles={squareStyle} 
+                      lightSquareStyle={LIGHT_SQUARE_STYLE}
+                      darkSquareStyle={DARK_SQUARE_STYLE}
+                      //Source: https://codesandbox.io/s/21r26yw13j?from-embed=&file=/src/integrations/CustomBoard.js
+                      pieces={CUSTOM_CHESS_PIECES}
+                      />
           <div>
               <NavLink
                   className={(state)=> state.isActive ?  "text-white no-underline font-bold text-lg " +
