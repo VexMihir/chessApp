@@ -20,11 +20,6 @@ export function PrevMoveList() {
       result: pgnObj.result
   }
 
-  const handleOnClick = (e) => {
-      e.preventDefault();
-      dispatch(getAnalysis())
-  }
-
     return (
         <div className={"flex flex-col justify-items-center items-stretch rounded-[0.3rem] h-fit bg-[rgba(12,12,54,.63)] p-8 text-white"}>
             <PrevMoveListPannel
@@ -43,11 +38,6 @@ export function PrevMoveList() {
                 <PrevMovePrevButton/>
                 <PrevMoveNextButton/>
             </div>
-            <button
-                onClick={(e)=>{
-                    handleOnClick(e)
-                }}
-            >Start Analysis</button>
         </div>
     );
 }

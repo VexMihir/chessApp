@@ -1,7 +1,7 @@
-import {LOADGAME} from "../String/prevGameViewInit";
 import {GETANALYSIS} from "../String/analysis";
 import {getAnalysisScore} from "./ServiceWorker/SFWorker";
 const ret = {
+    loaded: false,
     offsetScore: [],
     mateIn: [],
     displayScore: [],
@@ -14,11 +14,14 @@ export const loadAnalysisObj = store => next => async action => {
     let arr = []
 
     if (action.type === GETANALYSIS) {
+
+        //if (store.getState().AnalyisReducer.currIndex === action.payload) return;
+
         const fenStrArr = JSON.parse(store.getState().PrevGameView.PGNOBJ).prevMoveListFEN
         for (let index in fenStrArr) {
-            if (Number(index) === 0) continue;
-            arr.push(await getAnalysisScore(fenStrArr[index], index))
+            arr.push(getAnalysisScore(fenStrArr[index], index))
         }
+        arr = await Promise.all(arr);
         for (let items of arr) {
             ret.bestMoves.push(items.bestMove);
             ret.rawScore.push(items.rawScore)
@@ -28,6 +31,8 @@ export const loadAnalysisObj = store => next => async action => {
 
         for (let index in ret.rawScore) {
             if (Number(index) === 0) {
+                ret.displayScore.push(0);
+                ret.label.push("OK");
                 continue;
             } else if (!isNaN(ret.rawScore[index]) && ret.rawScore[index] !== Infinity && ret.rawScore[index] !== - Infinity) {
                 let percentScore = calculatePercentageScore(ret.offsetScore, index);
@@ -60,13 +65,15 @@ const labelingHelper = (offset, mateInScore) => {
     offset = Math.abs(offset);
     if (offset === 0) {
         return "BEST MOVE";
-    } else if (offset < 0.02) {
+    } else if (offset < 0.2) {
        return "EXCELLENT";
-    } else if (offset >= 0.02 && offset < 0.05) {
+    } else if (offset >= 0.2 && offset < 0.5) {
         return "GOOD";
-    } else if (offset >= 0.05 && offset < 0.1) {
+    } else if (offset >= 0.5 && offset < 0.8)  {
+        return "OK"
+    } else if (offset >= 0.8 && offset < 4) {
         return "INACCURACY";
-    }  else if (offset >= 0.1 && offset < 0.20) {
+    }  else if (offset >= 4 && offset < 8) {
         return "MISTAKE";
     } else {
        return "BLUNDER";

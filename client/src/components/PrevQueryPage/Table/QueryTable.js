@@ -2,6 +2,7 @@ import {useDispatch} from "react-redux";
 import {loadGameDB} from "../../../Redux/Action/prevGamViewActions";
 import {useNavigate} from "react-router-dom";
 import {Fragment} from "react";
+import {playBackView} from "../../../RouteString/RouteString";
 
 
 export function QueryTable({prop}) {
@@ -12,7 +13,7 @@ export function QueryTable({prop}) {
     function navigateToMoveList(e, index) {
      e.preventDefault();
      dispatch(loadGameDB(index.currIndex + OFFSET));
-     navigate("/prevMoveList", {replace: false})
+     navigate(playBackView)
  }
 
     return (
