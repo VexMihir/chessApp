@@ -24,14 +24,14 @@ export function WaitingRoomForm () {//({socket}) {
 
     return (
         <div>
-            <h2>Your Room Number is {roomNumber}</h2>
+            <h2 className={"rounded text-custom-black"}>Your Room Number is {roomNumber}</h2>
             <Link className={"invisible"} to="/" replace/>
             <NavLink
                 className=
-                    {"no-underline border  inline block mt-2 py-2 px-4 hover:bg-gray-100 " +
-                        "text-white font-bold border border-purple-450 rounded " +
-                        "shadow shadow-md shadow-white " +
-                        "m-auto"}
+                    {"m-auto text-center " +
+                    "no-underline border border-custom-black rounded-xl py-3 px-4 hover:shadow-transparent " +
+                    "text-custom-black font-bold rounded" +
+                    "shadow shadow-md shadow-custom-black mt-[1rem]"}
                 to={"/inGameView/"+ roomNumber}
                 state={{userName: state.userName}}
                 >Start Game</NavLink>

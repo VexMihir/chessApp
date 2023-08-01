@@ -47,59 +47,55 @@ export function SpectatorForm() {//{socket}) {
     }
 
     return (
-        <div className={"w-[100%] h-[100%] flex flex-col mb-1"}>
-            <fieldset className={"grid grid-rows-2 grid-cols-2 m-auto p-2 mt-[1rem] w-[80%] " +
-                "rounded-xl p-0 " +
-                "shadow shadow-sm shadow-white "}>
-                <legend className={"rounded text-white m-1"}>Join As Spectator</legend>
-                <label>Enter room number</label>
-                <br />
+        <div className={"w-[50%] h-[100%] flex flex-col mb-1"}>
+            <fieldset className={"w-[95%] " +
+                "rounded-xl p-2 border-custom-black border-10"}>
+                <legend className={"rounded text-custom-black " }>Join As Spectator</legend>
+                <label className = {"rounded text-custom-black"} >Enter Room Number</label>
+                <br/>
                 <input required
-                       type={"number"}
-                       min={0}
-                       max={1000000}
-                       onChange={(e)=>(handleRoomNumber(e))}
-                       className={"peer/Num rounded-md text-white py-0.5 border-none m-1 bg-violet-900/30 w-[90%]"}
-                       onBlur={(e)=>{checkInvalid(e)}}
-                />
-                <br />
+                        type={"number"}
+                        min={0}
+                        max={1000000}
+                        onChange={(e)=>(handleRoomNumber(e))}
+                        className={"peer/Num rounded-md text-custom-black py-0.5 border-custom-black border-10 m-1 bg-transparent w-[90%]"}
+                        onBlur={(e)=>{checkInvalid(e)}}
+                 />
                 {
-                    roomEror?  <p className="mb-1 text-pink-700  text-sm">
-                        <mark className={"bg-white text-pink-600"}>Room number must be a number between 0 and 1000000
-                        </mark></p>: ""
+                     roomEror?  <p className="mb-1 text-red-700  text-sm">
+                         <mark className={"bg-transparent text-red-600"}>Room number must be a number between 0 and 1000000
+                         </mark></p>: ""
 
-                }
-                <br />
-                <label>Enter username</label>
-                <br />
+                 }
+                <br/>
+                <label className = {"rounded text-custom-black"}>Enter username</label>
+                <br/>
                 <input required
-                       type={"text"}
-                       onChange={(e)=>(handleOnChange(e))}
-                       className={"peer/Text rounded-md text-white py-0.5 border-none m-1 bg-violet-900/30 w-[90%] relative"}
-                       onBlur={(e)=>{checkEmptyUserName(e)}}
-                />
-                <br />
-                {
-                    userNameError?  <p className="mb-1 text-pink-700  text-sm">
-                        <mark className={"bg-white text-pink-600"}>Username cannot be empty</mark></p>: ""
+                        type={"text"}
+                        onChange={(e)=>(handleOnChange(e))}
+                        className={"peer/Text rounded-md text-custom-black py-0.5 border-custom-black border-10 m-1 bg-transparent w-[90%] relative"}
+                        onBlur={(e)=>{checkEmptyUserName(e)}}
+                 />
+                 {
+                     userNameError?  <p className="mb-1 text-red-700  text-sm">
+                         <mark className={"bg-transparent text-red-600"}>Username cannot be empty</mark></p>: ""
 
-                }
-                <br />
-            </fieldset>
-            <NavLink
-                    className=
-                        {"m-auto text-center " +
-                            "no-underline border py-3 px-4 hover:bg-gray-900 " +
-                            "text-white font-bold rounded " +
-                            "shadow shadow-md shadow-white mt-[1rem]"
-                            }
-                    to={"/inGameView/"+ roomNumber}
-                    state={{userName: userName}}
-                    onClick={(e)=>{
-                        finalCheck(e)
-                    }}
-                >Join As Spectator</NavLink>
-            <br />
-        </div>
-    )
+                 }
+                 </fieldset>
+                 <NavLink
+                     className=
+                     {"m-auto text-center " +
+                     "no-underline border border-custom-black rounded-xl py-3 px-4 mt-5 hover:shadow-transparent " +
+                     "text-custom-black font-bold rounded " +
+                     "shadow shadow-md shadow-custom-black " +
+                     ""}
+                     to={"/inGameView/"+ roomNumber}
+                     state={{userName: userName}}
+                     onClick={(e)=>{
+                         finalCheck(e)
+                     }}
+                 >Join As Spectator</NavLink>
+             <br />
+         </div>
+     )
 }

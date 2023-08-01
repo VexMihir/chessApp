@@ -4,11 +4,15 @@ module.exports = {
   theme: {
     extend: {
       backgroundImage: {
-        "chessImage": " url('/public/joinRoomPic/image.jpg')"
+        "chessImage": " url('/public/joinRoomPic/bg.jpg')"
       },
       boxShadow: {
         "innerReal": "inset -10px -10px 15px rgba(255, 255, 255, 0.5), inset 10px 10px 15px rgba(70, 70, 70, 0.12)"
-      }
+      },
+      colors: {
+          "custom-black": "#333",
+          "custom-pale": "#cdcdcd"
+      },
     },
   },
   plugins: [],
