@@ -1,6 +1,8 @@
 import React from "react";
 import {NavLink, Outlet} from "react-router-dom";
 import "./RoomAssignment.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {faChess} from '@fortawesome/free-solid-svg-icons'
 
 
 export default function RoomAssignment() {
@@ -11,7 +13,7 @@ export default function RoomAssignment() {
             "bg-chessImage bg-cover bg-center bg-no-repeat " +
             "flex flex-col "
         }>
-            <div className="title">Chess Rumble </div>
+            <div className="title">Castle <FontAwesomeIcon icon={faChess}/> Conquer </div>
             <NavLink
             to={"/PreviousGameView"}
                 className="database-button"
