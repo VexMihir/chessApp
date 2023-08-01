@@ -5,6 +5,7 @@ import {NavLink, Outlet, useNavigate} from "react-router-dom";
 import {analysisView, normalView} from "../../RouteString/RouteString";
 import {getAnalysis} from "../../Redux/Action/Analysis";
 import { LinearProgress } from '@mui/material';
+import {NavBar} from "../NavBar/NavBar";
 
 
 
@@ -41,10 +42,10 @@ export default function PreviousGameView() {
             className={"h-fit m-[2rem]"}
         >
             <div
-                className={"h-[5%] p-[1rem]"}
+                className={"h-[1%] p-[1rem]"}
                 id={"NavBar"}
             >
-
+                <NavBar />
             </div>
             <div
                 id={"Header"}

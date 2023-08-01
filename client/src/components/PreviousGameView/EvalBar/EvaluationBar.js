@@ -1,5 +1,7 @@
 import {LinearProgress, linearProgressClasses, styled} from "@mui/material";
-
+/*
+Source: https://stackoverflow.com/questions/69469405/rotate-a-mui-linearprogress
+ */
 export function EvaluationBar({prop}) {
     //
     const percentage = prop.percentage;

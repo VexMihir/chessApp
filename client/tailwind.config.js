@@ -8,6 +8,9 @@ module.exports = {
       },
       boxShadow: {
         "innerReal": "inset -10px -10px 15px rgba(255, 255, 255, 0.5), inset 10px 10px 15px rgba(70, 70, 70, 0.12)"
+      },
+      fontFamily: {
+        "logo": "[Bungee+Spice]"
       }
     },
   },

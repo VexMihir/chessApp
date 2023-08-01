@@ -15,7 +15,6 @@ export function QueryTable({prop}) {
      dispatch(loadGameDB(index.currIndex + OFFSET));
      navigate(playBackView)
  }
-
     return (
         <>
             <table
@@ -62,7 +61,6 @@ export function QueryTable({prop}) {
                 )}
                 </tbody>
             </table>
-
         </>
     )
 }
