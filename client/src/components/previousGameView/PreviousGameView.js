@@ -52,7 +52,7 @@ export default function PreviousGameView() {
                 id={"Header"}
                 className={"h-[15%] p-[1rem] item-center"}
             >
-                <span className={"text-3xl text-center"}><h1>Previous Game</h1></span>
+                <span className={"text-3xl text-center text-custom-black"}><h1></h1></span>
             </div>
             <div
                 id={"MainComponents"}
@@ -68,38 +68,37 @@ export default function PreviousGameView() {
                             draggable={false}
                             squareStyles={squareStyle} />
                 <div
-                    className={"flex flex-col min-h-[650x] w-[100%] bg-violet-800 "}
+                    className={"flex flex-col min-h-[650x] w-[100%] bg-custom-grey rounded-lg "}
                 >
                    <div
                        className={"grid grid-cols-2 h-[20%] w-[95%] p-[1rem]"}
                    >
                        <NavLink
-                           className={(state)=> state.isActive ?  "text-white no-underline font-bold text-lg p-[2rem] " +
-                               "flex justify-center items-center backdrop-blur-md " +
-                               "hover:bg-violet-900 font-bold " +
+                           className={(state)=> state.isActive ?  "text-white no-underline font-bold text-lg p-[2rem] mr-2 " +
+                               "flex justify-center items-center backdrop-blur-md rounded-xl " +
+                               "hover:bg-custom-black font-bold " +
                                " " +
                                "z-0"
                                :
                                "text-white no-underline font-bold text-lg p-[2rem] " +
-                               "flex justify-center items-center " +
-                               "hover:bg-violet-900 font-bold " +
+                               "flex justify-center items-center rounded-xl" +
+                               "hover:bg-custom-black font-bold " +
                                "z-1 " +
-                               " " +
-                               "shadow-purple-900 shadow-[inset_0px_0px_10px_0.25px] p-[2rem] " }
+                               "shadow-custom-black shadow-[inset_0px_0px_10px_0.25px] p-[2rem] " }
                            to={normalView} >Normal View</NavLink>
                        <NavLink
                            className={(state)=> state.isActive ?  "text-white no-underline font-bold text-lg " +
-                               "flex justify-center items-center " +
-                               "hover:bg-violet-900 font-bold " +
+                               "flex justify-center items-center rounded-xl " +
+                               "hover:bg-custom-black font-bold " +
                                " " +
                                "z-0"
                                :
-                               "text-white no-underline font-bold text-lg p-[2rem] " +
-                               "flex justify-center items-center " +
-                               "hover:bg-violet-900 font-bold " +
+                               "text-white no-underline font-bold text-lg p-[2rem] ml-2 " +
+                               "flex justify-center items-center rounded-xl" +
+                               "hover:bg-custom-black font-bold " +
                                "z-1 " +
                                " " +
-                               "shadow-purple-900 shadow-[inset_0px_0px_10px_0.25px]" }
+                               "shadow-custom-black rounded-xl shadow-[inset_0px_0px_10px_0.25px]" }
                            state={currIndx}
                            onClick = {async (e)=> {
                                setProgressBar(true)

@@ -3,9 +3,17 @@
 @tailwind utilities;
 @tailwind variants;
 
+@import url('https://fonts.googleapis.com/css2?family=Andika:ital,wght@0,700;1,700&family=Rubik&display=swap');
+
 ::placeholder{
     color: white;
 }
+
+@font-face {
+    font-family: "Grenze";   /*Can be any text*/
+    src: local("Grenze-Black"),
+      url("../public/Fonts/Grenze-Black.ttf") format("truetype");
+  }
 
 body {
     background-color: #cdcdcd;
@@ -17,4 +25,5 @@ body {
 html, body, #app, #app>div {
     height: 100%;
     text-decoration-color: white;
+    font-family: 'Grenze';
 }

@@ -41,9 +41,9 @@ export function PrevMoveListPannel({ prop }) {
     return secondMove
   }
   return (
-   <div className={"h-[16rem] m-[1rem] w-[95%] overflow-scroll bg-violet-700 bg-gradient-to-t  "}>
+   <div className={"h-[16rem] m-[1rem] w-[95%] overflow-scroll bg-custom-black rounded-lg bg-gradient-to-t  "}>
      <table className={" border-collapse w-[100%] max-h-[10rem] border border-transparent overflow-scroll m-[1rem] " +
-         "bg-violet-700  "}>
+         "bg-custom-black  "}>
        <tbody>
        {
          indexArr.map((child, index)=> {

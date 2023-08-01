@@ -11,7 +11,13 @@ module.exports = {
       },
       colors: {
           "custom-black": "#333",
-          "custom-pale": "#cdcdcd"
+          "custom-pale": "#b5b5b5",
+          "custom-cream": "#D8D9DA",
+          "custom-grey": "#61677A"
+      },
+      fontSize: {
+        title: `5.6rem;`,
+        paragraph: `10.2rem;`
       },
     },
   },

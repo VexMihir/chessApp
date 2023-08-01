@@ -433,7 +433,6 @@ export default function InGameView() {
 
       <div className="flex items-center h-[100vh]">
         <div className="w-[85%] min-w-[1300px] m-[0_auto] bg-[#5928ed] text-[#fff]">
-          <div className="text-center text-4xl">In-Game System</div>
 
           <div className="flex bg-black text-white justify-around text-xl">
             <div>Turn: {activePlayer.toUpperCase()}</div>
