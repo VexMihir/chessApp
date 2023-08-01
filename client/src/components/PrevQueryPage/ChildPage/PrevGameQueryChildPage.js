@@ -1,12 +1,15 @@
 import {QueryTable} from "../Table/QueryTable";
 import {useParams} from "react-router-dom";
 import {useSelector} from "react-redux";
+import { useNavigate } from "react-router-dom";
+import {useEffect} from "react";
 
 export function PrevGameQueryChildPage() {
 
     const pgnData = useSelector((state)=>state.PrevGameQuery.databaseArr);
     const OFFSET = 1
     const CARDSPERPAGE = 5;
+    const navigate = useNavigate();
 
     let {pageNum} = useParams();
     pageNum = Number(pageNum);
@@ -16,6 +19,20 @@ export function PrevGameQueryChildPage() {
 
     const subArr = [...pgnData.slice(startIndex, endIndex)]
 
+    useEffect(() => {
+        const handleBackButton = (e) => {
+          if (pageNum === 1) {
+            e.preventDefault();
+            navigate('/');
+          }
+        };
+
+        window.addEventListener('popstate', handleBackButton);
+
+        return () => {
+            window.removeEventListener('popstate', handleBackButton);
+          };
+        }, [navigate, pageNum]);
 
     const parseSubArr = (data) => {
         let ret = [];
