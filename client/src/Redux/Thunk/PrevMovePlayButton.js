@@ -4,7 +4,7 @@ export function loadPageContinuously() {
     return async (dispatch, getState) => {
             try {
                 await loading(6);
-                let flag = getState().PrevGameViewReducer.playStatus;
+                let flag = getState().PrevGameView.playStatus;
                 if (flag){
                     dispatch(indiPieceUpdate(1))
                 }
