@@ -24,8 +24,9 @@ export function QueryTable({prop}) {
                 <tr key={"Header"}>
                     <th key={"GameH"} className={"py-6 px-5"}>Game</th>
                     <th key={"DateH"} className={"py-6"}>Date</th>
-                    <th key={"noMovesH"}>Number of moves</th>
+                    <th key={"noMovesH"}  className={"py-6"}>Number of moves</th>
                     <th key={"ResultH"} className={"py-6"}>Result</th>
+                    <th key={"SEE GAME"}  className={"py-6"}>SEE GAME</th>
                 </tr>
                 </thead>
                 <tbody key={"mainTableBody"}>
@@ -48,6 +49,18 @@ export function QueryTable({prop}) {
                                     <td rowSpan={3} className={"py-4 px-1"} key={row.date+currIndex}>{row.date}</td>
                                     <td rowSpan={3} key={row.numberOfMoves+currIndex}>{row.numberOfMoves}</td>
                                     <td rowSpan={3} className={"py-4 px-1"} key={row.result+currIndex}>{row.result}</td>
+                                    <td rowSpan={3} className={"py-4 px-1"} key={row.result+currIndex}>
+                                        <div className={"h-[100%] w-[100%] item-center"}>
+                                            <button
+                                                onClick={ (e) => {
+                                                    navigateToMoveList(e, {currIndex})
+                                                }}
+                                                className={"bg-transparent hover:bg-violet-500 text-white font-semibold " +
+                                                "shadow shadow-white shadow-md " +
+                                                "hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"}
+                                            >SEE GAME</button>
+                                        </div>
+                                    </td>
                                 </tr>
                                 <tr key={currIndex+ "p1"} className={"text-left text-medium border-none  "+ bgColor}>
                                     <td className={"py-4 px-5"} key={row.playerOne+currIndex}>Player #1: {row.playerOne}</td>
