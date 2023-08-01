@@ -22,11 +22,11 @@ export function QueryTable({prop}) {
                 className={"table-auto border-none border-collapse rounded-lg shadow shadow-purple-400 shadow-lg w-[100%] "}>
                 <thead key={"Thead"} className={"bg-violet-900 text-left font-bold text-xl"}>
                 <tr key={"Header"}>
-                    <th key={"GameH"} className={"py-6 px-5"}>Game</th>
+                    <th key={"SEE GAME"}  className={"py-6 px-5"}>SEE GAME</th>
+                    <th key={"GameH"} className={"py-6"}>Game</th>
                     <th key={"DateH"} className={"py-6"}>Date</th>
                     <th key={"noMovesH"}  className={"py-6"}>Number of moves</th>
                     <th key={"ResultH"} className={"py-6"}>Result</th>
-                    {/*<th key={"SEE GAME"}  className={"py-6"}>SEE GAME</th>*/}
                 </tr>
                 </thead>
                 <tbody key={"mainTableBody"}>
@@ -45,11 +45,7 @@ export function QueryTable({prop}) {
                                     }}
                                     className={"text-left text-medium border-none "+ bgColor}
                                 >
-                                    <td className={"py-4 pl-5"} key={row.game+currIndex}>{row.game}</td>
-                                    <td rowSpan={3} className={"py-4 px-1"} key={row.date+currIndex}>{row.date}</td>
-                                    <td rowSpan={3} key={row.numberOfMoves+currIndex}>{row.numberOfMoves}</td>
-                                    <td rowSpan={3} className={"py-4 px-1"} key={row.result+currIndex}>{row.result}</td>
-                                    {/*<td rowSpan={3} className={"py-4 px-1"} key={row.result+currIndex}>
+                                    <td rowSpan={3} className={"py-4 pl-5"} key={"button"+ currIndex}>
                                         <div className={"h-[100%] w-[100%] item-center"}>
                                             <button
                                                 onClick={ (e) => {
@@ -60,7 +56,11 @@ export function QueryTable({prop}) {
                                                 "hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"}
                                             >SEE GAME</button>
                                         </div>
-                                    </td>*/}
+                                    </td>
+                                    <td className={"py-4 px-1"} key={row.game+currIndex}>{row.game}</td>
+                                    <td rowSpan={3} className={"py-4 px-1"} key={row.date+currIndex}>{row.date}</td>
+                                    <td rowSpan={3} key={row.numberOfMoves+currIndex}>{row.numberOfMoves}</td>
+                                    <td rowSpan={3} className={"py-4 px-1"} key={row.result+currIndex}>{row.result}</td>
                                 </tr>
                                 <tr key={currIndex+ "p1"} className={"text-left text-medium border-none  "+ bgColor}>
                                     <td className={"py-4 px-5"} key={row.playerOne+currIndex}>Player #1: {row.playerOne}</td>
