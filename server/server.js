@@ -56,8 +56,8 @@ app.get('/createGame', (req, res) => {
   };
   const roomNumber = newUniqueRoomNumber();
 
-  let timeControl = parseInt(req.query.timeControl);
-  let timeIncrement = parseInt(req.query.timeIncrement);
+  let timeControl = parseInt(req.query.timeControl); // time control in minutes
+  let timeIncrement = parseInt(req.query.timeIncrement); // time increment in seconds
 
   // default time controlis 5+0 if not specified 
   if (isNaN(timeControl)) {
@@ -69,7 +69,7 @@ app.get('/createGame', (req, res) => {
   }
 
   // max time control is 1 hour, max increment is +3 minutes
-  if (timeControl < 1 || timeControl > 60 * 60 || timeIncrement < 0 || timeIncrement > 180) {
+  if (timeControl < 1 * 60 || timeControl > 60 * 60 || timeIncrement < 0 || timeIncrement > 180) {
     return res.status(400).json({ error: "Invalid time control or time increment" });
   }
 
