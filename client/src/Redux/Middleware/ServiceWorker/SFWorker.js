@@ -3,6 +3,8 @@ export async function getAnalysisScore(fenStr, index) {
     const OFFSET = -1;
     let worker = new Worker("/stockfish.js");
     let ret = {
+        index: index,
+        worker: worker,
         bestMove: undefined,
         rawScore: undefined,
         offsetScore: undefined,

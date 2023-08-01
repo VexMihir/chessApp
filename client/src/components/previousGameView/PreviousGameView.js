@@ -14,6 +14,7 @@ export default function PreviousGameView() {
     const navigate = useNavigate()
     const currIndx = useSelector(state=>state.PrevGameView.currIdx);
     const currPGNObj =  JSON.parse(useSelector(state=> state.PrevGameView.PGNOBJ));
+    const result = currPGNObj.result
     const positionFENStr = currPGNObj.prevMoveListFEN[currIndx];
     let squareStyle = {};
     const [progressBar, setProgressBar] = useState(false)
@@ -27,7 +28,7 @@ export default function PreviousGameView() {
 
     const handleAnalysisView =  async (e) => {
         e.preventDefault();
-        await dispatch(getAnalysis())
+        await dispatch(getAnalysis(result))
         setProgressBar(false);
         navigate(analysisView)
     }
