@@ -69,13 +69,13 @@ export default function ChessboardGame({
         const styles = {};
         const self = String(square);
         if (validMovesExclusingSelf.length > 0) {
-          styles[self] = { backgroundColor: "#bbcb2b" };
+          styles[self] = { backgroundColor: "#d1d5db" };
         }
         for (let i = 0; i < validMovesExclusingSelf.length; i++) {
           const property = String(validMovesExclusingSelf[i]);
           // Source: https://codesandbox.io/s/x332zqpkl4?from-embed=&file=/src/integrations/WithMoveValidation.js:1229-1284
           styles[property] = {
-            background: "radial-gradient(circle, #d6d6bd 36%, transparent 40%)",
+            background: "radial-gradient(circle, #ffffff 36%, transparent 40%)",
           };
         }
 

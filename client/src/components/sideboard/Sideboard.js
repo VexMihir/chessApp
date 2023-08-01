@@ -327,7 +327,7 @@ export default function Sideboard(props) {
             <div className="text-center text-white text-3xl bg-slate-500">
               Previous Moves
             </div>
-            <div className="h-[10.65rem]">
+            <div className="h-[11.65rem]">
               <InGamePrevMovePannel history={history} />
             </div>
             <div className="text-center text-white text-3xl bg-slate-500">Orientation</div>
