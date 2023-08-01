@@ -1,4 +1,5 @@
 import {  BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import React from "react";
 import InGameView from "./components/inGameView/InGameView";
 import RoomAssignment from "./components/roomAssignment/RoomAssignment";
 import {PrevGameQueryPage} from "./components/PrevQueryPage/PrevGameQueryPage";
@@ -7,11 +8,10 @@ import {PrevGameQueryChildPage} from "./components/PrevQueryPage/ChildPage/PrevG
 import {SpectatorForm} from "./components/roomAssignment/JoinAsSpectator/SpectatorForm";
 import {PlayerForm} from "./components/roomAssignment/JoinAsPlayer/PlayerForm";
 import {NOTFOUNDPAGE} from "./components/404NOTFOUND/404NOTFOUND";
-import React from "react";
 import {analysisView, normalView, playBackView} from "./RouteString/RouteString";
-import {AnalysisView} from "./components/previousGameView/AnalysisView/AnalysisView";
 import PreviousGameView from "./components/previousGameView/PreviousGameView";
 import {PrevMoveList} from "./components/previousGameView/PrevMoveList/PrevMoveList";
+import {AnalysisView} from "./components/previousGameView/AnalysisView/AnalysisView";
 
 function ChessApp() {
 
