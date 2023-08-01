@@ -4,7 +4,6 @@ import Chessboard from "chessboardjsx";
 import {NavLink, Outlet, useNavigate} from "react-router-dom";
 import {analysisView, normalView} from "../../RouteString/RouteString";
 import {getAnalysis} from "../../Redux/Action/Analysis";
-import { LinearProgress } from '@mui/material';
 import {NavBar} from "../NavBar/NavBar";
 
 
@@ -106,7 +105,7 @@ export default function PreviousGameView() {
                            }}
                            to={analysisView}>Analysis View</NavLink>
                    </div>
-                    {progressBar ? <LinearProgress />: ""}
+
                     <div
                         className={"h-[80%] w-[100%] "}
                     >

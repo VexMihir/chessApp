@@ -1,6 +1,7 @@
 import {useSelector} from "react-redux";
+//import {EvaluationBar} from "../EvalBar/EvaluationBar";
 import {PrevMoveList} from "../PrevMoveList/PrevMoveList";
-import {EvaluationBar} from "../EvalBar/EvaluationBar";
+
 
 export function AnalysisView() {
 
@@ -44,12 +45,8 @@ export function AnalysisView() {
                     <div
                         id={"EvaluationBar"}
                         className={"h-[100%] w-[15%] "}>
-                        <EvaluationBar prop={
-                            {
-                                percentage,
-                                color
-                            }
-                        }/>
+
+
                     </div>
                     <div
                         className={"h-[100%] w-[80%] "}>
