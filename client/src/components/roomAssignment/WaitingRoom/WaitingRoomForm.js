@@ -38,16 +38,12 @@ export function WaitingRoomForm () {//({socket}) {
                     "shadow shadow-md shadow-custom-black mt-[1rem]"}
                 to={"/inGameView/"+ roomNumber}
                 state={{userName: state.userName}}
-<<<<<<< HEAD
                 onClick={()=>{
                     socket.emit("join room",roomNumber, state.userName, () => {})
                 }}
-                >Start Game</NavLink>
-=======
                 >Start Game!</NavLink>
         </div>
         </div>
->>>>>>> styling_update
         </div>
     )
 }
