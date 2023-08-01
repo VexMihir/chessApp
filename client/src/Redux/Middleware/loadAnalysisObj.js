@@ -9,7 +9,7 @@ const ret = {
     rawScore: [],
     label: []
 }
-
+//things
 export const loadAnalysisObj = store => next => async action => {
     let arr = []
 
