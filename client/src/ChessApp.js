@@ -1,3 +1,4 @@
+import React from "react";
 import {  BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import InGameView from "./components/inGameView/InGameView";
 import RoomAssignment from "./components/roomAssignment/RoomAssignment";
@@ -8,11 +9,9 @@ import {SpectatorForm} from "./components/roomAssignment/JoinAsSpectator/Spectat
 import PreviousGameView from "./components/previousGameView/PreviousGameView";
 import {PlayerForm} from "./components/roomAssignment/JoinAsPlayer/PlayerForm";
 import {NOTFOUNDPAGE} from "./components/404NOTFOUND/404NOTFOUND";
-
-import React from "react";
-import {PrevMoveList} from "./components/sideboard/PrevMoveList/PrevMoveList";
 import {analysisView, normalView, playBackView} from "./RouteString/RouteString";
-import {AnalyisView} from "./components/previousGameView/AnalysisView/analyisView";
+import {PrevMoveList} from "./components/previousGameView/PrevMoveList/PrevMoveList";
+import {AnalysisView} from "./components/previousGameView/AnalysisView/AnalysisView";
 
 function ChessApp() {
 
@@ -32,7 +31,7 @@ function ChessApp() {
 
               <Route path={playBackView} element={<PreviousGameView />} >
                   <Route path={normalView} element={<PrevMoveList />} />
-                  <Route path={analysisView} element={<AnalyisView />} />
+                  <Route path={analysisView} element={<AnalysisView />} />
               </Route>
 
               <Route path="/inGameView/:id" element={<InGameView/>}/> 

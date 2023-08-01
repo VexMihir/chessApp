@@ -30,12 +30,11 @@ export function PrevMoveNextButton() {
 
 
     return (
-        <button className="bg-white hover:bg-violet-900 active:shadow-violet-950
-        py-2 px-4 border border-gray-400 rounded"
+        <button className="bg-transparent hover:bg-violet-900 active:shadow-violet-950 py-2 px-4 rounded shadow shadow-white shadow-md"
                 key={"PrevMoveNextButton"}
                 id={"NextButtonP"}
                 onClick={(e) => handleNext(e)}
                 disabled={nextDisability}
-            ><FontAwesomeIcon icon={faCaretRight} size={"xl"} alignmentBaseline={"central"}/></button>
+            ><FontAwesomeIcon color={"white"} icon={faCaretRight} size={"xl"} alignmentBaseline={"central"}/></button>
     );
 }

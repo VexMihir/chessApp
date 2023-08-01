@@ -14,11 +14,11 @@ export function PrevMoveEndButton() {
     }
 
     return (
-        <button className="bg-white hover:bg-violet-900 active:shadow-violet-950
-        py-2 px-4 border border-gray-400 rounded"
+        <button className={"bg-transparent hover:bg-violet-900 active:shadow-violet-950 fill-white " +
+            "py-2 px-4 rounded shadow shadow-white shadow-md "}
             key={"PrevMoveEndButton"}
             id={"PrevMoveEndButton"}
             onClick={(e)=>{handleStartOnClick(e)}}
-        ><FontAwesomeIcon icon={faForward} size={"xl"} alignmentBaseline={"central"}/></button>
+        ><FontAwesomeIcon color={"white"} icon={faForward} size={"xl"} alignmentBaseline={"central"}/></button>
     )
 }

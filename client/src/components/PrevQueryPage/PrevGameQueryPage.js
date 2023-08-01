@@ -3,6 +3,7 @@ import {Pagination} from "./Pagnination/Pagination";
 import {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {getDBObj} from "../../Redux/Thunk/PrevGameDB";
+import {NavBar} from "../NavBar/NavBar";
 
 export function PrevGameQueryPage() {
     const dispatch = useDispatch()
@@ -34,6 +35,7 @@ export function PrevGameQueryPage() {
 
     return (
         <div className={"flex flex-col absolute w-[100%] text-white overflow-hidden"} >
+            <NavBar />
             <div className={"text-white font-bold text-5xl relative m-auto"}>
                <h1>CHESS DATABASE</h1>
             </div>

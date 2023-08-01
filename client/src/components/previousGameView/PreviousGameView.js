@@ -4,6 +4,10 @@ import Chessboard from "chessboardjsx";
 import {NavLink, Outlet, useNavigate} from "react-router-dom";
 import {analysisView, normalView} from "../../RouteString/RouteString";
 import {getAnalysis} from "../../Redux/Action/Analysis";
+import { LinearProgress } from '@mui/material';
+import {NavBar} from "../NavBar/NavBar";
+
+
 
 export default function PreviousGameView() {
     const dispatch = useDispatch()
@@ -33,48 +37,84 @@ export default function PreviousGameView() {
     }, [])
   return (
     <>
-      <div className={"flex items-center justify-center my-1 text-white text-5xl"}><h1>Previous Game</h1></div>
-      <div className="flex flex-row justify-center items-end gap-y-[5rem] space-x-[5rem] text-white">
-          <Chessboard position={positionFENStr}
-                      draggable={false}
-                      squareStyles={squareStyle} />
-          <div>
-              <NavLink
-                  className={(state)=> state.isActive ?  "text-white no-underline font-bold text-lg " +
-                      "flex justify-center items-center " +
-                      "hover:bg-violet-900 font-bold " +
-                      " " +
-                      "z-0"
-                      :
-                      "text-white no-underline font-bold text-lg " +
-                      "flex justify-center items-center " +
-                      "hover:bg-violet-900 font-bold " +
-                      "z-1 " +
-                      " " +
-                      "shadow-purple-900 shadow-[inset_0px_0px_10px_0.25px]" }
-                  to={normalView} >Normal View</NavLink>
-              <NavLink
-                  className={(state)=> state.isActive ?  "text-white no-underline font-bold text-lg " +
-                      "flex justify-center items-center " +
-                      "hover:bg-violet-900 font-bold " +
-                      " " +
-                      "z-0"
-                      :
-                      "text-white no-underline font-bold text-lg " +
-                      "flex justify-center items-center " +
-                      "hover:bg-violet-900 font-bold " +
-                      "z-1 " +
-                      " " +
-                      "shadow-purple-900 shadow-[inset_0px_0px_10px_0.25px]" }
-                  state={currIndx}
-                  onClick = {async (e)=> {
-                      setProgressBar(true)
-                      await handleAnalysisView(e)
-                  }}
-                  to={analysisView}>Analysis View</NavLink>
-              <Outlet />
-          </div>
-      </div>
+        <div
+            id={"PrevGameView"}
+            className={"h-fit m-[2rem]"}
+        >
+            <div
+                className={"h-[1%] p-[1rem]"}
+                id={"NavBar"}
+            >
+                <NavBar />
+            </div>
+            <div
+                id={"Header"}
+                className={"h-[15%] p-[1rem] item-center"}
+            >
+                <span className={"text-3xl text-center"}><h1>Previous Game</h1></span>
+            </div>
+            <div
+                id={"MainComponents"}
+                className={"min-h-[650px] flex flex-row gap-x-[5rem] items-stretch justify-center p-[2rem]"}
+            >
+                <Chessboard
+                            boardStyle={
+                                {
+                                    height: "600px"
+                                }
+                            }
+                            position={positionFENStr}
+                            draggable={false}
+                            squareStyles={squareStyle} />
+                <div
+                    className={"flex flex-col min-h-[650x] w-[100%] bg-violet-800 "}
+                >
+                   <div
+                       className={"grid grid-cols-2 h-[20%] w-[95%] p-[1rem]"}
+                   >
+                       <NavLink
+                           className={(state)=> state.isActive ?  "text-white no-underline font-bold text-lg p-[2rem] " +
+                               "flex justify-center items-center backdrop-blur-md " +
+                               "hover:bg-violet-900 font-bold " +
+                               " " +
+                               "z-0"
+                               :
+                               "text-white no-underline font-bold text-lg p-[2rem] " +
+                               "flex justify-center items-center " +
+                               "hover:bg-violet-900 font-bold " +
+                               "z-1 " +
+                               " " +
+                               "shadow-purple-900 shadow-[inset_0px_0px_10px_0.25px] p-[2rem] " }
+                           to={normalView} >Normal View</NavLink>
+                       <NavLink
+                           className={(state)=> state.isActive ?  "text-white no-underline font-bold text-lg " +
+                               "flex justify-center items-center " +
+                               "hover:bg-violet-900 font-bold " +
+                               " " +
+                               "z-0"
+                               :
+                               "text-white no-underline font-bold text-lg p-[2rem] " +
+                               "flex justify-center items-center " +
+                               "hover:bg-violet-900 font-bold " +
+                               "z-1 " +
+                               " " +
+                               "shadow-purple-900 shadow-[inset_0px_0px_10px_0.25px]" }
+                           state={currIndx}
+                           onClick = {async (e)=> {
+                               setProgressBar(true)
+                               await handleAnalysisView(e)
+                           }}
+                           to={analysisView}>Analysis View</NavLink>
+                   </div>
+                    {progressBar ? <LinearProgress />: ""}
+                    <div
+                        className={"h-[80%] w-[100%] "}
+                    >
+                        <Outlet />
+                    </div>
+                </div>
+            </div>
+        </div>
     </>
   );
 }

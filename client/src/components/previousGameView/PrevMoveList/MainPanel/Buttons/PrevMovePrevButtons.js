@@ -28,12 +28,11 @@ export function PrevMovePrevButton() {
 
 
   return (
-      <button className="bg-white hover:bg-violet-900 active:shadow-violet-950
-        py-2 px-4 border border-gray-400 rounded"
+      <button className="bg-transparent hover:bg-violet-900 active:shadow-violet-950 py-2 px-4 rounded shadow shadow-white shadow-md"
         onClick={(e) => {
           handlePrev(e);
         }}
         disabled={prevDisability}
-      ><FontAwesomeIcon icon={faCaretLeft} size={"xl"} alignmentBaseline={"central"}/></button>
+      ><FontAwesomeIcon icon={faCaretLeft} color={"white"} size={"xl"} alignmentBaseline={"central"}/></button>
   )
 }

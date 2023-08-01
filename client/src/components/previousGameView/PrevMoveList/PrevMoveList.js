@@ -1,5 +1,5 @@
 import { PrevMoveListPannel } from "./MainPanel/PrevMovePannel";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {PrevMovePlayButton} from "./MainPanel/Buttons/PrevMovePlayButton";
 import {PrevMovePausetButton} from "./MainPanel/Buttons/PrevMovePauseButton";
 import {PrevMoveStartButton} from "./MainPanel/Buttons/PrevMoveStartButton";
@@ -7,9 +7,8 @@ import {PrevMoveEndButton} from "./MainPanel/Buttons/PrevMoveEndButton";
 import {PrevMovePrevButton} from "./MainPanel/Buttons/PrevMovePrevButtons";
 import {PrevMoveNextButton} from "./MainPanel/Buttons/PrevMoveNextButton";
 import {InfoPanel} from "./MainPanel/InfoPanel/InfoPanel";
-import {getAnalysis} from "../../../Redux/Action/Analysis";
+
 export function PrevMoveList() {
-    const dispatch = useDispatch()
   const pgnObj = JSON.parse(useSelector(state=>state.PrevGameView.PGNOBJ));
   const LANMoveList = pgnObj.prevMoveListLAN;
   const infoObj = {
@@ -21,7 +20,7 @@ export function PrevMoveList() {
   }
 
     return (
-        <div className={"flex flex-col justify-items-center items-stretch rounded-[0.3rem] h-fit bg-[rgba(12,12,54,.63)] p-8 text-white"}>
+        <div className={"flex flex-col h-[100%] "}>
             <PrevMoveListPannel
                 prop={
                     {
@@ -30,7 +29,8 @@ export function PrevMoveList() {
                 }
             />
             <InfoPanel prop={infoObj} />
-            <div className={"m-[1rem_1rem_1rem_0rem] decoration-white [&>*]:m-[0.20rem_0.20rem] [&>*]:bg-transparent [&>*]:text-white [&>*]:text-xl [&>*]:p-4"} id={"ButtonPanel"}>
+            <div className={"p-[1rem] h-[12%] flex flex-row gap-x-[0.25rem] w-[95%] item-stretch justify-around text-white"}
+                 id={"ButtonPanel"}>
                 <PrevMovePlayButton/>
                 <PrevMovePausetButton/>
                 <PrevMoveStartButton/>
