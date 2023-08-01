@@ -1,4 +1,3 @@
-import "./PrevMoveListPanel.css"
 import {useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 
@@ -42,22 +41,25 @@ export function PrevMoveListPannel({ prop }) {
     return secondMove
   }
   return (
-    <table>
-      <tbody>
-        {
-          indexArr.map((child, index)=> {
-            let temp = currInCre;
-            currInCre = currInCre + 1;
-            return (
-                <tr key={index}>
-                  <td>{child}</td>
-                  <td>{getFirstMove(child + temp)}</td>
-                  <td>{getSecondMove(child + temp)}</td>
-                </tr>
-            )
-          })
-        }
-      </tbody>
-    </table>
+   <div className={"h-[16rem] m-[1rem] w-[95%] overflow-scroll bg-custom-black rounded-lg bg-gradient-to-t  "}>
+     <table className={" border-collapse w-[100%] max-h-[10rem] border border-transparent overflow-scroll m-[1rem] " +
+         "bg-custom-black  "}>
+       <tbody>
+       {
+         indexArr.map((child, index)=> {
+           let temp = currInCre;
+           currInCre = currInCre + 1;
+           return (
+               <tr key={index} className={"h-[1rem] p-[0.25rem]"}>
+                 <td className={"h-[1rem] p-[0.25rem]"}>{child}</td>
+                 <td className="h-[1rem] p-[0.25rem]">{getFirstMove(child + temp)}</td>
+                 <td className="h-[1rem] p-[0.25rem]">{getSecondMove(child + temp)}</td>
+               </tr>
+           )
+         })
+       }
+       </tbody>
+     </table>
+   </div>
   );
 }

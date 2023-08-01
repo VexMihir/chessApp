@@ -25,21 +25,29 @@ export function WaitingRoomForm () {//({socket}) {
     }, [errorPage])
 
     return (
-        <div>
-            <h2>Your Room Number is {roomNumber}</h2>
+        <div className="flex flex-col items-center justify-end h-screen">
+            <div className="mt-auto mb-10">
+            <h2 className={"rounded text-custom-black"}>Your Room Number is {roomNumber}</h2>
             <Link className={"invisible"} to="/" replace/>
+            <div className="text-center">
             <NavLink
                 className=
-                    {"no-underline border  inline block mt-2 py-2 px-4 hover:bg-gray-100 " +
-                        "text-white font-bold border border-purple-450 rounded " +
-                        "shadow shadow-md shadow-white " +
-                        "m-auto"}
+                    {"m-auto text-center " +
+                    "no-underline border border-custom-black rounded-xl py-3 px-4 hover:shadow-transparent " +
+                    "text-custom-black text-right font-bold rounded" +
+                    "shadow shadow-md shadow-custom-black mt-[1rem]"}
                 to={"/inGameView/"+ roomNumber}
                 state={{userName: state.userName}}
+<<<<<<< HEAD
                 onClick={()=>{
                     socket.emit("join room",roomNumber, state.userName, () => {})
                 }}
                 >Start Game</NavLink>
+=======
+                >Start Game!</NavLink>
+        </div>
+        </div>
+>>>>>>> styling_update
         </div>
     )
 }

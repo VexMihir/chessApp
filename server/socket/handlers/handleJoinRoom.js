@@ -74,8 +74,8 @@ const handleJoinRoom = (io, socket, rooms, gameModel, gameSchema) => (roomNumber
 
 
               // set both players' timers to 5 minutes
-              timers[rooms[roomNumber].players[0].id] = 300;
-              timers[rooms[roomNumber].players[1].id] = 300;
+              timers[rooms[roomNumber].players[0].id] = rooms[roomNumber].timeControl;
+              timers[rooms[roomNumber].players[1].id] = rooms[roomNumber].timeControl;
               io.to(roomNumber).emit(EVENTS.START_GAME);
               startTimer(roomNumber);
 

@@ -30,13 +30,12 @@ export function PrevMovePlayButton() {
     }, [currIndx,  currPGNOBj.prevMoveListFEN.length])
 
     return (
-        <button  className="bg-white hover:bg-violet-900 active:shadow-violet-950
-        py-2 px-4 border border-gray-400 rounded"
+        <button  className="bg-transparent hover:bg-custom-pale active:shadow-custom-pale py-2 px-4 rounded shadow shadow-white shadow-md"
                  key={"PrevMovePlayButton"}
             disabled={setPlay}
             onClick={async (e) => {
                 await handleStartOnClick(e)
             }}
-        ><FontAwesomeIcon icon={faCirclePlay} size={"xl"} alignmentBaseline={"central"}/></button>
+        ><FontAwesomeIcon icon={faCirclePlay} color={"white"} size={"xl"} alignmentBaseline={"central"}/></button>
     )
 }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { BLACK_CHESS_PIECE, WHITE_CHESS_PIECE } from "../inGameView/InGameView";
 
-import { InGamePrevMovePannel } from "./PrevMoveList/InGamePrevMovePannel";
+import { InGamePrevMovePannel } from "./InGamePrevMovePannel";
 export default function Sideboard(props) {
   const socket = props.socket;
   const players = props.players;
