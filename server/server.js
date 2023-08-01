@@ -30,15 +30,15 @@ app.get('/', (req, res) => {
 let rooms = {};
 
 mongoose.connect(process.env.MONGO_URI)
-    .then(() => console.log('...// Connected to ChessApp Cluster //...'))
-    .catch(error => console.log(error));
+  .then(() => console.log('...// Connected to ChessApp Cluster //...'))
+  .catch(error => console.log(error));
 
 const gameSchema = new mongoose.Schema({
-    history: [{}],
-    playerOneData: Object,
-    playerTwoData: Object,
-    date: Date,
-    result: String // "White", "Black", or "Draw"
+  history: [{}],
+  playerOneData: Object,
+  playerTwoData: Object,
+  date: Date,
+  result: String // "White", "Black", or "Draw"
 });
 
 const Game = mongoose.model('Games', gameSchema);
@@ -55,15 +55,35 @@ app.get('/createGame', (req, res) => {
     }
   };
   const roomNumber = newUniqueRoomNumber();
+
+  let timeControl = parseInt(req.query.timeControl);
+  let timeIncrement = parseInt(req.query.timeIncrement);
+
+  // default time controlis 5+0 if not specified 
+  if (isNaN(timeControl)) {
+    timeControl = 5 * 60; // to seconds
+  }
+
+  if (isNaN(timeIncrement)) {
+    timeIncrement = 0;
+  }
+
+  // max time control is 1 hour, max increment is +3 minutes
+  if (timeControl < 1 || timeControl > 60 * 60 || timeIncrement < 0 || timeIncrement > 180) {
+    return res.status(400).json({ error: "Invalid time control or time increment" });
+  }
+
   rooms[roomNumber] = {
     game: new ChessGame(),
     players: [],
     spectators: [],
     timers: {},
+    timeControl: timeControl,
+    increment: timeIncrement,
     currentPlayer: null,
     drawOffer: null
   }
-  
+
   res.send({ roomNumber });
 });
 
@@ -73,23 +93,23 @@ app.get('/rooms', (req, res) => {
 })
 
 app.get('/games', async (req, res) => {
-    const uuid = req.query.uuid;
-    if (uuid) {
-        try {
-            const game = await Game.findOne({ _id: uuid });
-            if (game) {
-                res.send(game);
-            } else {
-                res.status(404).send({ message: 'No game found with the specified UUID.' });
-            }
-        } catch (error) {
-            console.log(error);
-            res.status(500).send({ message: 'Error finding game by UUID.' });
-        }
-    } else {
-        const games = await Game.find().sort({ date: -1 }).limit(10);
-        res.send(games);
+  const uuid = req.query.uuid;
+  if (uuid) {
+    try {
+      const game = await Game.findOne({ _id: uuid });
+      if (game) {
+        res.send(game);
+      } else {
+        res.status(404).send({ message: 'No game found with the specified UUID.' });
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(500).send({ message: 'Error finding game by UUID.' });
     }
+  } else {
+    const games = await Game.find().sort({ date: -1 }).limit(10);
+    res.send(games);
+  }
 });
 
 // app.post('/games', async (req, res, next) => {
@@ -100,7 +120,7 @@ app.get('/games', async (req, res) => {
 //   var newGame = new Game(req.body).save()
 //   res.status(200).send('Successful')
 //   // res.send("")
-  
+
 
 //   // var newGame = new Game({
 
