@@ -20,7 +20,7 @@ export function QueryTable({prop}) {
             <table
                 key={"mainTable"}
                 className={"table-auto border border-collapse rounded-lg shadow shadow-custom-black-400 shadow-lg w-[100%] "}>
-                <thead key={"Thead"} className={"bg-custom-black text-left text-yellow-400 text-center uppercase font-bold text-xl"}>
+                <thead key={"Thead"} className={"bg-custom-black text-left text-xl text-yellow-400 text-center uppercase font-bold text-xl"}>
                 <tr key={"Header"}>
                     <th key={"SEE GAME"}  className={"py-6 px-5"}></th>
                     <th key={"GameH"} className={"py-6"}>Game</th>
@@ -57,16 +57,16 @@ export function QueryTable({prop}) {
                                             >Replay</button>
                                         </div>
                                     </td>
-                                    <td className={"text-center py-4 px-1"} key={row.game+currIndex}>{row.game}</td>
-                                    <td rowSpan={3} className={"text-center py-4 px-1"} key={row.date+currIndex}>{row.date}</td>
-                                    <td rowSpan={3} className = "text-center" key={row.numberOfMoves+currIndex}>{row.numberOfMoves}</td>
-                                    <td rowSpan={3} className={"text-center py-4 px-1"} key={row.result+currIndex}>{row.result}</td>
+                                    <td className={"text-center text-lg py-4 px-1"} key={row.game+currIndex}>{row.game}</td>
+                                    <td rowSpan={3} className={"text-center text-lg py-4 px-1"} key={row.date+currIndex}>{row.date}</td>
+                                    <td rowSpan={3} className = "text-center text-lg" key={row.numberOfMoves+currIndex}>{row.numberOfMoves}</td>
+                                    <td rowSpan={3} className={"text-center text-lg py-4 px-1"} key={row.result+currIndex}>{row.result}</td>
                                 </tr>
                                 <tr key={currIndex+ "p1"} className={"text-center text-medium border-none  "+ bgColor}>
-                                    <td className={"py-4 px-5"} key={row.playerOne+currIndex}>Player #1: {row.playerOne}</td>
+                                    <td className={"py-4 px-5"} key={row.playerOne+currIndex}>PLAYER #1 : {row.playerOne}</td>
                                 </tr>
                                 <tr key={currIndex + "p2"} className={"text-center text-medium border-none "+ bgColor}>
-                                    <td className={"py-4 px-5"} key={row.playerTwo+currIndex}>Player #2: {row.playerTwo}</td>
+                                    <td className={"py-4 px-5"} key={row.playerTwo+currIndex}>PLAYER #2 : {row.playerTwo}</td>
                                 </tr>
                             </Fragment>
                         )

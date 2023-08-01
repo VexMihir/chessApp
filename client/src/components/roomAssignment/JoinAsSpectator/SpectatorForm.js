@@ -47,7 +47,8 @@ export function SpectatorForm() {//{socket}) {
     }
 
     return (
-        <div className={"w-[50%] h-[100%] flex flex-col mb-1"}>
+        <div className={"flex justify-center items-end h-screen"}>
+        <div className={"w-[50%] flex flex-col mb-1"}>
             <fieldset className={"w-[95%] " +
                 "rounded-xl p-2 border-custom-black border-10"}>
                 <legend className={"rounded text-custom-black " }>Join As Spectator</legend>
@@ -96,6 +97,7 @@ export function SpectatorForm() {//{socket}) {
                      }}
                  >Join As Spectator</NavLink>
              <br />
+         </div>
          </div>
      )
 }

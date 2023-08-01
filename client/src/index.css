@@ -26,4 +26,5 @@ html, body, #app, #app>div {
     height: 100%;
     text-decoration-color: white;
     font-family: 'Grenze';
+    font-size: 20px;
 }

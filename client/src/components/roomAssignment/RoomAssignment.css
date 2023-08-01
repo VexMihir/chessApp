@@ -47,12 +47,18 @@
 
   .join-1 {
     position: absolute;
-    top: 20%;
+    top: 22%;
     left: 33%;
   }
 
   .join-2 {
     position: absolute;
-    top: 20%;
+    top: 22%;
     left: 55%;
+  }
+
+  .title {
+    font-size: 100px;
+    text-align: center;
+    color: #333;
   }
