@@ -45,6 +45,8 @@ export const loadAnalysisObj = store => next => async action => {
         for (let index in ret.rawScore) {
             if (Number(index) === 0) {
                 ret.displayScore.push(0);
+                ret.rawScore[0] = 0;
+                ret.offsetScore[0] = 0;
                 ret.label.push("OK");
                 continue;
             } else if (!isNaN(ret.rawScore[index]) && ret.rawScore[index] !== Infinity && ret.rawScore[index] !== - Infinity) {
@@ -53,7 +55,7 @@ export const loadAnalysisObj = store => next => async action => {
                 ret.displayScore.push(percentScore);
                 ret.label.push(label)
             } else if (!isNaN(ret.mateIn[index])) {
-                ret.displayScore.push(Math.sign(ret.rawScore) * 8);
+                ret.displayScore.push(Math.sign(ret.rawScore[index]) * 8);
                 let label = labelingHelper(ret.rawScore, ret.mateIn);
                 ret.label.push(label)
             }
@@ -76,6 +78,9 @@ export const loadAnalysisObj = store => next => async action => {
 
 const calculatePercentageScore = (ret, index) => {
     let score = (ret[Number(index)] - ret[Number(index) -1])/100;
+    if (index === 1) {
+        score = ret[Number(index)] / 100;
+    }
     return score
 }
 

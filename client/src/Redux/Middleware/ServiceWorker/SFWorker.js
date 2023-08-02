@@ -48,7 +48,7 @@ export async function getAnalysisScore(fenStr, index) {
                 if (score) {
                     ret.rawScore = parseInt(score[0]);
                     ret.offsetScore = parseInt(score[0]);
-                    if (index % 2 !== 0 ) {
+                    if (index % 2 === 0 ) {
                         ret.offsetScore *= OFFSET;
                     }
                 }
@@ -57,9 +57,10 @@ export async function getAnalysisScore(fenStr, index) {
                 let mate = data.match(/(?<=mate\s+).*?(?=\s+nodes)/gs);
                 if (mate != null) {
                     mate = parseInt(mate[0]);
-                    ret.rawScore = Math.sign(mate) * Infinity;
-                    ret.offsetScore = Math.sign(mate) * Infinity
+                    ret.rawScore =  Infinity;
+                    ret.offsetScore = Infinity;
                     if (index % 2 !== 0 ) {
+                        ret.rawScore *= OFFSET;
                         ret.offsetScore *= OFFSET;
                     }
                     ret.mateIn = mate;
