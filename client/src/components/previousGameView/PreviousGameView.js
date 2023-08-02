@@ -42,10 +42,10 @@ export default function PreviousGameView() {
         <>
             <div
                 id={"PrevGameView"}
-                className={"h-fit m-[2rem]"}
+                className={"h-fit m-[1rem]"}
             >
                 <div
-                    className={"h-[0.5%]"}
+                    className={"h-[0.5%] items-center m-0"}
                     id={"NavBar"}
                 >
                     <NavBar />

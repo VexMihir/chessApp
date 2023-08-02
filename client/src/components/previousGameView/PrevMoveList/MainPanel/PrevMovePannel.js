@@ -41,8 +41,7 @@ export function PrevMoveListPannel({ prop }) {
     return secondMove
   }
   return (
-     <table className={"table-fixed border-collapse w-[95%] border border-transparent m-[1rem] " +
-         "overflow-hidden " +
+     <table className={"table-fixed border-collapse w-[90%] border border-transparent m-[1rem] " +
          "bg-custom-black  "}>
 
        <colgroup>

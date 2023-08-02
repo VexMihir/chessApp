@@ -36,8 +36,8 @@ export function PrevGameQueryPage() {
     return (
         <div className={"flex flex-col absolute w-[100%] text-custom-black overflow-hidden"} >
             <NavBar />
-            <div className={"text-custom-black font-bold text-5xl relative m-auto"}>
-               <h1>CHESS DATABASE</h1>
+            <div className={"text-custom-black font-bold text-4xl relative m-[2rem] h-[10%] text-center items-center"}>
+               <h1 className={" text-center m-0"}>CHESS DATABASE</h1>
             </div>
             <div className={"flex flex-col w-[100%] text-custom-black items-centre justify-centre"}>
                 <Outlet />
