@@ -17,7 +17,7 @@ export function PrevMoveStartButton() {
                 key={"PrevMovePauseButton"}
                 id={"PrevMovePauseButton"}
                 onClick={(e)=>{handleStartOnClick(e)}}
-        ><FontAwesomeIcon icon={faBackward} color={"white"} size={"xl"} alignmentBaseline={"central"}/></button>
+        ><FontAwesomeIcon icon={faBackward} color={"white"} size={"l"} alignmentBaseline={"central"}/></button>
 
     )
 }

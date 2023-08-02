@@ -21,15 +21,21 @@ export function PrevMoveList() {
 
     return (
         <div className={"flex flex-col h-[100%] "}>
-            <PrevMoveListPannel
-                prop={
-                    {
-                        LANMoveList: LANMoveList
+            <div className={"overflow-scroll h-[70%] bg-custom-black mx-[1rem] mt-[1rem] rounded shadow shadow-white"}>
+                <PrevMoveListPannel
+                    prop={
+                        {
+                            LANMoveList: LANMoveList
+                        }
                     }
-                }
-            />
-            <InfoPanel prop={infoObj} />
-            <div className={"p-[1rem] h-[12%] flex flex-row gap-x-[0.25rem] w-[95%] item-stretch justify-around text-white"}
+                />
+            </div>
+            <div className={"h-[30%] m-[1rem] text-xs"}>
+                <InfoPanel prop={
+                    infoObj
+                } />
+            </div>
+            <div className={"h-[10%] flex flex-row gap-x-[0.25rem] w-[100%] item-stretch justify-around text-white"}
                  id={"ButtonPanel"}>
                 <PrevMovePlayButton/>
                 <PrevMovePausetButton/>
