@@ -47,6 +47,9 @@ const handleGameOver = (io, roomNumber, rooms, gameState, gameSchema, gameModel)
     handleCheckmate(gameState, io, roomNumber, rooms);
     pushToMongoAndManageDB(rooms[roomNumber], gameSchema, gameModel);
     clearInterval(rooms[roomNumber].timer);
+    // console.log("line 50");
+    delete rooms[roomNumber]
+    // console.log("line 52");
 };
 
 const handleMove = (io, socket, rooms, gameSchema, gameModel) => (roomNumber, from, to, promotionChoice) => {

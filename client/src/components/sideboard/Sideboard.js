@@ -57,7 +57,7 @@ export default function Sideboard(props) {
       if (players.length === 1) {
         if (socket.id === players[0].id) {
           setSelf(players[0]);
-          if (players[0].color === 'black') {
+          if (players[0].color.toLowerCase() === 'black') {
             setPawnPromotionChoice(BLACK_CHESS_PIECE.KNIGHT)
           }
         } 
@@ -65,13 +65,13 @@ export default function Sideboard(props) {
         if (socket.id === players[0].id) {
           setSelf(players[0]);
           setChallenger(players[1]);
-          if (players[0].color === 'black') {
+          if (players[0].color.toLowerCase() === 'black') {
             setPawnPromotionChoice(BLACK_CHESS_PIECE.KNIGHT)
           }
         } else if (socket.id === players[1].id) {
           setSelf(players[1]);
           setChallenger(players[0]);
-          if (players[1].color === 'black') {
+          if (players[1].color.toLowerCase() === 'black') {
             setPawnPromotionChoice(BLACK_CHESS_PIECE.KNIGHT)
           }
 
@@ -169,7 +169,7 @@ export default function Sideboard(props) {
                 <div className="text-3xl text-white text-center bg-slate-500">
                   Pawn Promotion Choice
                 </div>
-                {self !== undefined && self.color === "black" ? (
+                {self !== undefined && self.color.toLowerCase() === "black" ? (
                   <>
                     <div>{pawnPromotionChoice}</div>
                     <div className="bg-white flex justify-around">
