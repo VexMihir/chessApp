@@ -1,11 +1,11 @@
 import {NavLink} from "react-router-dom";
 import {useState} from "react";
 
-export function SpectatorForm() {//{socket}) {
+export function SpectatorForm() {
     const [userName, setUserName] = useState(null);
     const [roomNumber, setRoomNumber] = useState(null);
-    const [userNameError, setuserNameError] = useState(false);
-    const [roomEror, setRoomNumberError] = useState(false);
+    const [userNameError, setuserNameError] = useState("invisible");
+    const [roomEror, setRoomNumberError] = useState("invisible");
 
 
     const handleOnChange = (e) => {
@@ -22,17 +22,17 @@ export function SpectatorForm() {//{socket}) {
 
     const checkEmptyUserName = (e) => {
         if(!e.target.value || e.target.value.length === 0) {
-            setuserNameError(true)
+            setuserNameError(" ")
         } else {
-            setuserNameError(false)
+            setuserNameError("invisible")
         }
     }
 
     const checkInvalid = (e) => {
         if(!e.target.value || e.target.value.length === 0 || isNaN(e.target.value) || e.target.value < 0 || e.target.value > 1000000) {
-            setRoomNumberError(true)
+            setRoomNumberError(" ")
         } else {
-            setRoomNumberError(false)
+            setRoomNumberError("invisible")
         }
     }
 
@@ -47,57 +47,41 @@ export function SpectatorForm() {//{socket}) {
     }
 
     return (
-        <div className={"flex justify-center items-end h-screen"}>
-        <div className={"w-[50%] flex flex-col mb-1"}>
-            <fieldset className={"w-[95%] " +
-                "rounded-xl p-2 border-custom-black border-10"}>
-                <legend className={"rounded text-custom-black " }>Join As Spectator</legend>
-                <label className = {"rounded text-custom-black"} >Enter Room Number</label>
-                <br/>
-                <input required
-                        type={"number"}
+        <div className={"w-[40%] h-[85%] flex flex-col m-auto  "}>
+            <fieldset className={"flex flex-col h-[85%] " +
+                "rounded-xl border-custom-black border-10 p-0 m-0 mb-[0.5rem] pb-[0.5rem]  px-[0.5rem]"}>
+                <legend className={"rounded-2xl text-custom-black text-md text-black"}>Join As Spectator</legend>
+                <label className = {"rounded-2xl text-custom-black text-sm"}>Enter room number</label>
+                <input  required
                         min={0}
                         max={1000000}
+                        type={"number"}
                         onChange={(e)=>(handleRoomNumber(e))}
-                        className={"peer/Num rounded-md text-custom-black py-0.5 border-custom-black border-10 m-1 bg-transparent w-[90%]"}
+                        className={"peer/Num rounded-md text-custom-black border-custom-black border-10 bg-transparent w-[90%]"}
                         onBlur={(e)=>{checkInvalid(e)}}
-                 />
-                {
-                     roomEror?  <p className="mb-1 text-red-700  text-sm">
-                         <mark className={"bg-transparent text-red-600"}>Room number must be a number between 0 and 1000000
-                         </mark></p>: ""
-
-                 }
-                <br/>
-                <label className = {"rounded text-custom-black"}>Enter username</label>
-                <br/>
+                />
+                <p className={`text-red-600  text-xs m-0 ${roomEror}`}>Invalid Number(must between 0 and 1000000)</p>
+                <label className = {"rounded text-custom-black m-0 text-sm"}>Enter username</label>
                 <input required
-                        type={"text"}
-                        onChange={(e)=>(handleOnChange(e))}
-                        className={"peer/Text rounded-md text-custom-black py-0.5 border-custom-black border-10 m-1 bg-transparent w-[90%] relative"}
-                        onBlur={(e)=>{checkEmptyUserName(e)}}
-                 />
-                 {
-                     userNameError?  <p className="mb-1 text-red-700  text-sm">
-                         <mark className={"bg-transparent text-red-600"}>Username cannot be empty</mark></p>: ""
-
-                 }
-                 </fieldset>
-                 <NavLink
-                     className=
-                     {"m-auto text-center " +
-                     "no-underline border border-custom-black rounded-xl py-3 px-4 mt-5 hover:shadow-transparent " +
-                     "text-custom-black font-bold rounded " +
-                     "shadow shadow-md shadow-custom-black " +
-                     ""}
-                     to={"/inGameView/"+ roomNumber}
-                     state={{userName: userName}}
-                     onClick={(e)=>{
-                         finalCheck(e)
-                     }}
-                 >Join As Spectator</NavLink>
-             <br />
-         </div>
-         </div>
+                       onChange={(e)=>(handleOnChange(e))}
+                       onBlur={(e)=>{checkEmptyUserName(e)}}
+                       className={"peer/Text rounded-md text-custom-black px-0.5 border-custom-black border-10 bg-transparent w-[90%]"}
+                />
+                <p className={`text-red-600 m-0 text-xs mb-[0.2rem] ${userNameError}`}>Empty Username</p>
+            </fieldset>
+            <NavLink
+                className=
+                    {" text-center " +
+                        "no-underline border border-custom-black rounded-xl hover:shadow-transparent " +
+                        "text-custom-black font-bold rounded " +
+                        "shadow shadow-md shadow-custom-black " +
+                        "h-[10%] py-[0.5rem] px-4 m-auto "}
+                onClick={(e)=>{
+                    finalCheck(e)
+                }}
+                to={"/inGameView/"+ roomNumber}
+                state={{userName: userName}}
+            >Join Room</NavLink>
+        </div>
      )
 }

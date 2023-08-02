@@ -1,10 +1,9 @@
 import {NavLink} from "react-router-dom";
-import {useRef, useState} from "react";
+import {useState} from "react";
 
-export function JoinRoomForm({socket}) {
-    const refInput = useRef(null)
+export function JoinRoomForm() {
     const [userName, setUserName] = useState(null);
-    const [userNameError, setuserNameError] = useState(false);
+    const [userNameError, setuserNameError] = useState("invisible");
 
     const handleOnChange = (e) => {
         checkEmptyUserName(e)
@@ -14,9 +13,9 @@ export function JoinRoomForm({socket}) {
 
     const checkEmptyUserName = (e) => {
         if(!e.target.value || e.target.value.length === 0) {
-            setuserNameError(true)
+            setuserNameError(" ")
         } else {
-            setuserNameError(false)
+            setuserNameError("invisible")
         }
     }
 
@@ -28,34 +27,26 @@ export function JoinRoomForm({socket}) {
     }
 
     return (
-        <div className={"w-[50%] h-[100%] flex flex-col mb-1"}>
-            <fieldset className={"w-[95%] " +
-                "rounded-xl p-2 border-custom-black border-10"}>
-
-                <legend className={"rounded text-custom-black " }>Create Room</legend>
-                <label className = {"rounded text-custom-black"} >Enter username</label>
+        <div className={"w-[50%] h-[100%] flex flex-col items-stretch  "}>
+            <fieldset className={"flex flex-col h-[85%] " +
+                "rounded-xl border-custom-black border-10 p-0 m-0 mb-[0.5rem] pb-[0.5rem]  px-[0.5rem]"}>
+                <legend className={"rounded-2xl text-custom-black text-md text-black"}>Create Room</legend>
+                <label className = {"rounded-2xl text-custom-black text-sm"} >Enter username</label>
                 <input required
                        type={"text"}
-                       ref={refInput}
                        onChange={(e)=>(handleOnChange(e))}
                        onBlur={(e)=>{checkEmptyUserName(e)}}
-                       className={"peer/Text rounded-md text-custom-black py-[0.25rem] border-custom-black border-10 bg-transparent " +
-                           "w-[90%] relative " +
-                           "m-auto"}
+                       className={"peer/Text rounded-md text-custom-black px-0.5 border-custom-black border-10 bg-transparent w-[90%]"}
                 />
-                {
-                    userNameError?  <p className="mb-1 text-red-700  text-sm">
-                        <mark className={"bg-transparent text-red-600"}>Username cannot be empty</mark></p>: ""
-
-                }
+                <p className={`text-red-600  text-sm ${userNameError}`}>Empty username</p>
             </fieldset>
             <NavLink
                 className=
-                    {
-                        "m-auto text-center " +
-                        "no-underline border border-custom-black rounded-xl py-3 px-4 hover:shadow-transparent " +
-                        "text-custom-black font-bold rounded" +
-                        "shadow shadow-md shadow-custom-black mt-[1rem]"
+                    {   " text-center " +
+                        "no-underline border border-custom-black rounded-xl hover:shadow-transparent " +
+                        "text-custom-black font-bold rounded " +
+                        "shadow shadow-md shadow-custom-black " +
+                        "h-[10%] py-[0.5rem] px-4 m-auto mt-[1.5rem] "
                     }
                 onClick={(e)=>{finalCheck(e)}}
                 to={"/waitingRoomForm"}

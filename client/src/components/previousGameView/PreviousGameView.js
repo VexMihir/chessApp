@@ -50,18 +50,20 @@ export default function PreviousGameView() {
                 >
                     <NavBar />
                 </div>
-                {/*<div
-                id={"Header"}
-                className={"h-[15%] p-[1rem] item-center"}
-            >
-                <span className={"text-3xl text-center text-custom-black"}><h1></h1></span>
-            </div>*/}
                 <div
                     id={"MainComponents"}
                     className={"min-h-[650px] flex flex-row gap-x-[2rem] items-stretch justify-center p-[2rem] "}
                 >
                     <Chessboard
                         width={650}
+                        boardStyle={
+                            {
+                                boxShadow: `0 5px 15px rgba(0, 0, 0, 0.5)`
+
+                            }
+                        }
+                        lightSquareStyle={{ backgroundColor: "#547396" }}
+                        darkSquareStyle={{ backgroundColor: "#eae9d4" }}
                         position={positionFENStr}
                         draggable={false}
                         squareStyles={squareStyle} />

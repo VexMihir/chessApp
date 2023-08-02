@@ -11,25 +11,42 @@ export default function RoomAssignment() {
         <div className={
             "h-screen w-screen " +
             "bg-chessImage bg-cover bg-center bg-no-repeat " +
-            "flex flex-col "
+            "flex flex-col " +
+            "overflow-hidden "
         }>
-            <div className="title">Castle <FontAwesomeIcon icon={faChess}/> Conquer </div>
-            <NavLink
-            to={"/PreviousGameView"}
-                className="database-button"
-            >Database</NavLink>
-                    <div>
-                        <NavLink  to={"/playerForm"}
+            <div className={"flex flex-col"}>
+                <div
+                    className={"w-[5px] "}
+                >
+                    <NavLink
+                        to={"/PreviousGameView"}
+                        className="database-button"
+                    >Database</NavLink>
+                </div>
+                <div
+                    className={"h-[150px] "}
+                    id="title">Castle <FontAwesomeIcon icon={faChess}/> Conquer
+                </div>
+            </div>
+            <div
+                className={"p-[100px] h-[170px]"}
+            >
+                <NavLink  to={"/playerForm"}
                                   className= "join-button join-1"
                         >Join As Player
-                        </NavLink>
-                        <NavLink
+                </NavLink>
+                <NavLink
                             className="join-button join-2"
                             to={"/joinAsSpectator"}>
                             Join As Spectator
-                        </NavLink>
-                    </div>
-                    <Outlet/>
+                </NavLink>
+            </div>
+            <div
+                className={"h-[220px] p-[1.25rem] w-[95.55%] items-center"}
+            >
+                <Outlet />
+            </div>
         </div>
+
     )
 }
