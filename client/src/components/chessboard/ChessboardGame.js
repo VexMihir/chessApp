@@ -196,14 +196,14 @@ export default function ChessboardGame({
           <Chessboard
             position={fen.split(" ")[0]}
             orientation={orientation}
-            width={700}
+            width={900}
             draggable={true}
             onDrop={onDrop}
             onDragOverSquare={onDragOverSquare}
             squareStyles={sqaureStyles}
             onSquareClick={onSquareClick}
             onMouseOverSquare={onMouseOverSquare}
-            pieces={{
+             pieces={{
               bQ: (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

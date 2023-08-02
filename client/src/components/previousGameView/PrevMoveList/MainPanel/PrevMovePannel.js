@@ -25,7 +25,7 @@ export function PrevMoveListPannel({ prop }) {
   function getFirstMove(index) {
     let firstMove = LANArr[index];
     if (index === currIndex) {
-      firstMove = <mark className={"bg-red-300 p-[0.25rem]"}>{firstMove}</mark>
+      firstMove = <div className={"text-yellow-300 p-[0.25rem]"}>{firstMove}</div>
     }
     return firstMove;
   }
@@ -35,7 +35,7 @@ export function PrevMoveListPannel({ prop }) {
     if (LANArr[index+1]) {
       secondMove = LANArr[index+1];
       if (index+1 === currIndex) {
-        secondMove = <mark className={"bg-red-300 p-[0.25rem]"}>{secondMove}</mark>
+        secondMove = <div className={"text-yellow-300 p-[0.25rem]"}>{secondMove}</div>
       }
     }
     return secondMove
