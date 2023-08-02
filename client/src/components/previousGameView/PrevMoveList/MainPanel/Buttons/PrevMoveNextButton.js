@@ -35,6 +35,6 @@ export function PrevMoveNextButton() {
                 id={"NextButtonP"}
                 onClick={(e) => handleNext(e)}
                 disabled={nextDisability}
-            ><FontAwesomeIcon color={"white"} icon={faCaretRight} size={"xl"} alignmentBaseline={"central"}/></button>
+            ><FontAwesomeIcon color={"white"} icon={faCaretRight} size={"l"} alignmentBaseline={"central"}/></button>
     );
 }

@@ -28,7 +28,7 @@ export function AnalysisView() {
     return (
         <>
             <div
-                className={"h-[100%] w-[100%] m-0 flex flex-col gap-y-[3%]"}
+                className={"h-[95%] w-[100%] m-0 flex flex-col gap-y-[1%]"}
                 id={"wholeAnalysisPanel"} >
                 <div
                     id={"InfoHeader"}
@@ -40,10 +40,10 @@ export function AnalysisView() {
                 </div>
                 <div
                     id={"AnalysisPanel"}
-                    className={"flex flex-row  h-[85%] w-[95%] item-stretch gap-x-[5%] p-[1rem] "}>
+                    className={"flex flex-row  h-[90%] w-[100%] item-stretch gap-x-[5%] pl-[0.2rem] "}>
                     <div
                         id={"EvaluationBar"}
-                        className={"h-[100%] w-[15%] "}>
+                        className={"h-[100%] w-[5%] "}>
                         <EvaluationBar prop={
                             {
                                 percentage,
@@ -52,7 +52,7 @@ export function AnalysisView() {
                         }/>
                     </div>
                     <div
-                        className={"h-[100%] w-[80%] "}>
+                        className={"h-[100%] w-[95%] "}>
                         <PrevMoveList />
                     </div>
 
