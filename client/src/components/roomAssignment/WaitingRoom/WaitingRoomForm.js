@@ -1,12 +1,23 @@
-import {useContext, useEffect} from "react";
+import {useContext, useEffect, useRef} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {getRoomNumberAsync} from "../../../Redux/Thunk/getRoomNoAsync";
+// import {getRoomNumberAsync} from "../../../Redux/Thunk/getRoomNoAsync";
+import {getRoomNumberAsync} from "../../../Redux/Thunk/getRoomNumberAsync";
 import {Link, NavLink, useLocation, useNavigate} from "react-router-dom";
 import { SocketContext } from "../../../context/socket";
 
-export function WaitingRoomForm () {//({socket}) {
+export function WaitingRoomForm () {
     const dispatch = useDispatch();
-    const roomNumber = useSelector(state=>state.JoinRoomReducer.roomNumber);
+
+    const isEffectRunRef = useRef(false)
+
+    const roomNumber = useSelector(state=>{
+        if (state.RoomsReducer.data[state.RoomsReducer.data.length-1] !== undefined) {
+            return state.RoomsReducer.data[state.RoomsReducer.data.length-1].roomNumber;
+        } else {
+            return null
+        }
+    })
+    
     const errorPage = useSelector(state=>(state.SetError));
     const navigate = useNavigate()
 
@@ -15,7 +26,10 @@ export function WaitingRoomForm () {//({socket}) {
     const socket = useContext(SocketContext)
 
     useEffect(()=> {
-        dispatch(getRoomNumberAsync(state.userName))
+        if (!isEffectRunRef.current) {
+            dispatch(getRoomNumberAsync())
+            isEffectRunRef.current = true
+        }
     }, [])
 
     useEffect(() => {

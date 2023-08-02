@@ -49,8 +49,8 @@ export function SpectatorForm() {
     }
 
     return (
-        <div className={"flex justify-center items-end h-screen"}>
-        <div className={"w-[50%] flex flex-col mb-1"}>
+        <div className={"flex justify-center items-center h-screen"}>
+        <div className={"w-[50%] flex flex-col mb-1 bg-[#ffffff]"}>
             <fieldset className={"w-[95%] " +
                 "rounded-xl p-2 border-custom-black border-10"}>
                 <legend className={"rounded text-custom-black " }>Join As Spectator</legend>

@@ -2,6 +2,7 @@ import {useContext, useEffect} from "react";
 import { SocketContext } from "../../../../context/socket";
 import {NavLink} from "react-router-dom";
 import {useRef, useState} from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 export function FindRoomForm() {
     const refInput = useRef(null);
@@ -12,6 +13,14 @@ export function FindRoomForm() {
     const [roomEror, setRoomNumberError] = useState(false);
 
     const [isRoomFull, setIsRoomFull] = useState('');
+    
+    const roomNumbers = useSelector(state=>{
+        if (state.RoomsReducer.data !== undefined) {
+            return state.RoomsReducer.data;
+        } else {
+            return null
+        }
+    })
 
     const socket = useContext(SocketContext);
 
@@ -83,10 +92,13 @@ export function FindRoomForm() {
 
                 {/* Source: https://www.w3schools.com/tags/tag_option.asp */}
                 <select id="rooms">
-                    <option value="">123456</option>
-                    <option value="">123457</option>
-                    <option value="">123458</option>
-                    <option value="">123459</option>
+                    {roomNumbers.map((roomNumber, index) => {
+                        if (roomNumber.roomNumber !== undefined) {
+                            console.log(roomNumber.roomNumber);
+                            return <option key={index} value={roomNumber.roomNumber}>{index + 1}. {roomNumber.roomNumber}</option>
+                        }
+                    })}
+                    
                 </select>
 
                 <input  required

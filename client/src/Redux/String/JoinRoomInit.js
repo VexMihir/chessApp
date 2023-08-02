@@ -10,6 +10,13 @@ export const STATUS = {
     ERROR: "ERROR"
 }
 
+// export const initObj = {
+//     userName: "",
+//     roomNumber: Number.NEGATIVE_INFINITY,
+//     allowedRoom: Number.NEGATIVE_INFINITY,
+//     navigateFlag: false,
+// }
+
 export const initObj = {
     userName: "",
     roomNumber: Number.NEGATIVE_INFINITY,
