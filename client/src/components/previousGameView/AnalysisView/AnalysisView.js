@@ -8,7 +8,7 @@ export function AnalysisView() {
     const currIndex = useSelector(state=> state).PrevGameView.currIdx
     const bestMove = info.bestMoves[currIndex - 1] || "NOT AVAILABLE";
     const displayScore = info.displayScore[currIndex] || 0;
-    const rawScore = info.rawScore[currIndex] || "NOT AVAILABLE"
+    //const rawScore = info.rawScore[currIndex] || "NOT AVAILABLE"
     let percentage = Math.ceil((Math.abs(displayScore)/8)*100);
     let color;
 
@@ -35,7 +35,6 @@ export function AnalysisView() {
                     className={"flex flex-row item-center justify-evenly h-[15%] w-[100%] item-center text-center"}>
                     <p>
                         <span className={"font-bold text-center item-center"}>BEST MOVE: </span>{bestMove}</p>
-                    <p><span className={"font-bold text-center item-center"}>RAW SCORE: </span>{rawScore}</p>
                     <p>{displayScore}</p>
                 </div>
                 <div
