@@ -203,6 +203,8 @@ export default function ChessboardGame({
             squareStyles={sqaureStyles}
             onSquareClick={onSquareClick}
             onMouseOverSquare={onMouseOverSquare}
+            darkSquareStyle={{ backgroundColor: "#547396" }}
+            lightSquareStyle={{ backgroundColor: "#eae9d4" }}
              pieces={{
               bQ: (
                 <svg
