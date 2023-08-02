@@ -41,9 +41,16 @@ export function PrevMoveListPannel({ prop }) {
     return secondMove
   }
   return (
-     <table className={"border-collapse w-[90%] border border-transparent m-[1rem] " +
+     <table className={"table-fixed border-collapse w-[95%] border border-transparent m-[1rem] " +
          "overflow-hidden " +
          "bg-custom-black  "}>
+
+       <colgroup>
+         <col className={"w-[10%]"} />
+         <col className={"w-[40%]"} />
+         <col className={"w-[40%]"} />
+       </colgroup>
+
        <tbody>
        {
          indexArr.map((child, index)=> {
