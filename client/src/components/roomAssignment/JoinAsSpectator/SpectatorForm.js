@@ -29,7 +29,7 @@ export function SpectatorForm() {//{socket}) {
     }
 
     const checkInvalid = (e) => {
-        if(!e.target.value || e.target.value.length === 0 || !isNaN(e.target.value)) {
+        if(!e.target.value || e.target.value.length === 0 || isNaN(e.target.value) || e.target.value < 0 || e.target.value > 1000000) {
             setRoomNumberError(true)
         } else {
             setRoomNumberError(false)

@@ -17,7 +17,7 @@ export async function getAnalysisScore(fenStr, index) {
 
                 if (data.startsWith("bestmove")) {
                     onBestMove(data)
-                } else if (data.startsWith("info depth 16") &&
+                } else if (data.startsWith("info depth 22") &&
                     !data.includes('lowerbound') &&
                     !data.includes('upperbound')) {
                     onRawScore(data)
@@ -25,7 +25,7 @@ export async function getAnalysisScore(fenStr, index) {
             })
 
             worker.postMessage(`position fen ${fenStr}`);
-            worker.postMessage("go depth 16");
+            worker.postMessage("go depth 22");
 
             /* Helper functions
              */
@@ -71,7 +71,7 @@ export async function getAnalysisScore(fenStr, index) {
 
             setTimeout(() => {
                 resolve(ret)
-            }, 50000)
+            }, 90000)
         } catch (error) {
             reject(error)
         }
