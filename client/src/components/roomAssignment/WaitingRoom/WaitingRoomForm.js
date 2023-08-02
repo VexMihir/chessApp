@@ -23,10 +23,8 @@ export function WaitingRoomForm () {//({socket}) {
     }, [errorPage])
 
     return (
-        <div className="flex flex-col items-center justify-end h-screen">
-            <div className="mt-auto mb-10">
+        <div className="flex flex-col items-center justify-start h-[100%]">
             <h2 className={"rounded text-custom-black"}>Your Room Number is {roomNumber}</h2>
-            <Link className={"invisible"} to="/" replace/>
             <div className="text-center">
             <NavLink
                 className=
@@ -37,7 +35,6 @@ export function WaitingRoomForm () {//({socket}) {
                 to={"/inGameView/"+ roomNumber}
                 state={{userName: state.userName}}
                 >Start Game!</NavLink>
-        </div>
         </div>
         </div>
     )
