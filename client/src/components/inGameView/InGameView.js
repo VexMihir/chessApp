@@ -95,22 +95,22 @@ export default function InGameView() {
   useEffect(() => {
     if (resigningPlayer !== "") {
       if (resigningPlayer === players[0].username) {
-        if (players[0].color === "white") {
+        if (players[0].color.toLowerCase() === "white") {
           setScore("1-0");
           setResult("White");
           setReason("Black player forfeits");
-        } else if (players[0].color === "black") {
+        } else if (players[0].color.toLowerCase() === "black") {
           setScore("0-1");
           setResult("Black");
           setReason("White player forfeits");
         }
         setWinnerName(players[1].username);
       } else if (resigningPlayer === players[1].username) {
-        if (players[0].color === "white") {
+        if (players[0].color.toLowerCase() === "white") {
           setScore("1-0");
           setResult("White");
           setReason("Black player forfeits");
-        } else if (players[0].color === "black") {
+        } else if (players[0].color.toLowerCase() === "black") {
           setScore("0-1");
           setResult("Black");
           setReason("White player forfeits");
@@ -126,15 +126,15 @@ export default function InGameView() {
       setResult("Draw");
       setWinnerName("None");
       if (socket.id === players[0].id) {
-        if (players[0].color === "white") {
+        if (players[0].color.toLowerCase() === "white") {
           setReason("White player accepted the draw offer");
-        } else if (players[1].color === "black") {
+        } else if (players[1].color.toLowerCase() === "black") {
           setReason("Black player accepted the draw offer");
         }
       } else if (socket.id === players[1].id) {
-        if (players[0].color === "white") {
+        if (players[0].color.toLowerCase() === "white") {
           setReason("White player accepted the draw offer");
-        } else if (players[1].color === "black") {
+        } else if (players[1].color.toLowerCase() === "black") {
           setReason("Black player accepted the draw offer");
         }
       }
@@ -147,15 +147,15 @@ export default function InGameView() {
         setScore("0-1");
         setResult("Black");
         if (socket.id === players[0].id) {
-          if (players[0].color === "white") {
+          if (players[0].color.toLowerCase() === "white") {
             setWinnerName(players[1].username);
-          } else if (players[0].color === "black") {
+          } else if (players[0].color.toLowerCase() === "black") {
             setWinnerName(players[0].username);
           }
         } else if (socket.id === players[1].id) {
-          if (players[1].color === "white") {
+          if (players[1].color.toLowerCase() === "white") {
             setWinnerName(players[0].username);
-          } else if (players[1].color === "black") {
+          } else if (players[1].color.toLowerCase() === "black") {
             setWinnerName(players[1].username);
           }
         }
@@ -164,15 +164,15 @@ export default function InGameView() {
         setScore("1-0");
         setResult("White");
         if (socket.id === players[0].id) {
-          if (players[0].color === "white") {
+          if (players[0].color.toLowerCase() === "white") {
             setWinnerName(players[0].username);
-          } else if (players[0].color === "black") {
+          } else if (players[0].color.toLowerCase() === "black") {
             setWinnerName(players[1].username);
           }
         } else if (socket.id === players[1].id) {
-          if (players[1].color === "white") {
+          if (players[1].color.toLowerCase() === "white") {
             setWinnerName(players[1].username);
-          } else if (players[1].color === "black") {
+          } else if (players[1].color.toLowerCase() === "black") {
             setWinnerName(players[0].username);
           }
         }
@@ -187,15 +187,15 @@ export default function InGameView() {
         setScore("0-1");
         setResult("Black");
         if (socket.id === players[0].id) {
-          if (players[0].color === "white") {
+          if (players[0].color.toLowerCase() === "white") {
             setWinnerName(players[1].username);
-          } else if (players[0].color === "black") {
+          } else if (players[0].color.toLowerCase() === "black") {
             setWinnerName(players[0].username);
           }
         } else if (socket.id === players[1].id) {
-          if (players[1].color === "white") {
+          if (players[1].color.toLowerCase() === "white") {
             setWinnerName(players[0].username);
-          } else if (players[1].color === "black") {
+          } else if (players[1].color.toLowerCase() === "black") {
             setWinnerName(players[1].username);
           }
         }
@@ -204,15 +204,15 @@ export default function InGameView() {
         setScore("1-0");
         setResult("White");
         if (socket.id === players[0].id) {
-          if (players[0].color === "white") {
+          if (players[0].color.toLowerCase() === "white") {
             setWinnerName(players[0].username);
-          } else if (players[0].color === "black") {
+          } else if (players[0].color.toLowerCase() === "black") {
             setWinnerName(players[1].username);
           }
         } else if (socket.id === players[1].id) {
-          if (players[1].color === "white") {
+          if (players[1].color.toLowerCase() === "white") {
             setWinnerName(players[1].username);
-          } else if (players[1].color === "black") {
+          } else if (players[1].color.toLowerCase() === "black") {
             setWinnerName(players[0].username);
           }
         }
@@ -248,12 +248,12 @@ export default function InGameView() {
       }
       if (userList.players.length === 1) {
         if (socket.id === userList.players[0].id) {
-          setSelfColor(userList.players[0].color);
+          setSelfColor(userList.players[0].color.toLowerCase());
         }
       }
       if (userList.players.length === 2) {
         if (socket.id === userList.players[1].id) {
-          setSelfColor(userList.players[1].color);
+          setSelfColor(userList.players[1].color.toLowerCase());
         }
       }
     });
@@ -275,6 +275,7 @@ export default function InGameView() {
       //   date: new Date(),
       //   winner: winningPlayerColor
       // }))
+      console.log("line 278 checkmate color", checkmatedPlayerColor);
       setCheckmateColor(checkmatedPlayerColor);
       setIsGameStarted(false);
       setIsModalOpen(true);

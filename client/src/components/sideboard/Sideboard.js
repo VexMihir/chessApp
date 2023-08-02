@@ -229,13 +229,13 @@ export default function Sideboard(props) {
             </div>
             <div className="flex justify-around">
               <button
-                className="font-bold bg-gray-300 text-2xl w-1/2 p-1"
+                className="font-mono font-bold bg-gray-300 text-2xl w-1/2 p-1"
                 onClick={() => socket.emit("resignation", roomId)}
               >
                 Forfeit
               </button>
               <button
-                className="font-bold bg-gray-300 text-2xl w-1/2 p-1"
+                className="font-mono font-bold bg-gray-300 text-2xl w-1/2 p-1"
                 onClick={() => socket.emit("drawOffered", roomId)}
               >
                 Offer Draw
@@ -333,10 +333,10 @@ export default function Sideboard(props) {
             <div className="text-center text-white text-3xl bg-slate-500">Orientation</div>
             <div>
             {/* Source: https://chat.openai.com/share/74c6ed80-6104-4787-903d-ab0de1dd408e */}
-            <button className={orientation==="white" ?  "font-bold bg-black text-white text-2xl w-1/2 p-1" : "font-bold bg-gray-300 text-2xl w-1/2 p-1"}
+            <button className={orientation==="white" ?  "font-mono font-bold bg-black text-white text-2xl w-1/2 p-1" : "font-mono font-bold bg-gray-300 text-2xl w-1/2 p-1"}
             onClick={() => setOrientation("white")}>White</button>
             {/* Source: https://chat.openai.com/share/74c6ed80-6104-4787-903d-ab0de1dd408e */}
-            <button className={orientation==="black" ? "font-bold bg-black text-white text-2xl w-1/2 p-1" : "font-bold bg-gray-300 text-2xl w-1/2 p-1"}
+            <button className={orientation==="black" ? "font-mono font-bold bg-black text-white text-2xl w-1/2 p-1" : "font-mono font-bold bg-gray-300 text-2xl w-1/2 p-1"}
             onClick={() => setOrientation("black")}>Black</button>
             </div>
           </div>
