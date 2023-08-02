@@ -7,8 +7,8 @@ export function AnalysisView() {
     const info = useSelector(state=>(state.AnalyisReducer));
     const currIndex = useSelector(state=> state).PrevGameView.currIdx
     const bestMove = info.bestMoves[currIndex - 1] || "NOT AVAILABLE";
-    const displayScore = info.displayScore[currIndex - 1] || 0;
-    const rawScore = info.rawScore[currIndex - 1] || "NOT AVAILABLE"
+    const displayScore = info.displayScore[currIndex] || 0;
+    const rawScore = info.rawScore[currIndex] || "NOT AVAILABLE"
     let percentage = Math.ceil((Math.abs(displayScore)/8)*100);
     let color;
 
