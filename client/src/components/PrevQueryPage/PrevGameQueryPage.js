@@ -34,12 +34,12 @@ export function PrevGameQueryPage() {
     }, [errorPage])
 
     return (
-        <div className={"flex flex-col absolute w-[100%] text-white overflow-hidden"} >
+        <div className={"flex flex-col absolute w-[100%] text-custom-black overflow-hidden"} >
             <NavBar />
-            <div className={"text-white font-bold text-5xl relative m-auto"}>
+            <div className={"text-custom-black font-bold text-5xl relative m-auto"}>
                <h1>CHESS DATABASE</h1>
             </div>
-            <div className={"flex flex-col w-[100%] text-white items-centre justify-centre"}>
+            <div className={"flex flex-col w-[100%] text-custom-black items-centre justify-centre"}>
                 <Outlet />
                 <Pagination />
             </div>

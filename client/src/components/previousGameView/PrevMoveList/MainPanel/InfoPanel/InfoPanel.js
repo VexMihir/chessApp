@@ -7,13 +7,13 @@ export function InfoPanel({prop}) {
 
     return (
         <div
-            className={"p-[1rem] text-md "}
+            className={"h-[100%] text-sm grid grid-cols-2 px-[1rem] py-[0.5rem] "}
         >
-            <p><span className={"font-bold text-yellow-500"}>Player One</span>: {playerOne}</p>
-            <p><span className={"font-bold text-yellow-500"}>Player Two</span>: {playerTwo}</p>
-            <p><span className={"font-bold text-yellow-500"}>Date</span>: {date}</p>
-            <p><span className={"font-bold text-yellow-500"}>Number of moves</span>: {numberOfMoves}</p>
-            <p><span className={"font-bold text-yellow-500"}>Result</span>: {result}</p>
+            <span><span className={"font-bold text-yellow-500"}>Player One</span>: {playerOne} </span>
+            <span><span className={"font-bold text-yellow-500"}>Player Two</span>: {playerTwo}</span>
+            <span><span className={"font-bold text-yellow-500"}>Date</span>: {date}</span>
+            <span><span className={"font-bold text-yellow-500"}>Number of moves</span>: {numberOfMoves}</span>
+            <span><span className={"font-bold text-yellow-500"}>Result</span>: {result}</span>
         </div>
     )
 }
