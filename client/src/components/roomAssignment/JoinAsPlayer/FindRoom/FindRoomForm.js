@@ -13,7 +13,7 @@ export function FindRoomForm() {
     const [roomEror, setRoomNumberError] = useState(false);
 
     const [isRoomFull, setIsRoomFull] = useState('');
-    
+
     
     const roomNumbers = useSelector(state=>{
         if (state.RoomsReducer.data !== undefined) {
@@ -73,8 +73,9 @@ export function FindRoomForm() {
 
     useEffect(() => {
 
-        socket.emit('is room full', roomNumber);
-
+        if (roomNumber !== null) {
+            socket.emit('is room full', roomNumber);
+        }
         socket.on('is room full', (isRoomFull) => {
             console.log("line 87 room full");
             setIsRoomFull(isRoomFull)

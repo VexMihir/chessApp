@@ -43,21 +43,28 @@ const gameSchema = new mongoose.Schema({
 
 const Game = mongoose.model('Games', gameSchema);
 
+console.log("line 46");
 socketHandlers.init(io, rooms, gameSchema, Game);
+console.log("line 48");
 
-app.get('/createGame', (req, res) => {
+app.post('/createGame', (req, res) => {
+  console.log("line 49");
   const newUniqueRoomNumber = () => {
     const roomNumber = Math.floor(Math.random() * 1000000);
     if (rooms[roomNumber]) {
+      console.log("line 52");
       return newUniqueRoomNumber();
     } else {
+      console.log("line 55");
       return roomNumber;
     }
   };
   const roomNumber = newUniqueRoomNumber();
 
-  let timeControl = parseInt(req.query.timeControl); // time control in minutes
-  let timeIncrement = parseInt(req.query.timeIncrement); // time increment in seconds
+  let timeControl = 300//parseInt(req.query.timeControl); // time control in minutes
+  let timeIncrement = 1//parseInt(req.query.timeIncrement); // time increment in seconds
+
+  let owner = req.body.socketId;
 
   // default time controlis 5+0 if not specified 
   if (isNaN(timeControl)) {
@@ -81,15 +88,31 @@ app.get('/createGame', (req, res) => {
     timeControl: timeControl,
     increment: timeIncrement,
     currentPlayer: null,
+    owner: owner, // associated with a socket id value for sever to check the person who creates the room. This allows the user creates only one room number.
     drawOffer: null
   }
+
+  
 
   res.send({ roomNumber });
 });
 
+//Source: https://chat.openai.com/share/48692ed3-23bb-46f2-9226-6da51d2ced56
+const seenObjects = new Set();
 app.get('/rooms', (req, res) => {
-  // return rooms
-  res.send(rooms)
+  const roomsWithoutCircularRefs = JSON.stringify({rooms}, (key, value) => {
+    if (typeof value === 'object' && value !== null) {
+      if (seenObjects.has(value)) {
+        return '[Curcular]'
+      }
+      seenObjects.add(value)
+    }
+    return value
+  })
+  seenObjects.clear()
+
+  return res.send(JSON.parse(roomsWithoutCircularRefs))
+
 })
 
 app.get('/games', async (req, res) => {
@@ -111,61 +134,6 @@ app.get('/games', async (req, res) => {
     res.send(games);
   }
 });
-
-// app.post('/games', async (req, res, next) => {
-//   console.log("line 89");
-//   // console.log("line 89", req.body);
-
-
-//   var newGame = new Game(req.body).save()
-//   res.status(200).send('Successful')
-//   // res.send("")
-
-
-//   // var newGame = new Game({
-
-//   //   history: [
-//   //     {
-//   //       color: "w",
-//   //       piece: "p",
-//   //       from: "f2",
-//   //       to: "f4",
-//   //       san: "f4",
-//   //       flags: "b",
-//   //       lan: "f2f4",
-//   //       before: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
-//   //       after: "rnbqkbnr/pppppppp/8/8/5P2/8/PPPPP1PP/RNBQKBNR b KQkq - 0 1"
-//   //     },
-//   //     {
-//   //       color: "b",
-//   //       piece: "p",
-//   //       from: "e7",
-//   //       to: "e5",
-//   //       san: "e5",
-//   //       flags: "b",
-//   //       lan: "e7e5",
-//   //       before: "rnbqkbnr/pppppppp/8/8/5P2/8/PPPPP1PP/RNBQKBNR b KQkq - 0 1",
-//   //       after: "rnbqkbnr/pppp1ppp/8/4p3/5P2/8/PPPPP1PP/RNBQKBNR w KQkq - 0 2"
-//   //     }
-//   //   ],
-//   //   playerOneData: {
-//   //     //Socket id
-//   //     id: "1234",
-//   //     username: "Dan",
-//   //     color: "black"
-//   //   },
-//   //   playerTwoData: {
-//   //     id: "2342",
-//   //     username: "Jason",
-//   //     color: "white"
-//   //   },
-//   //   date: new Date(),
-//   //   winner: "Dan" // "White", "Black", or "Draw"
-
-//   // }).save()
-//   // console.log("line 89", newGame);
-//   // res.send(newGame)
-// })
 
 server.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);

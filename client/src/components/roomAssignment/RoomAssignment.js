@@ -19,13 +19,13 @@ export default function RoomAssignment() {
                 className="database-button"
             >Database</NavLink>
                     <div>
-                        <NavLink  to={"/playerForm"}
+                        <NavLink  to={"playerForm"}
                                   className= "join-button join-1"
                         >Join As Player
                         </NavLink>
                         <NavLink
                             className="join-button join-2"
-                            to={"/joinAsSpectator"}>
+                            to={"joinAsSpectator"}>
                             Join As Spectator
                         </NavLink>
                     </div>

@@ -7,11 +7,6 @@ import {getAnalysis} from "../../Redux/Action/Analysis";
 import { LinearProgress } from '@mui/material';
 import {NavBar} from "../NavBar/NavBar";
 
-
-
-import { CUSTOM_CHESS_PIECES } from "../../constants/CustomChessPieces";
-import { DARK_SQUARE_STYLE, LIGHT_SQUARE_STYLE } from "../../constants/CustomChessSquareColor";
-
 export default function PreviousGameView() {
     const dispatch = useDispatch()
     const navigate = useNavigate()

@@ -27,7 +27,7 @@ export function WaitingRoomForm () {
 
     useEffect(()=> {
         if (!isEffectRunRef.current) {
-            dispatch(getRoomNumberAsync())
+            dispatch(getRoomNumberAsync(socket.id))
             isEffectRunRef.current = true
         }
     }, [])

@@ -1,15 +1,34 @@
 import {NavLink} from "react-router-dom";
-import {useRef, useState} from "react";
+import {useContext, useEffect, useRef, useState} from "react";
+import { SocketContext } from "../../../../context/socket";
 
-export function JoinRoomForm({socket}) {
+export function JoinRoomForm() {
     const refInput = useRef(null)
     const [userName, setUserName] = useState(null);
     const [userNameError, setuserNameError] = useState(false);
+
+    const socket = useContext(SocketContext)
+
+    const [isUserCreatedRoom, setUserCreatedRoom] = useState(false)
+
+    useEffect(() => {
+        if(socket) {
+            console.log("lien 15", socket.id);
+
+            socket.on("is user created room", (isUserCreatedRoom) => {
+                console.log("line 14", isUserCreatedRoom);
+                setUserCreatedRoom(isUserCreatedRoom)
+
+            })
+        }
+    }, [socket])
 
     const handleOnChange = (e) => {
         checkEmptyUserName(e)
         e.preventDefault();
         setUserName(e.target.value);
+
+        socket.emit("is user created room");
     }
 
     const checkEmptyUserName = (e) => {
@@ -21,7 +40,10 @@ export function JoinRoomForm({socket}) {
     }
 
     const finalCheck = (e) => {
-        if (!userName || userName.length === 0 ) {
+        if (isUserCreatedRoom) {
+            e.preventDefault();
+            window.alert("Socket id has already created a room called")
+        } else if (!userName || userName.length === 0 ) {
             e.preventDefault();
             window.alert("USERNAME CANNOT BE EMPTY")
         }
@@ -58,7 +80,7 @@ export function JoinRoomForm({socket}) {
                         "shadow shadow-md shadow-custom-black mt-[1rem]"
                     }
                 onClick={(e)=>{finalCheck(e)}}
-                to={"/waitingRoomForm"}
+                to={"waitingRoomForm"}
                 state={{userName: userName}
                 }>Create Room</NavLink>
         </div>

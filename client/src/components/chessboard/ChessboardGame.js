@@ -5,8 +5,6 @@ import {
   BLACK_CHESS_PIECE,
   WHITE_CHESS_PIECE,
 } from "../inGameView/InGameView";
-import { CUSTOM_CHESS_PIECES } from "../../constants/CustomChessPieces";
-import { DARK_SQUARE_STYLE, LIGHT_SQUARE_STYLE } from "../../constants/CustomChessSquareColor";
 
 const chess = new Chess();
 
@@ -191,6 +189,8 @@ export default function ChessboardGame({
             squareStyles={sqaureStyles}
             onSquareClick={onSquareClick}
             onMouseOverSquare={onMouseOverSquare}
+            // lightSquareStyle={{ backgroundColor: "#eeeed2" }}
+            // darkSquareStyle={{ backgroundColor: "#769656" }}
             pieces={{
               bQ: (
                 <svg
