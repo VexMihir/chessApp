@@ -50,7 +50,7 @@ export function FindRoomForm() {
     return (
         <div className={"w-[50%] h-[100%] flex flex-col items-stretch  "}>
             <fieldset className={"flex flex-col h-[85%] " +
-                "rounded-xl border-custom-black border-10 p-0 m-0 mb-[0.5rem] pb-[0.5rem]  px-[0.5rem]"}>
+                "rounded-xl border-custom-black border-10 p-0 m-0 mb-[0.5rem] pb-[1.2rem]  px-[0.5rem]"}>
                 <legend className={"rounded-2xl text-custom-black text-md text-black"}>Find Room</legend>
                 <label className = {"rounded-2xl text-custom-black text-sm"}>Enter room number</label>
                 <input  required

@@ -55,7 +55,6 @@ app.get('/createGame', (req, res) => {
     }
   };
   const roomNumber = newUniqueRoomNumber();
-
   let timeControl = parseInt(req.query.timeControl); // time control in minutes
   let timeIncrement = parseInt(req.query.timeIncrement); // time increment in seconds
 

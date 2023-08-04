@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {getRoomNumberAsync} from "../../../Redux/Thunk/getRoomNoAsync";
 import {Link, NavLink, useLocation, useNavigate} from "react-router-dom";
 
-export function WaitingRoomForm () {//({socket}) {
+export function WaitingRoomForm () {
     const dispatch = useDispatch();
     const roomNumber = useSelector(state=>state.JoinRoomReducer.roomNumber);
     const errorPage = useSelector(state=>(state.SetError));
@@ -12,7 +12,7 @@ export function WaitingRoomForm () {//({socket}) {
     let {state} = useLocation();
 
     useEffect(()=> {
-        dispatch(getRoomNumberAsync(state.userName))
+        dispatch(getRoomNumberAsync(state.userName, state.selectedTimeControl, state.selectedIncrementControl))
 
     }, [])
 
