@@ -58,10 +58,12 @@ export default function Register() {
     return (
         <>
             {/* Source: https://stackoverflow.com/questions/71182470/sumbit-button-also-used-as-a-navlink-to-route-page-does-not-sumbt-the-form-unle */}
-            <form onSubmit={handleSubmit} className='flex justify-center items-center h-[100vh] w-full m-[auto] text-black text-center'>
-                <div className='bg-white p-3'>
-                    <div className='text-5xl mb-5'>Register</div>
-                    <div className='flex mb-1'>
+            <form onSubmit={handleSubmit} className='flex flex-col justify-center items-center h-[100vh] w-full m-[auto] text-black text-center'>
+                <div className='text-5xl mb-2'>Multiplayer Mode</div>
+                <div className='relative bg-white p-3'>
+                    <div className='absolute right-[30px] cursor-pointer' onClick={() => {navigate('/')}}>❌</div>
+                    <div className='text-4xl mb-5'>Register</div>
+                    <div className='flex flex-col mb-1'>
                         <label className='w-36 text-3xl mr-3'>Username</label>
                         <input 
                             className="text-3xl mr-3" 
@@ -70,7 +72,7 @@ export default function Register() {
                             
                         />
                     </div>
-                    <div className='flex'>
+                    <div className='flex flex-col'>
                         <label className='w-36 text-3xl mr-3'>Password</label>
                         <input 
                             className="text-3xl mr-3" 
