@@ -23,6 +23,10 @@ const port = 5001;
 app.use(cors());
 app.use(express.json());
 
+// Source: https://github.com/gitdagray/user_auth/blob/main/server.js
+app.use('/register', require('./routes/register'))
+app.use('/auth', require('./routes/auth'))
+
 app.get('/', (req, res) => {
   res.send("Welcome to the game!");
 });

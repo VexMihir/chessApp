@@ -8,7 +8,7 @@ export default function RegisterSuccess() {
                 <div className='bg-white p-3'>
                     <div className='text-5xl mb-5'>Register Successfully</div>
                     <div className='flex mb-1'>
-                        <p className='w-36 text-3xl mr-3'>You successfully registered for a new username, you can click Confirm button to go back to login.</p>                        
+                        <p className='w-[600px] m-auto text-left text-3xl mr-3'>You successfully registered for a new username, you can click Confirm button to go back to login.</p>                        
                     </div>
                     <div className='mt-3'>
                         {/* Source: https://v1.tailwindcss.com/components/buttons */}
