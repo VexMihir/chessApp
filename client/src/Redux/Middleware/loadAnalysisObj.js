@@ -25,16 +25,18 @@ export const loadAnalysisObj = store => next => async action => {
         }
         arr = await Promise.all(arr);
 
+        console.log("Before sorting:", arr);
+
         arr.sort((a,b)=>{
-            if (a.index > b.index) {
-                return 1;
-            } else if (a.index < b.index) {
-                return -1;
-            } else {
-                return 0;
-            }
+            const indexA = parseInt(a.index, 10);
+            const indexB = parseInt(b.index, 10);
+            return indexA - indexB;
         })
+
+        console.log("After sorting:", arr);
+
         for (let items of arr) {
+            console.log("Raw Analysis Item:", items); // Debugging line
             ret.bestMoves.push(items.bestMove);
             ret.rawScore.push(items.rawScore)
             ret.mateIn.push(items.mateIn);
@@ -45,6 +47,8 @@ export const loadAnalysisObj = store => next => async action => {
         for (let index in ret.rawScore) {
             if (Number(index) === 0) {
                 ret.displayScore.push(0);
+                ret.rawScore[0] = 0;
+                ret.offsetScore[0] = 0;
                 ret.label.push("OK");
                 continue;
             } else if (!isNaN(ret.rawScore[index]) && ret.rawScore[index] !== Infinity && ret.rawScore[index] !== - Infinity) {
@@ -53,7 +57,7 @@ export const loadAnalysisObj = store => next => async action => {
                 ret.displayScore.push(percentScore);
                 ret.label.push(label)
             } else if (!isNaN(ret.mateIn[index])) {
-                ret.displayScore.push(Math.sign(ret.rawScore) * 8);
+                ret.displayScore.push(Math.sign(ret.rawScore[index]) * 8);
                 let label = labelingHelper(ret.rawScore, ret.mateIn);
                 ret.label.push(label)
             }
@@ -68,6 +72,9 @@ export const loadAnalysisObj = store => next => async action => {
             ret.rawScore.push("CHECKMATE");
             ret.bestMoves.push("CHECKMATE")
         }
+
+        console.log("Evaluations:", ret);
+
         action.payload = ret;
         return next(action)
     }
@@ -76,14 +83,17 @@ export const loadAnalysisObj = store => next => async action => {
 
 const calculatePercentageScore = (ret, index) => {
     let score = (ret[Number(index)] - ret[Number(index) -1])/100;
+    if (index === 1) {
+        score = ret[Number(index)] / 100;
+    }
     return score
 }
 
 const labelingHelper = (offset, mateInScore) => {
     if (offset === Infinity && mateInScore) {
-        return 'BLACK FORCE MATE IN ${mateInScore}'
+        return `BLACK FORCE MATE IN ${mateInScore}`
     } else if (offset === - Infinity && mateInScore) {
-        return 'WHITE FORCE MATE IN ${mateInScore}'
+        return `WHITE FORCE MATE IN ${mateInScore}`
     }
     offset = Math.abs(offset);
     if (offset === 0) {

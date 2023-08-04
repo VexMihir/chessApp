@@ -16,6 +16,6 @@ export function PrevMovePausetButton() {
             key={"PrevMovePauseButton"}
             id={"PrevMovePauseButton"}
             onClick={(e)=>{handleStartOnClick(e)}}
-        ><FontAwesomeIcon icon={faPause} color={"white"} size={"xl"} alignmentBaseline={"central"}/></button>
+        ><FontAwesomeIcon icon={faPause} color={"white"} size={"l"} alignmentBaseline={"central"}/></button>
     )
 }

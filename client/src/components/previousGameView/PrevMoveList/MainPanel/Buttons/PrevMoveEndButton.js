@@ -14,10 +14,10 @@ export function PrevMoveEndButton() {
     }
 
     return (
-        <button className={"bg-transparent hover:bg-custom-pale active:shadow-custom-pale py-2 px-4 rounded shadow shadow-white shadow-md"}
+        <button className={"bg-transparent hover:bg-custom-pale active:shadow-custom-pale py-2 px-5 rounded shadow shadow-white shadow-md"}
             key={"PrevMoveEndButton"}
             id={"PrevMoveEndButton"}
             onClick={(e)=>{handleStartOnClick(e)}}
-        ><FontAwesomeIcon color={"white"} icon={faForward} size={"xl"} alignmentBaseline={"central"}/></button>
+        ><FontAwesomeIcon color={"white"} icon={faForward} size={"l"} alignmentBaseline={"central"}/></button>
     )
 }

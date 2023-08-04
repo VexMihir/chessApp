@@ -33,6 +33,6 @@ export function PrevMovePrevButton() {
           handlePrev(e);
         }}
         disabled={prevDisability}
-      ><FontAwesomeIcon icon={faCaretLeft} color={"white"} size={"xl"} alignmentBaseline={"central"}/></button>
+      ><FontAwesomeIcon icon={faCaretLeft} color={"white"} size={"l"} alignmentBaseline={"central"}/></button>
   )
 }

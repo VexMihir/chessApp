@@ -13,7 +13,8 @@ module.exports = {
           "custom-black": "#333",
           "custom-pale": "#b5b5b5",
           "custom-cream": "#D8D9DA",
-          "custom-grey": "#61677A"
+          "custom-grey": "#61677A",
+          "bgc": "#fff"
       },
       fontSize: {
         title: `5.6rem;`,

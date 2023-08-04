@@ -4,13 +4,11 @@ import {JoinRoomForm} from "./CreateRoom/JoinRoomForm";
 export function PlayerForm(){
 
     return (
-        <div className="flex items-center justify-center h-screen">
-        <div className={"w-[50%] " +
-            "flex flex-cols justify-start gap-x-[5%] rounded-xl border bg-[#ffffff] border-custom-black border-100"
+        <div className={"w-[60%] h-[100%] m-auto " +
+            "flex flex-cols justify-center item-center gap-x-[5%]  "
         }>
             <JoinRoomForm />
             <FindRoomForm />
-        </div>
         </div>
     )
 }

@@ -14,6 +14,7 @@
     padding: 10px 20px;
     text-decoration: none;
     font-size: 18px;
+    width: 5rem;
     
     &:hover {
       background: #333;
@@ -47,17 +48,17 @@
 
   .join-1 {
     position: absolute;
-    top: 22%;
+    top: 20%;
     left: 33%;
   }
 
   .join-2 {
     position: absolute;
-    top: 22%;
+    top: 20%;
     left: 55%;
   }
 
-  .title {
+  #title {
     font-size: 100px;
     text-align: center;
     color: #333;

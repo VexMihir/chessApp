@@ -25,7 +25,7 @@ export function PrevMoveListPannel({ prop }) {
   function getFirstMove(index) {
     let firstMove = LANArr[index];
     if (index === currIndex) {
-      firstMove = <mark>{firstMove}</mark>
+      firstMove = <div className={"text-yellow-300 p-[0.25rem]"}>{firstMove}</div>
     }
     return firstMove;
   }
@@ -35,15 +35,21 @@ export function PrevMoveListPannel({ prop }) {
     if (LANArr[index+1]) {
       secondMove = LANArr[index+1];
       if (index+1 === currIndex) {
-        secondMove = <mark>{secondMove}</mark>
+        secondMove = <div className={"text-yellow-300 p-[0.25rem]"}>{secondMove}</div>
       }
     }
     return secondMove
   }
   return (
-   <div className={"h-[16rem] m-[1rem] w-[95%] overflow-scroll bg-custom-black rounded-lg bg-gradient-to-t  "}>
-     <table className={" border-collapse w-[100%] max-h-[10rem] border border-transparent overflow-scroll m-[1rem] " +
+     <table className={"table-fixed border-collapse w-[90%] border border-transparent m-[1rem] " +
          "bg-custom-black  "}>
+
+       <colgroup>
+         <col className={"w-[10%]"} />
+         <col className={"w-[40%]"} />
+         <col className={"w-[40%]"} />
+       </colgroup>
+
        <tbody>
        {
          indexArr.map((child, index)=> {
@@ -60,6 +66,5 @@ export function PrevMoveListPannel({ prop }) {
        }
        </tbody>
      </table>
-   </div>
   );
 }

@@ -36,6 +36,6 @@ export function PrevMovePlayButton() {
             onClick={async (e) => {
                 await handleStartOnClick(e)
             }}
-        ><FontAwesomeIcon icon={faCirclePlay} color={"white"} size={"xl"} alignmentBaseline={"central"}/></button>
+        ><FontAwesomeIcon icon={faCirclePlay} color={"white"} size={"l"} alignmentBaseline={"central"}/></button>
     )
 }

@@ -399,13 +399,13 @@ export default function InGameView() {
       />
 
       <div className="flex items-center h-[100vh]">
-        <div className="w-[85%] min-w-[1300px] m-[0_auto] bg-[#5928ed] text-[#fff]">
+        <div className="w-[85%] min-w-[1300px] m-[0_auto] bg-[#cdcdcd] text-[#fff]">
 
-          <div className="flex bg-black text-white justify-around text-xl">
+          <div className="flex bg-black text-yellow-400 p-2 justify-around text-2xl">
             <div>Turn: {activePlayer.toUpperCase()}</div>
             <div>Halfmove: {halfMove}</div>
             <div>Fullmove: {fullMove}</div>
-            <div>Room Info: {roomId}</div>
+            <div>Room Number: {roomId}</div>
           </div>
 
           <div className="flex">

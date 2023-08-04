@@ -1,6 +1,6 @@
-
 export async function getAnalysisScore(fenStr, index) {
     const OFFSET = -1;
+    const DEPTH = 12;
     let worker = new Worker("/stockfish.js");
     let ret = {
         index: index,
@@ -18,7 +18,7 @@ export async function getAnalysisScore(fenStr, index) {
 
                 if (data.startsWith("bestmove")) {
                     onBestMove(data)
-                } else if (data.startsWith("info depth 17") &&
+                } else if (data.startsWith(`info depth ${DEPTH}`) &&
                     !data.includes('lowerbound') &&
                     !data.includes('upperbound')) {
                     onRawScore(data)
@@ -26,7 +26,7 @@ export async function getAnalysisScore(fenStr, index) {
             })
 
             worker.postMessage(`position fen ${fenStr}`);
-            worker.postMessage("go depth 17");
+            worker.postMessage(`go depth ${DEPTH}`);
 
             /* Helper functions
              */
@@ -38,7 +38,7 @@ export async function getAnalysisScore(fenStr, index) {
                 } else {
                     ret.bestMove = bestMove[0];
                 }
-                if (ret.bestMove && ret.rawScore && ret.offsetScore) {
+                if (ret.bestMove && ((ret.rawScore && ret.offsetScore) || ret.mateIn)) {
                     resolve(ret);
                 }
             }
@@ -48,7 +48,7 @@ export async function getAnalysisScore(fenStr, index) {
                 if (score) {
                     ret.rawScore = parseInt(score[0]);
                     ret.offsetScore = parseInt(score[0]);
-                    if (index % 2 !== 0 ) {
+                    if (index % 2 === 0 ) {
                         ret.offsetScore *= OFFSET;
                     }
                 }
@@ -57,17 +57,21 @@ export async function getAnalysisScore(fenStr, index) {
                 let mate = data.match(/(?<=mate\s+).*?(?=\s+nodes)/gs);
                 if (mate != null) {
                     mate = parseInt(mate[0]);
-                    ret.rawScore = Math.sign(mate) * Infinity;
-                    ret.offsetScore = Math.sign(mate) * Infinity
+                    ret.rawScore =  Infinity;
+                    ret.offsetScore = Infinity;
                     if (index % 2 !== 0 ) {
                         ret.offsetScore *= OFFSET;
                     }
                     ret.mateIn = mate;
                 }
-                if (ret.bestMove && ret.rawScore && ret.offsetScore) {
+                if (ret.bestMove && ((ret.rawScore && ret.offsetScore) || ret.mateIn)) {
                     resolve(ret);
                 }
             }
+
+            setTimeout(() => {
+                resolve(ret)
+            }, 90000)
         } catch (error) {
             reject(error)
         }

@@ -1,16 +1,20 @@
 import {useContext, useEffect} from "react";
 import { SocketContext } from "../../../../context/socket";
 import {NavLink} from "react-router-dom";
+<<<<<<< HEAD
 import {useRef, useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
+=======
+import {useState} from "react";
+
+
+>>>>>>> analysis-fixes2
 
 export function FindRoomForm() {
-    const refInput = useRef(null);
-    const refRoom = useRef(null);
     const [userName, setUserName] = useState(null);
     const [roomNumber, setRoomNumber] = useState(null);
-    const [userNameError, setuserNameError] = useState(false);
-    const [roomEror, setRoomNumberError] = useState(false);
+    const [userNameError, setuserNameError] = useState("invisible");
+    const [roomEror, setRoomNumberError] = useState("invisible");
 
     const [isRoomFull, setIsRoomFull] = useState('');
 
@@ -39,17 +43,17 @@ export function FindRoomForm() {
 
     const checkEmptyUserName = (e) => {
         if(!e.target.value || e.target.value.length === 0) {
-            setuserNameError(true)
+            setuserNameError(" ")
         } else {
-            setuserNameError(false)
+            setuserNameError("invisible")
         }
     }
 
     const checkInvalid = (e) => {
         if(!e.target.value || e.target.value.length === 0 || isNaN(Number(e.target.value))) {
-            setRoomNumberError(true)
+            setRoomNumberError(" ")
         } else {
-            setRoomNumberError(false)
+            setRoomNumberError("invisible")
         }
     }
     const finalCheck = (e) => {
@@ -71,6 +75,7 @@ export function FindRoomForm() {
 
     }
 
+<<<<<<< HEAD
     useEffect(() => {
 
         if (roomNumber !== null) {
@@ -103,50 +108,59 @@ export function FindRoomForm() {
                     
                 </select>
 
+=======
+    return (
+        <div className={"w-[50%] h-[100%] flex flex-col items-stretch  "}>
+            <fieldset className={"flex flex-col h-[85%] " +
+                "rounded-xl border-custom-black border-10 p-0 m-0 mb-[0.5rem] pb-[0.5rem]  px-[0.5rem]"}>
+                <legend className={"rounded-2xl text-custom-black text-md text-black"}>Find Room</legend>
+                <label className = {"rounded-2xl text-custom-black text-sm"}>Enter room number</label>
+>>>>>>> analysis-fixes2
                 <input  required
                         min={0}
                         max={1000000}
                         type={"number"}
-                        ref={refRoom}
                         onChange={(e)=>(handleRoomNumber(e))}
+<<<<<<< HEAD
                         className={"peer/Num rounded-md text-custom-black px-0.5 border-custom-black border-10 m-1 bg-transparent w-[90%]"}
                         // onBlur={(e)=>{checkInvalid(e)}}
+=======
+                        className={"peer/Num rounded-md text-custom-black border-custom-black border-10 bg-transparent w-[90%]"}
+                        onBlur={(e)=>{checkInvalid(e)}}
+>>>>>>> analysis-fixes2
                 />
-                {
-                    roomEror?  <p className="mb-1 text-red-700  text-sm">
-                        <mark className={"bg-transparent text-red-600"}>Room number must be a number between 0 and 1000000
-                        </mark></p>: ""
-
-                }
-                <br/>
-                <label className = {"rounded text-custom-black"}>Enter username</label>
-                <br/>
+                <p className={`text-red-600  text-xs m-0 ${roomEror}`}>Invalid Number(must between 0 and 1000000)</p>
+                <label className = {"rounded text-custom-black m-0 text-sm"}>Enter username</label>
                 <input required
-                       ref={refInput}
                        onChange={(e)=>(handleOnChange(e))}
+<<<<<<< HEAD
                     //    onBlur={(e)=>{checkEmptyUserName(e)}}
                        className={"peer/Text rounded-md text-custom-black  px-0.5 border-custom-black border-10 m-1 bg-transparent w-[90%]"}
+=======
+                       onBlur={(e)=>{checkEmptyUserName(e)}}
+                       className={"peer/Text rounded-md text-custom-black px-0.5 border-custom-black border-10 bg-transparent w-[90%]"}
+>>>>>>> analysis-fixes2
                 />
-                {
-                    userNameError?  <p className="mb-1 text-red-700  text-sm">
-                        <mark className={"bg-transparent text-red-600"}>Username cannot be empty</mark></p>: ""
-
-                }
+                <p className={`text-red-600 m-0 text-xs mb-[0.2rem] ${userNameError}`}>Empty Username</p>
             </fieldset>
             <NavLink
                 className=
-                    {"m-auto text-center " +
-                        "no-underline border border-custom-black rounded-xl py-3 px-4 mt-5 hover:shadow-transparent " +
+                    {" text-center " +
+                        "no-underline border border-custom-black rounded-xl hover:shadow-transparent " +
                         "text-custom-black font-bold rounded " +
                         "shadow shadow-md shadow-custom-black " +
+<<<<<<< HEAD
                         ""}
                 onClick={(e)=> {
+=======
+                        "h-[10%] py-[0.5rem] px-4 m-auto "}
+                onClick={(e)=>{
+>>>>>>> analysis-fixes2
                     finalCheck(e)
                 }}
                 to={"/inGameView/"+ roomNumber}
                 state={{userName: userName}}
             >Join Room</NavLink>
-            <br />
         </div>
     )
 }

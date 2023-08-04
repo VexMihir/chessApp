@@ -1,19 +1,19 @@
-import {QueryTable} from "../Table/QueryTable";
-import {useParams} from "react-router-dom";
-import {useSelector} from "react-redux";
+import { QueryTable } from "../Table/QueryTable";
+import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import {useEffect} from "react";
+import { useEffect } from "react";
 
 export function PrevGameQueryChildPage() {
 
-    const pgnData = useSelector((state)=>state.PrevGameQuery.databaseArr);
+    const pgnData = useSelector((state) => state.PrevGameQuery.databaseArr);
     const OFFSET = 1
     const CARDSPERPAGE = 5;
     const navigate = useNavigate();
 
-    let {pageNum} = useParams();
+    let { pageNum } = useParams();
     pageNum = Number(pageNum);
-    let startIndex = (pageNum - OFFSET)*CARDSPERPAGE;
+    let startIndex = (pageNum - OFFSET) * CARDSPERPAGE;
     let endIndex = (startIndex + CARDSPERPAGE)
 
 
@@ -21,18 +21,24 @@ export function PrevGameQueryChildPage() {
 
     useEffect(() => {
         const handleBackButton = (e) => {
-          if (pageNum === 1) {
-            e.preventDefault();
-            navigate('/');
-          }
+            if (pageNum === 1) {
+                e.preventDefault();
+                navigate('/');
+            }
         };
 
         window.addEventListener('popstate', handleBackButton);
 
         return () => {
             window.removeEventListener('popstate', handleBackButton);
-          };
-        }, [navigate, pageNum]);
+        };
+    }, [navigate, pageNum]);
+
+
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+    };
 
     const parseSubArr = (data) => {
         let ret = [];
@@ -41,9 +47,9 @@ export function PrevGameQueryChildPage() {
         for (let items of data) {
             newObj = {};
             newObj["game"] = items["playerOne"] + " vs " + items["playerTwo"];
-            newObj["playerOne"] =  items["playerOne"];
+            newObj["playerOne"] = items["playerOne"];
             newObj["playerTwo"] = items["playerTwo"];
-            newObj["date"] = items["date"];
+            newObj["date"] = formatDate(items["date"]);
             newObj["result"] = items.result
             newObj["numberOfMoves"] = items.transition.length;
             ret.push(newObj)
