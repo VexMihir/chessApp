@@ -23,7 +23,12 @@ export function WaitingRoomForm () {
 
     let {state} = useLocation();
 
+<<<<<<< HEAD
     const socket = useContext(SocketContext)
+=======
+    useEffect(()=> {
+        dispatch(getRoomNumberAsync(state.userName, state.selectedTimeControl, state.selectedIncrementControl))
+>>>>>>> project_5-2
 
     useEffect(()=> {
         // if (!isEffectRunRef.current) {

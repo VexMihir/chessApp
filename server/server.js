@@ -65,11 +65,8 @@ app.post('/createGame', (req, res) => {
     }
   };
   const roomNumber = newUniqueRoomNumber();
-
-  let timeControl = 300//parseInt(req.query.timeControl); // time control in minutes
-  let timeIncrement = 1//parseInt(req.query.timeIncrement); // time increment in seconds
-
-  let owner = req.body.socketId;
+  let timeControl = parseInt(req.query.timeControl); // time control in minutes
+  let timeIncrement = parseInt(req.query.timeIncrement); // time increment in seconds
 
   // default time controlis 5+0 if not specified 
   if (isNaN(timeControl)) {
