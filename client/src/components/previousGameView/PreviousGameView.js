@@ -36,7 +36,6 @@ export default function PreviousGameView() {
     useEffect(() => {
         navigate(normalView);
     }, [])
-<<<<<<< HEAD
 
     const location = useLocation();
     return (
@@ -98,6 +97,7 @@ export default function PreviousGameView() {
                                     "flex justify-center items-center backdrop-blur-md rounded-xl" +
                                     "hover:bg-custom-black font-bold " +
                                     "z-0"}
+                                state={currIndx}
                                 onClick={async (e) => {
                                     setProgressBar(true);
                                     await handleAnalysisView(e);
@@ -116,52 +116,4 @@ export default function PreviousGameView() {
             </div>
         </>
     );
-=======
-  return (
-    <>
-      <div className={"flex items-center justify-center my-1 text-white text-5xl"}><h1>Previous Game</h1></div>
-      <div className="flex flex-row justify-center items-end gap-y-[5rem] space-x-[5rem] text-black">
-          <Chessboard position={positionFENStr}
-                      draggable={false}
-                      squareStyles={squareStyle} />
-          <div>
-              <NavLink
-                  className={(state)=> state.isActive ?  "text-white no-underline font-bold text-lg " +
-                      "flex justify-center items-center " +
-                      "hover:bg-violet-900 font-bold " +
-                      " " +
-                      "z-0"
-                      :
-                      "text-white no-underline font-bold text-lg " +
-                      "flex justify-center items-center " +
-                      "hover:bg-violet-900 font-bold " +
-                      "z-1 " +
-                      " " +
-                      "shadow-purple-900 shadow-[inset_0px_0px_10px_0.25px]" }
-                  to={normalView} >Normal View</NavLink>
-              <NavLink
-                  className={(state)=> state.isActive ?  "text-white no-underline font-bold text-lg " +
-                      "flex justify-center items-center " +
-                      "hover:bg-violet-900 font-bold " +
-                      " " +
-                      "z-0"
-                      :
-                      "text-white no-underline font-bold text-lg " +
-                      "flex justify-center items-center " +
-                      "hover:bg-violet-900 font-bold " +
-                      "z-1 " +
-                      " " +
-                      "shadow-purple-900 shadow-[inset_0px_0px_10px_0.25px]" }
-                  state={currIndx}
-                  onClick = {async (e)=> {
-                      setProgressBar(true)
-                      await handleAnalysisView(e)
-                  }}
-                  to={analysisView}>Analysis View</NavLink>
-              <Outlet />
-          </div>
-      </div>
-    </>
-  );
->>>>>>> project_5
 }

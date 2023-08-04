@@ -200,18 +200,13 @@ export default function ChessboardGame({
           <Chessboard
             position={fen.split(" ")[0]}
             orientation={orientation}
-<<<<<<< HEAD
-            width={900}
-=======
             width={700}
->>>>>>> project_5
             draggable={true}
             onDrop={onDrop}
             onDragOverSquare={onDragOverSquare}
             squareStyles={sqaureStyles}
             onSquareClick={onSquareClick}
             onMouseOverSquare={onMouseOverSquare}
-<<<<<<< HEAD
             darkSquareStyle={{ backgroundColor: "#547396" }}
             lightSquareStyle={{ backgroundColor: "#eae9d4" }}
              pieces={{
@@ -302,12 +297,6 @@ export default function ChessboardGame({
                 </svg>
               ),
             }}
-=======
-            lightSquareStyle={LIGHT_SQUARE_STYLE}
-            darkSquareStyle={DARK_SQUARE_STYLE}
-            //Source: https://codesandbox.io/s/21r26yw13j?from-embed=&file=/src/integrations/CustomBoard.js
-            pieces={CUSTOM_CHESS_PIECES}
->>>>>>> project_5
           />
         </div>
       </div>
