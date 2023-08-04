@@ -229,13 +229,13 @@ export default function Sideboard(props) {
             </div>
             <div className="flex justify-around">
               <button
-                className="bg-custom-black hover:bg-yellow-300 text-yellow-400 font-bold hover:text-custom-black rounded-md text-2xl w-1/2 p-1 m-1"
+                className="bg-custom-black hover:bg-yellow-300 text-yellow-400 font-bold hover:text-custom-black rounded-md text-2xl w-1/2 p-1"
                 onClick={() => socket.emit("resignation", roomId)}
               >
                 Forfeit
               </button>
               <button
-                className="bg-custom-black hover:bg-yellow-300 text-yellow-400 font-bold hover:text-custom-black rounded-md m-1 text-2xl w-1/2 p-1"
+                className="bg-custom-black hover:bg-yellow-300 text-yellow-400 font-bold hover:text-custom-black rounded-md text-2xl w-1/2 p-1"
                 onClick={() => socket.emit("drawOffered", roomId)}
               >
                 Offer Draw
@@ -244,10 +244,10 @@ export default function Sideboard(props) {
           </div>
         </div>
       ) : (
-        <div className="w-1/2 bg-white">
+        <div className="w-1/2 bg-custom-cream">
           <div className="w-full flex flex-col h-full justify-between items-stretch">
             <div>
-              <div className="text-white text-3xl text-center bg-slate-500">
+              <div className="text-center text-3xl text-yellow-400 font-bold bg-custom-black">
                 Players Info
               </div>
               <div className="flex justify-around text-black text-xl text-center font-bold">
@@ -302,7 +302,7 @@ export default function Sideboard(props) {
               </div>
             </div>
             <div>
-              <div className="text-white text-3xl text-center bg-slate-500">
+              <div className="text-center text-3xl text-yellow-400 font-bold bg-custom-black">
                 Spectators
               </div>
               <div className="h-16 overflow-y-scroll text-black text-2xl grid grid-cols-[1fr_10fr_1fr_10fr]">
@@ -324,19 +324,21 @@ export default function Sideboard(props) {
                   : ""}
               </div>
             </div>
-            <div className="text-center text-white text-3xl bg-slate-500">
+            <div className="text-center text-3xl text-yellow-400 font-bold bg-custom-black">
               Previous Moves
             </div>
             <div className="h-[11.65rem]">
               <InGamePrevMovePannel history={history} />
             </div>
-            <div className="text-center text-white text-3xl bg-slate-500">Orientation</div>
+            <div className="text-center text-3xl text-yellow-400 font-bold bg-custom-black">Orientation</div>
             <div>
+
+            
             {/* Source: https://chat.openai.com/share/74c6ed80-6104-4787-903d-ab0de1dd408e */}
-            <button className={orientation==="white" ?  "font-mono font-bold bg-black text-white text-2xl w-1/2 p-1" : "font-mono font-bold bg-gray-300 text-2xl w-1/2 p-1"}
+            <button className={orientation==="white" ?  "font-mono font-bold bg-yellow-300 text-custom-black rounded-md text-2xl w-1/2 p-1" : "font-mono bg-custom-black text-yellow-400 font-bold hover:bg-yellow-300 hover:text-custom-black rounded-md text-2xl w-1/2 p-1"}
             onClick={() => setOrientation("white")}>White</button>
             {/* Source: https://chat.openai.com/share/74c6ed80-6104-4787-903d-ab0de1dd408e */}
-            <button className={orientation==="black" ? "font-mono font-bold bg-black text-white text-2xl w-1/2 p-1" : "font-mono font-bold bg-gray-300 text-2xl w-1/2 p-1"}
+            <button className={orientation==="black" ? "font-mono font-bold bg-yellow-300 text-custom-black rounded-md text-2xl w-1/2 p-1" : "font-mono bg-custom-black text-yellow-400 font-bold hover:bg-yellow-300 hover:text-custom-black rounded-md text-2xl w-1/2 p-1" }
             onClick={() => setOrientation("black")}>Black</button>
             </div>
           </div>
