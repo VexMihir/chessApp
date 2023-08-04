@@ -23,7 +23,16 @@ const handleJoinAsSpectator = (io, socket, rooms) => (roomNumber, username) => {
             players: rooms[roomNumber].players,
             spectators: rooms[roomNumber].spectators
         };
+
         io.to(roomNumber).emit(EVENTS.USER_LIST_UPDATE, userList);
+        const game = rooms[roomNumber].game;
+
+        const currentFEN = game.getCurrentFEN();
+        socket.emit('game current fen', currentFEN)
+        const currentHistory = game.getGameHistory()
+        socket.emit('game current history', currentHistory)
+
+
     } else {
         console.log(`Room ${roomNumber} does not exist`);
     }

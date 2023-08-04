@@ -12,8 +12,8 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    // origin: [ process.env.FRONTEND_URL || "http://localhost:3000" || 'https://chessfrontend-2mfh.onrender.com' , "https://admin.socket.io"],
-    origin: [ 'https://chessfrontend-2mfh.onrender.com' , "https://admin.socket.io"],
+    origin: [ "http://localhost:3000" , "https://admin.socket.io"],    
+    // origin: [ 'https://chessfrontend-2mfh.onrender.com' , "https://admin.socket.io"],
     methods: ["GET", "POST"],
     allowedHeaders: ["my-custom-header"],
     credentials: true

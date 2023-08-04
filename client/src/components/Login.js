@@ -22,8 +22,8 @@ export default function Login() {
         };
 
         try {
-            const response = await fetch("https://chessbackend-evhq.onrender.com/auth", requestOptions)
-            // const response = await fetch('http://localhost:5001/auth' || "https://chessbackend-evhq.onrender.com/auth", requestOptions)
+            const response = await fetch('http://localhost:5001/auth' , requestOptions)
+            // const response = await fetch("https://chessbackend-evhq.onrender.com/auth", requestOptions)
             // Source: https://chat.openai.com/share/7e0302c4-87a4-4a5a-9ae5-f74f4d358637
             if (!response.ok) {
                 const errorMessage = await response.text()

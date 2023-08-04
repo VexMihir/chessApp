@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BLACK_CHESS_PIECE, WHITE_CHESS_PIECE } from "../inGameView/InGameView";
+import { BLACK_CHESS_PIECE, WHITE_CHESS_PIECE } from "../constant/customChessPiece";
 
 import { InGamePrevMovePannel } from "./InGamePrevMovePannel";
 export default function Sideboard(props) {
@@ -92,7 +92,7 @@ export default function Sideboard(props) {
               </div>
               <div className="flex justify-around text-custom-black text-xl text-center font-bold">
                 <div className="w-1/2 border border-black border-solid">
-                  <div>Player1:   (You)</div>
+                  <div>Player1: (You)</div>
                   <div className="flex border-x-0 border-y border-y-black border-solid px-2">
                     <div>Name:</div>
 
@@ -117,7 +117,7 @@ export default function Sideboard(props) {
                 </div>
 
                 <div className="w-1/2 border border-black border-solid">
-                  <div>Player2:  (Challenger)</div>
+                  <div>Player2: (Challenger)</div>
                   <div className="flex border-x-0 border-y border-y-black border-solid px-2">
                     <div>Name:</div>
                     <div className="text-center w-full">
@@ -162,7 +162,32 @@ export default function Sideboard(props) {
               Previous Moves
             </div>
             <div className="h-[4.8rem]">
-              <InGamePrevMovePannel history={history} />
+              {history === undefined ? (
+              <div
+                //Source: https://stackoverflow.com/questions/72391045/what-do-the-parameters-in-tailwind-grid-cols-1fr-700px-2fr-do
+                //Source: https://stackoverflow.com/questions/67242334/tailwind-css-how-to-make-a-grid-with-two-columns-where-the-1st-column-has-20
+                className="overflow-y-scroll text-custom-black bg-custom-cream grid grid-cols-[1fr_6fr_6fr] text-2xl text-center"
+              ></div>
+              ) : (
+              <div className="h-[4.8rem] overflow-y-scroll text-custom-black bg-custom-cream grid grid-cols-[1fr_6fr_6fr] text-2xl text-center">
+                {history.map((child, index) => {
+                  return (
+                    <>
+                      {index % 2 === 0 ? (
+                        <>
+                          <div className="h-[min-content]">
+                            {index / 2 + 1}.
+                          </div>{" "}
+                          <div className="h-[min-content]">{child["san"]}</div>
+                        </>
+                      ) : (
+                        <div className="h-[min-content]">{child["san"]}</div>
+                      )}
+                    </>
+                  );
+                })}
+              </div>
+              )}
             </div>
             <div>
               <div className="text-5xl bg-custom-cream text-red-700 font-black text-center">
@@ -173,23 +198,35 @@ export default function Sideboard(props) {
                   <>
                     <div>{pawnPromotionChoice}</div>
                     <div className="bg-custom-cream flex justify-around">
-                      <button className="text-2xl text-black font-bold bg-custom-black rounded-md"
-                        onClick={() => setPawnPromotionChoice(BLACK_CHESS_PIECE.ROOK)}
+                      <button
+                        className="text-2xl text-black font-bold bg-custom-black rounded-md"
+                        onClick={() =>
+                          setPawnPromotionChoice(BLACK_CHESS_PIECE.ROOK)
+                        }
                       >
                         {BLACK_CHESS_PIECE.ROOK}
                       </button>
-                      <button className="text-2xl text-black font-bold bg-custom-black rounded-md"
-                        onClick={() => setPawnPromotionChoice(BLACK_CHESS_PIECE.KNIGHT)}
+                      <button
+                        className="text-2xl text-black font-bold bg-custom-black rounded-md"
+                        onClick={() =>
+                          setPawnPromotionChoice(BLACK_CHESS_PIECE.KNIGHT)
+                        }
                       >
                         {BLACK_CHESS_PIECE.KNIGHT}
                       </button>
-                      <button className="text-2xl text-black font-bold bg-custom-black rounded-md"
-                        onClick={() => setPawnPromotionChoice(BLACK_CHESS_PIECE.BISHOP)}
+                      <button
+                        className="text-2xl text-black font-bold bg-custom-black rounded-md"
+                        onClick={() =>
+                          setPawnPromotionChoice(BLACK_CHESS_PIECE.BISHOP)
+                        }
                       >
                         {BLACK_CHESS_PIECE.BISHOP}
                       </button>
-                      <button className="text-2xl text-black font-bold bg-custom-black rounded-md"
-                        onClick={() => setPawnPromotionChoice(BLACK_CHESS_PIECE.QUEEN)}
+                      <button
+                        className="text-2xl text-black font-bold bg-custom-black rounded-md"
+                        onClick={() =>
+                          setPawnPromotionChoice(BLACK_CHESS_PIECE.QUEEN)
+                        }
                       >
                         {BLACK_CHESS_PIECE.QUEEN}
                       </button>
@@ -199,23 +236,35 @@ export default function Sideboard(props) {
                   <>
                     <div>{pawnPromotionChoice}</div>
                     <div className="bg-custom-cream flex justify-around">
-                      <button className="text-2xl text-white font-bold bg-custom-black rounded-md"
-                        onClick={() => setPawnPromotionChoice(WHITE_CHESS_PIECE.ROOK)}
+                      <button
+                        className="text-2xl text-white font-bold bg-custom-black rounded-md"
+                        onClick={() =>
+                          setPawnPromotionChoice(WHITE_CHESS_PIECE.ROOK)
+                        }
                       >
                         {WHITE_CHESS_PIECE.ROOK}
                       </button>
-                      <button className="text-2xl text-white font-bold bg-custom-black rounded-md"
-                        onClick={() => setPawnPromotionChoice(WHITE_CHESS_PIECE.KNIGHT)}
+                      <button
+                        className="text-2xl text-white font-bold bg-custom-black rounded-md"
+                        onClick={() =>
+                          setPawnPromotionChoice(WHITE_CHESS_PIECE.KNIGHT)
+                        }
                       >
                         {WHITE_CHESS_PIECE.KNIGHT}
                       </button>
-                      <button className="text-2xl text-white font-bold bg-custom-black rounded-md"
-                        onClick={() => setPawnPromotionChoice(WHITE_CHESS_PIECE.BISHOP)}
+                      <button
+                        className="text-2xl text-white font-bold bg-custom-black rounded-md"
+                        onClick={() =>
+                          setPawnPromotionChoice(WHITE_CHESS_PIECE.BISHOP)
+                        }
                       >
                         {WHITE_CHESS_PIECE.BISHOP}
                       </button>
-                      <button className="text-2xl text-white font-bold bg-custom-black rounded-md"
-                        onClick={() => setPawnPromotionChoice(WHITE_CHESS_PIECE.QUEEN)}
+                      <button
+                        className="text-2xl text-white font-bold bg-custom-black rounded-md"
+                        onClick={() =>
+                          setPawnPromotionChoice(WHITE_CHESS_PIECE.QUEEN)
+                        }
                       >
                         {WHITE_CHESS_PIECE.QUEEN}
                       </button>
@@ -328,18 +377,59 @@ export default function Sideboard(props) {
               Previous Moves
             </div>
             <div className="h-[11.65rem]">
-              <InGamePrevMovePannel history={history} />
+            {history === undefined ? (
+              <div
+                //Source: https://stackoverflow.com/questions/72391045/what-do-the-parameters-in-tailwind-grid-cols-1fr-700px-2fr-do
+                //Source: https://stackoverflow.com/questions/67242334/tailwind-css-how-to-make-a-grid-with-two-columns-where-the-1st-column-has-20
+                className="overflow-y-scroll text-custom-black bg-custom-cream grid grid-cols-[1fr_6fr_6fr] text-2xl text-center"
+              ></div>
+              ) : (
+              <div className="h-[11.65rem] overflow-y-scroll text-custom-black bg-custom-cream grid grid-cols-[1fr_6fr_6fr] text-2xl text-center">
+                {history.map((child, index) => {
+                  return (
+                    <>
+                      {index % 2 === 0 ? (
+                        <>
+                          <div className="h-[min-content]">
+                            {index / 2 + 1}.
+                          </div>{" "}
+                          <div className="h-[min-content]">{child["san"]}</div>
+                        </>
+                      ) : (
+                        <div className="h-[min-content]">{child["san"]}</div>
+                      )}
+                    </>
+                  );
+                })}
+              </div>
+              )}
             </div>
-            <div className="text-center text-3xl text-yellow-400 font-bold bg-custom-black">Orientation</div>
+            <div className="text-center text-3xl text-yellow-400 font-bold bg-custom-black">
+              Orientation
+            </div>
             <div>
-
-            
-            {/* Source: https://chat.openai.com/share/74c6ed80-6104-4787-903d-ab0de1dd408e */}
-            <button className={orientation==="white" ?  "font-bold bg-yellow-300 text-custom-black rounded-md text-2xl w-1/2 p-1" : "bg-custom-black text-yellow-400 font-bold hover:bg-yellow-300 hover:text-custom-black rounded-md text-2xl w-1/2 p-1"}
-            onClick={() => setOrientation("white")}>White</button>
-            {/* Source: https://chat.openai.com/share/74c6ed80-6104-4787-903d-ab0de1dd408e */}
-            <button className={orientation==="black" ? "font-bold bg-yellow-300 text-custom-black rounded-md text-2xl w-1/2 p-1" : "bg-custom-black text-yellow-400 font-bold hover:bg-yellow-300 hover:text-custom-black rounded-md text-2xl w-1/2 p-1" }
-            onClick={() => setOrientation("black")}>Black</button>
+              {/* Source: https://chat.openai.com/share/74c6ed80-6104-4787-903d-ab0de1dd408e */}
+              <button
+                className={
+                  orientation === "white"
+                    ? "font-bold bg-yellow-300 text-custom-black rounded-md text-2xl w-1/2 p-1"
+                    : "bg-custom-black text-yellow-400 font-bold hover:bg-yellow-300 hover:text-custom-black rounded-md text-2xl w-1/2 p-1"
+                }
+                onClick={() => setOrientation("white")}
+              >
+                White
+              </button>
+              {/* Source: https://chat.openai.com/share/74c6ed80-6104-4787-903d-ab0de1dd408e */}
+              <button
+                className={
+                  orientation === "black"
+                    ? "font-bold bg-yellow-300 text-custom-black rounded-md text-2xl w-1/2 p-1"
+                    : "bg-custom-black text-yellow-400 font-bold hover:bg-yellow-300 hover:text-custom-black rounded-md text-2xl w-1/2 p-1"
+                }
+                onClick={() => setOrientation("black")}
+              >
+                Black
+              </button>
             </div>
           </div>
         </div>

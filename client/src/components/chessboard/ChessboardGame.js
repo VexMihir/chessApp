@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import {
   BLACK_CHESS_PIECE,
   WHITE_CHESS_PIECE,
-} from "../inGameView/InGameView";
+} from "../constant/customChessPiece";
 
 const chess = new Chess();
 
@@ -152,6 +152,13 @@ export default function ChessboardGame({
         setHalfMove(fen.split(" ")[4]);
         setFullMove(fen.split(" ")[5]);
       });
+
+      socket.on('game current fen', (currentFEN) => {
+        setFen(currentFEN)
+      })
+      socket.on('game current history', (currentHistory) => {
+        setHistory(currentHistory)
+      })
     }
   }, [roomId, socket]);
 

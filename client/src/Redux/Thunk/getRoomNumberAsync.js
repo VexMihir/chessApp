@@ -4,12 +4,10 @@ import { setRoomNumber } from "../Action/roomActions";
 export function getRoomNumberAsync(socketId) {
     return async (dispatch, getState) => {
             try {
-                // const response = await axios.get((process.env.REACT_APP_BACKEND_URL || 'http://localhost:5001') + '/createGame');
-
                 const response = await axios({
                     method: 'post',
-                    url: ('https://chessbackend-evhq.onrender.com') + '/createGame',
-                    // url: (process.env.REACT_APP_BACKEND_URL || 'http://localhost:5001' || 'https://chessbackend-evhq.onrender.com') + '/createGame',
+                    url: ('http://localhost:5001') + '/createGame',
+                    // url: ('https://chessbackend-evhq.onrender.com') + '/createGame',
                     headers: { "Content-Type": "application/json" },
                     data: {
                         socketId: socketId
