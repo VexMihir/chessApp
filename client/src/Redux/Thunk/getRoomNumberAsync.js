@@ -8,7 +8,7 @@ export function getRoomNumberAsync(socketId) {
 
                 const response = await axios({
                     method: 'post',
-                    url: (process.env.REACT_APP_BACKEND_URL || 'http://localhost:5001') + '/createGame',
+                    url: (process.env.REACT_APP_BACKEND_URL || 'http://localhost:5001' || 'https://chessbackend-evhq.onrender.com') + '/createGame',
                     headers: { "Content-Type": "application/json" },
                     data: {
                         socketId: socketId
