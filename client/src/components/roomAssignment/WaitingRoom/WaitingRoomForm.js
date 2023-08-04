@@ -26,10 +26,10 @@ export function WaitingRoomForm () {
     const socket = useContext(SocketContext)
 
     useEffect(()=> {
-        if (!isEffectRunRef.current) {
+        // if (!isEffectRunRef.current) {
             dispatch(getRoomNumberAsync(socket.id))
-            isEffectRunRef.current = true
-        }
+            // isEffectRunRef.current = true
+        // }
     }, [])
 
     useEffect(() => {
