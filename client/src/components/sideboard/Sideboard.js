@@ -173,22 +173,22 @@ export default function Sideboard(props) {
                   <>
                     <div>{pawnPromotionChoice}</div>
                     <div className="bg-custom-cream flex justify-around">
-                      <button className="text-2xl text-yellow-400 font-bold bg-custom-black rounded-md"
+                      <button className="text-2xl text-black font-bold bg-custom-black rounded-md"
                         onClick={() => setPawnPromotionChoice(BLACK_CHESS_PIECE.ROOK)}
                       >
                         {BLACK_CHESS_PIECE.ROOK}
                       </button>
-                      <button className="text-2xl text-yellow-400 font-bold bg-custom-black rounded-md"
+                      <button className="text-2xl text-black font-bold bg-custom-black rounded-md"
                         onClick={() => setPawnPromotionChoice(BLACK_CHESS_PIECE.KNIGHT)}
                       >
                         {BLACK_CHESS_PIECE.KNIGHT}
                       </button>
-                      <button className="text-2xl text-yellow-400 font-bold bg-custom-black rounded-md"
+                      <button className="text-2xl text-black font-bold bg-custom-black rounded-md"
                         onClick={() => setPawnPromotionChoice(BLACK_CHESS_PIECE.BISHOP)}
                       >
                         {BLACK_CHESS_PIECE.BISHOP}
                       </button>
-                      <button className="text-2xl text-yellow-400 font-bold bg-custom-black rounded-md"
+                      <button className="text-2xl text-black font-bold bg-custom-black rounded-md"
                         onClick={() => setPawnPromotionChoice(BLACK_CHESS_PIECE.QUEEN)}
                       >
                         {BLACK_CHESS_PIECE.QUEEN}
@@ -199,22 +199,22 @@ export default function Sideboard(props) {
                   <>
                     <div>{pawnPromotionChoice}</div>
                     <div className="bg-custom-cream flex justify-around">
-                      <button className="text-2xl text-yellow-400 font-bold bg-custom-black rounded-md"
+                      <button className="text-2xl text-white font-bold bg-custom-black rounded-md"
                         onClick={() => setPawnPromotionChoice(WHITE_CHESS_PIECE.ROOK)}
                       >
                         {WHITE_CHESS_PIECE.ROOK}
                       </button>
-                      <button className="text-2xl text-yellow-400 font-bold bg-custom-black rounded-md"
+                      <button className="text-2xl text-white font-bold bg-custom-black rounded-md"
                         onClick={() => setPawnPromotionChoice(WHITE_CHESS_PIECE.KNIGHT)}
                       >
                         {WHITE_CHESS_PIECE.KNIGHT}
                       </button>
-                      <button className="text-2xl text-yellow-400 font-bold bg-custom-black rounded-md"
+                      <button className="text-2xl text-white font-bold bg-custom-black rounded-md"
                         onClick={() => setPawnPromotionChoice(WHITE_CHESS_PIECE.BISHOP)}
                       >
                         {WHITE_CHESS_PIECE.BISHOP}
                       </button>
-                      <button className="text-2xl text-yellow-400 font-bold bg-custom-black rounded-md"
+                      <button className="text-2xl text-white font-bold bg-custom-black rounded-md"
                         onClick={() => setPawnPromotionChoice(WHITE_CHESS_PIECE.QUEEN)}
                       >
                         {WHITE_CHESS_PIECE.QUEEN}
@@ -305,7 +305,7 @@ export default function Sideboard(props) {
               <div className="text-center text-3xl text-yellow-400 font-bold bg-custom-black">
                 Spectators
               </div>
-              <div className="h-16 overflow-y-scroll text-black text-2xl grid grid-cols-[1fr_10fr_1fr_10fr]">
+              <div className="h-16 overflow-y-scroll text-custom-black text-2xl grid grid-cols-[1fr_10fr_1fr_10fr]">
                 {spectators
                   ? spectators.map((child, index) => {
                       return (
@@ -335,10 +335,10 @@ export default function Sideboard(props) {
 
             
             {/* Source: https://chat.openai.com/share/74c6ed80-6104-4787-903d-ab0de1dd408e */}
-            <button className={orientation==="white" ?  "font-mono font-bold bg-yellow-300 text-custom-black rounded-md text-2xl w-1/2 p-1" : "font-mono bg-custom-black text-yellow-400 font-bold hover:bg-yellow-300 hover:text-custom-black rounded-md text-2xl w-1/2 p-1"}
+            <button className={orientation==="white" ?  "font-bold bg-yellow-300 text-custom-black rounded-md text-2xl w-1/2 p-1" : "bg-custom-black text-yellow-400 font-bold hover:bg-yellow-300 hover:text-custom-black rounded-md text-2xl w-1/2 p-1"}
             onClick={() => setOrientation("white")}>White</button>
             {/* Source: https://chat.openai.com/share/74c6ed80-6104-4787-903d-ab0de1dd408e */}
-            <button className={orientation==="black" ? "font-mono font-bold bg-yellow-300 text-custom-black rounded-md text-2xl w-1/2 p-1" : "font-mono bg-custom-black text-yellow-400 font-bold hover:bg-yellow-300 hover:text-custom-black rounded-md text-2xl w-1/2 p-1" }
+            <button className={orientation==="black" ? "font-bold bg-yellow-300 text-custom-black rounded-md text-2xl w-1/2 p-1" : "bg-custom-black text-yellow-400 font-bold hover:bg-yellow-300 hover:text-custom-black rounded-md text-2xl w-1/2 p-1" }
             onClick={() => setOrientation("black")}>Black</button>
             </div>
           </div>
