@@ -6,6 +6,8 @@ import {
   RESULT,
   WHITE_CHESS_PIECE,
 } from "../inGameView/InGameView";
+import { CUSTOM_CHESS_PIECES } from "../../constants/CustomChessPieces";
+import { DARK_SQUARE_STYLE, LIGHT_SQUARE_STYLE } from "../../constants/CustomChessSquareColor";
 
 const chess = new Chess();
 
@@ -56,7 +58,8 @@ export default function ChessboardGame({
       console.log("line 90", currentPlayer);
       console.log("line 91", activePlayer);
 
-      if (activePlayer === currentPlayer.color[0]) {
+      // activePlayer always = w or b
+      if (activePlayer === currentPlayer.color[0].toLowerCase()) {
         const validMovesIncludingSelf = chess.moves({
           square: square,
           verbose: true,
@@ -174,6 +177,7 @@ export default function ChessboardGame({
     if (players.length === 2) {
       const currentPlayer = players.find((player) => player.id === socket.id);
       if (currentPlayer) {
+        console.log("linr 178", currentPlayer.color);
         setPlayerColor(currentPlayer.color);
       }
     }
@@ -196,13 +200,18 @@ export default function ChessboardGame({
           <Chessboard
             position={fen.split(" ")[0]}
             orientation={orientation}
+<<<<<<< HEAD
             width={900}
+=======
+            width={700}
+>>>>>>> project_5
             draggable={true}
             onDrop={onDrop}
             onDragOverSquare={onDragOverSquare}
             squareStyles={sqaureStyles}
             onSquareClick={onSquareClick}
             onMouseOverSquare={onMouseOverSquare}
+<<<<<<< HEAD
             darkSquareStyle={{ backgroundColor: "#547396" }}
             lightSquareStyle={{ backgroundColor: "#eae9d4" }}
              pieces={{
@@ -293,6 +302,12 @@ export default function ChessboardGame({
                 </svg>
               ),
             }}
+=======
+            lightSquareStyle={LIGHT_SQUARE_STYLE}
+            darkSquareStyle={DARK_SQUARE_STYLE}
+            //Source: https://codesandbox.io/s/21r26yw13j?from-embed=&file=/src/integrations/CustomBoard.js
+            pieces={CUSTOM_CHESS_PIECES}
+>>>>>>> project_5
           />
         </div>
       </div>
