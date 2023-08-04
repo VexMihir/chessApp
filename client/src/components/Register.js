@@ -5,53 +5,59 @@ import axios from "axios";
 export default function Register() {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+    const [confrimPassword, setConfirmPassword] = useState('')
     const navigate = useNavigate()
     const [errorMessage, setErrorMessage] = useState('')
     
     async function handleSubmit(e) {
         e.preventDefault()
 
-        //Source: Postman
-        var requestOptions = {
-            method: 'POST',
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({
-                user: username,
-                pwd: password,
-            }),
-            redirect: 'follow'
-        };
+        if (confrimPassword !== password) {
+            setErrorMessage("Password did not match")
+        } else {
 
-        try {
-            const response = await fetch("http://localhost:5001/register", requestOptions)
-            // Source: https://chat.openai.com/share/7e0302c4-87a4-4a5a-9ae5-f74f4d358637
-            if (!response.ok) {
-                const errorMessage = await response.text()
-                let isJSONObj = false
-                if (errorMessage[0] === '{' || errorMessage[errorMessage.length - 1] === '}') {
-                    isJSONObj = true
-                }
-                if (response.status === 409) {
-                    if (isJSONObj) {
-                        setErrorMessage(JSON.parse(errorMessage).message)
-                    } else {
-                        if (errorMessage === '')
-                        setErrorMessage(errorMessage)
+            //Source: Postman
+            var requestOptions = {
+                method: 'POST',
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({
+                    user: username,
+                    pwd: password,
+                }),
+                redirect: 'follow'
+            };
+
+            try {
+                const response = await fetch("http://localhost:5001/register", requestOptions)
+                // Source: https://chat.openai.com/share/7e0302c4-87a4-4a5a-9ae5-f74f4d358637
+                if (!response.ok) {
+                    const errorMessage = await response.text()
+                    let isJSONObj = false
+                    if (errorMessage[0] === '{' || errorMessage[errorMessage.length - 1] === '}') {
+                        isJSONObj = true
                     }
-                    // Source: https://chat.openai.com/share/7e0302c4-87a4-4a5a-9ae5-f74f4d358637
+                    if (response.status === 409) {
+                        if (isJSONObj) {
+                            setErrorMessage(JSON.parse(errorMessage).message)
+                        } else {
+                            if (errorMessage === '')
+                            setErrorMessage(errorMessage)
+                        }
+                        // Source: https://chat.openai.com/share/7e0302c4-87a4-4a5a-9ae5-f74f4d358637
+                    } else {
+                        if (isJSONObj) {
+                            setErrorMessage(JSON.parse(errorMessage).message)
+                        } else {
+                            setErrorMessage(errorMessage)
+                        }
+                    }
                 } else {
-                    if (isJSONObj) {
-                        setErrorMessage(JSON.parse(errorMessage).message)
-                    } else {
-                        setErrorMessage(errorMessage)
-                    }
+                    navigate('/registerSuccess')
                 }
-            } else {
-                navigate('/registerSuccess')
+            } catch (error) {
+                console.error(error);
+                // setErrorMessage(error)
             }
-        } catch (error) {
-            console.error(error);
-            // setErrorMessage(error)
         }
     }
 
@@ -64,7 +70,7 @@ export default function Register() {
                     <div className='absolute right-[30px] cursor-pointer' onClick={() => {navigate('/')}}>❌</div>
                     <div className='text-4xl mb-5'>Register</div>
                     <div className='flex flex-col mb-1'>
-                        <label className='w-36 text-3xl mr-3'>Username</label>
+                        <label className='text-left text-3xl mr-3'>Username</label>
                         <input 
                             className="text-3xl mr-3" 
                             type='text' 
@@ -73,11 +79,21 @@ export default function Register() {
                         />
                     </div>
                     <div className='flex flex-col'>
-                        <label className='w-36 text-3xl mr-3'>Password</label>
+                        <label className='text-left text-3xl mr-3'>Password</label>
                         <input 
                             className="text-3xl mr-3" 
                             type='password' 
                             onChange={(e) => setPassword(e.target.value)}
+                           
+                        />
+                    </div>
+
+                    <div className='flex flex-col'>
+                        <label className='text-left text-3xl mr-3'>Confirm Password</label>
+                        <input 
+                            className="text-3xl mr-3" 
+                            type='password' 
+                            onChange={(e) => setConfirmPassword(e.target.value)}
                            
                         />
                     </div>

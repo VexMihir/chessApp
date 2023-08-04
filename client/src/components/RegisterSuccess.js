@@ -1,7 +1,8 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 
 export default function RegisterSuccess() {
+    const navigate = useNavigate()
     return (
         <>
             <form className='flex justify-center items-center h-[100vh] w-full m-[auto] text-black text-center'>
@@ -12,7 +13,12 @@ export default function RegisterSuccess() {
                     </div>
                     <div className='mt-3'>
                         {/* Source: https://v1.tailwindcss.com/components/buttons */}
-                        <NavLink to={"/login"} className='w-32 text-2xl bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-3 mx-2 border border-blue-500 hover:border-transparent rounded'>Confirm</NavLink>
+                        <div className='text-2xl bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-3 mx-2 border border-blue-500 hover:border-transparent rounded'
+                            onClick={() => {
+                                navigate('/login')
+                            }}>
+                                Confirm
+                        </div>
                     </div>
                 </div>
             </form>
