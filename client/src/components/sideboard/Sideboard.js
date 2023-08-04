@@ -161,11 +161,7 @@ export default function Sideboard(props) {
             <div className="text-center text-yellow-400 text-3xl bg-custom-black">
               Previous Moves
             </div>
-<<<<<<< HEAD
             <div className="h-[4.8rem]">
-=======
-            <div className="">
->>>>>>> analysis-fixes2
               <InGamePrevMovePannel history={history} />
             </div>
             <div>
@@ -233,21 +229,13 @@ export default function Sideboard(props) {
             </div>
             <div className="flex justify-around">
               <button
-<<<<<<< HEAD
-                className="font-mono font-bold bg-gray-300 text-2xl w-1/2 p-1"
-=======
                 className="bg-custom-black hover:bg-yellow-300 text-yellow-400 font-bold hover:text-custom-black rounded-md text-2xl w-1/2 p-1 m-1"
->>>>>>> analysis-fixes2
                 onClick={() => socket.emit("resignation", roomId)}
               >
                 Forfeit
               </button>
               <button
-<<<<<<< HEAD
-                className="font-mono font-bold bg-gray-300 text-2xl w-1/2 p-1"
-=======
                 className="bg-custom-black hover:bg-yellow-300 text-yellow-400 font-bold hover:text-custom-black rounded-md m-1 text-2xl w-1/2 p-1"
->>>>>>> analysis-fixes2
                 onClick={() => socket.emit("drawOffered", roomId)}
               >
                 Offer Draw

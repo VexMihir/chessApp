@@ -34,19 +34,10 @@ export default function PreviousGameView() {
     useEffect(() => {
         navigate(normalView);
     }, [])
-<<<<<<< HEAD
-  return (
-    <>
-        <div
-            id={"PrevGameView"}
-            className={"h-fit m-[2rem]"}
-        >
-=======
-
+    
     const location = useLocation();
     return (
         <>
->>>>>>> analysis-fixes2
             <div
                 id={"PrevGameView"}
                 className={"h-fit m-[1rem]"}
@@ -121,12 +112,6 @@ export default function PreviousGameView() {
                     </div>
                 </div>
             </div>
-<<<<<<< HEAD
-        </div>
-    </>
-  );
-=======
         </>
     );
->>>>>>> analysis-fixes2
 }

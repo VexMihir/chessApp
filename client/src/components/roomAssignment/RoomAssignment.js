@@ -31,7 +31,7 @@ export default function RoomAssignment() {
             <div
                 className={"p-[100px] h-[170px]"}
             >
-                <NavLink  to={"/playerForm"}
+                <NavLink  to={"/roomAssignment/playerForm"}
                                   className= "join-button join-1"
                         >Join As Player
                 </NavLink>

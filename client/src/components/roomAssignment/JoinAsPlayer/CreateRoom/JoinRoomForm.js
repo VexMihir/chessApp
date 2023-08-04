@@ -1,12 +1,13 @@
-<<<<<<< HEAD
-import {NavLink} from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import {useContext, useEffect, useRef, useState} from "react";
 import { SocketContext } from "../../../../context/socket";
 
 export function JoinRoomForm() {
-    const refInput = useRef(null)
-    const [userName, setUserName] = useState(null);
-    const [userNameError, setuserNameError] = useState(false);
+  const [userName, setUserName] = useState(null);
+  const [userNameError, setuserNameError] = useState("invisible");
+  const [selectedTimeControl, setSelectedTimeControl] = useState(null);
+  const [selectedIncrementControl, setSelectedIncrementControl] =
+    useState(null);
 
     const socket = useContext(SocketContext)
 
@@ -24,27 +25,12 @@ export function JoinRoomForm() {
         }
     }, [socket])
 
-    const handleOnChange = (e) => {
-        checkEmptyUserName(e)
-        e.preventDefault();
-        setUserName(e.target.value);
-
-        socket.emit("is user created room");
-=======
-import { NavLink } from "react-router-dom";
-import { useState } from "react";
-
-export function JoinRoomForm() {
-  const [userName, setUserName] = useState(null);
-  const [userNameError, setuserNameError] = useState("invisible");
-  const [selectedTimeControl, setSelectedTimeControl] = useState(null);
-  const [selectedIncrementControl, setSelectedIncrementControl] =
-    useState(null);
 
   const handleOnChange = (e) => {
     checkEmptyUserName(e);
     e.preventDefault();
     setUserName(e.target.value);
+    socket.emit("is user created room");
   };
 
   const checkEmptyUserName = (e) => {
@@ -52,16 +38,18 @@ export function JoinRoomForm() {
       setuserNameError(" ");
     } else {
       setuserNameError("invisible");
->>>>>>> analysis-fixes2
     }
   };
 
   const finalCheck = (e) => {
-    if (!userName || userName.length === 0) {
-      e.preventDefault();
-      window.alert("USERNAME CANNOT BE EMPTY");
+    if (isUserCreatedRoom) {
+        e.preventDefault();
+        window.alert("Socket id has already created a room called")
+    } else if (!userName || userName.length === 0 ) {
+        e.preventDefault();
+        window.alert("USERNAME CANNOT BE EMPTY")
     }
-  };
+}
 
   const handleTimeControlSelection = (timeControl) => {
     setSelectedTimeControl(timeControl);
@@ -78,54 +66,6 @@ export function JoinRoomForm() {
           "flex flex-col h-[115%] " +
           "rounded-xl border-custom-black border-10 p-0 m-0 mb-[0.5rem] pb-[0.5rem]  px-[0.5rem]"
         }
-<<<<<<< HEAD
-    }
-
-    const finalCheck = (e) => {
-        if (isUserCreatedRoom) {
-            e.preventDefault();
-            window.alert("Socket id has already created a room called")
-        } else if (!userName || userName.length === 0 ) {
-            e.preventDefault();
-            window.alert("USERNAME CANNOT BE EMPTY")
-        }
-    }
-
-    return (
-        <div className={"w-[50%] h-[100%] flex flex-col mb-1"}>
-            <fieldset className={"w-[95%] " +
-                "rounded-xl p-2 border-custom-black border-10"}>
-
-                <legend className={"rounded text-custom-black " }>Create Room</legend>
-                <label className = {"rounded text-custom-black"} >Enter username</label>
-                <input required
-                       type={"text"}
-                       ref={refInput}
-                       onChange={(e)=>(handleOnChange(e))}
-                       onBlur={(e)=>{checkEmptyUserName(e)}}
-                       className={"peer/Text rounded-md text-custom-black py-[0.25rem] border-custom-black border-10 bg-transparent " +
-                           "w-[90%] relative " +
-                           "m-auto"}
-                />
-                {
-                    userNameError?  <p className="mb-1 text-red-700  text-sm">
-                        <mark className={"bg-transparent text-red-600"}>Username cannot be empty</mark></p>: ""
-
-                }
-            </fieldset>
-            <NavLink
-                className=
-                    {
-                        "m-auto text-center " +
-                        "no-underline border border-custom-black rounded-xl py-3 px-4 hover:shadow-transparent " +
-                        "text-custom-black font-bold rounded" +
-                        "shadow shadow-md shadow-custom-black mt-[1rem]"
-                    }
-                onClick={(e)=>{finalCheck(e)}}
-                to={"waitingRoomForm"}
-                state={{userName: userName}
-                }>Create Room</NavLink>
-=======
       >
         <legend className={"rounded-2xl text-custom-black text-md text-black"}>
           Create Room
@@ -196,7 +136,6 @@ export function JoinRoomForm() {
           >
             1
           </button>
->>>>>>> analysis-fixes2
         </div>
         <legend className={"rounded-2xl text-custom-black text-md text-black mt-2"}>
           Increment Selection (Secs)
@@ -259,7 +198,7 @@ export function JoinRoomForm() {
         onClick={(e) => {
           finalCheck(e);
         }}
-        to={"/waitingRoomForm"}
+        to={"/roomAssignment/playerForm/waitingRoomForm"}
         state={{ userName: userName }}
       >
         Create Room
