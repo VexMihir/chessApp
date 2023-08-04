@@ -12,7 +12,7 @@ export default function RoomAssignment() {
             "h-screen w-screen " +
             "bg-chessImage bg-cover bg-center bg-no-repeat " +
             "flex flex-col " +
-            "overflow-hidden "
+            "overflow-y: auto"
         }>
             <div className={"flex flex-col"}>
                 <div
