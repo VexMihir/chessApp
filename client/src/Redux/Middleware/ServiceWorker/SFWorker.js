@@ -71,7 +71,7 @@ export async function getAnalysisScore(fenStr, index) {
 
             setTimeout(() => {
                 resolve(ret)
-            }, 90000)
+            }, 30000)
         } catch (error) {
             reject(error)
         }
