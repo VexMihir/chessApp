@@ -28,7 +28,7 @@ export default function Register() {
             };
 
             try {
-                const response = await fetch("https://chessbackend-evhq.onrender.com/register" || 'http://localhost:5001', requestOptions)
+                const response = await fetch("https://chessbackend-evhq.onrender.com/register" || 'http://localhost:5001/register', requestOptions)
                 // Source: https://chat.openai.com/share/7e0302c4-87a4-4a5a-9ae5-f74f4d358637
                 if (!response.ok) {
                     const errorMessage = await response.text()

@@ -33,7 +33,7 @@ app.get('/', (req, res) => {
 
 let rooms = {};
 
-mongoose.connect(process.env.MONGO_URI)
+mongoose.connect(process.env.MONGO_URI || 'mongodb+srv://JAMDK:3lxXgQuMgCTGsZwV@chessapp.ynnbkwt.mongodb.net/ChessGames?retryWrites=true&w=majority')
   .then(() => console.log('...// Connected to ChessApp Cluster //...'))
   .catch(error => console.log(error));
 
