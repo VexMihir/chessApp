@@ -1,5 +1,6 @@
 export async function getAnalysisScore(fenStr, index) {
     const OFFSET = -1;
+    const DEPTH = 12;
     let worker = new Worker("/stockfish.js");
     let ret = {
         index: index,
@@ -17,7 +18,7 @@ export async function getAnalysisScore(fenStr, index) {
 
                 if (data.startsWith("bestmove")) {
                     onBestMove(data)
-                } else if (data.startsWith("info depth 22") &&
+                } else if (data.startsWith(`info depth ${DEPTH}`) &&
                     !data.includes('lowerbound') &&
                     !data.includes('upperbound')) {
                     onRawScore(data)
@@ -25,7 +26,7 @@ export async function getAnalysisScore(fenStr, index) {
             })
 
             worker.postMessage(`position fen ${fenStr}`);
-            worker.postMessage("go depth 22");
+            worker.postMessage(`go depth ${DEPTH}`);
 
             /* Helper functions
              */
@@ -59,7 +60,6 @@ export async function getAnalysisScore(fenStr, index) {
                     ret.rawScore =  Infinity;
                     ret.offsetScore = Infinity;
                     if (index % 2 !== 0 ) {
-                        ret.rawScore *= OFFSET;
                         ret.offsetScore *= OFFSET;
                     }
                     ret.mateIn = mate;

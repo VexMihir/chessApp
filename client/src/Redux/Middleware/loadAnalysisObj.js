@@ -25,16 +25,18 @@ export const loadAnalysisObj = store => next => async action => {
         }
         arr = await Promise.all(arr);
 
+        console.log("Before sorting:", arr);
+
         arr.sort((a,b)=>{
-            if (a.index > b.index) {
-                return 1;
-            } else if (a.index < b.index) {
-                return -1;
-            } else {
-                return 0;
-            }
+            const indexA = parseInt(a.index, 10);
+            const indexB = parseInt(b.index, 10);
+            return indexA - indexB;
         })
+
+        console.log("After sorting:", arr);
+
         for (let items of arr) {
+            console.log("Raw Analysis Item:", items); // Debugging line
             ret.bestMoves.push(items.bestMove);
             ret.rawScore.push(items.rawScore)
             ret.mateIn.push(items.mateIn);
@@ -70,6 +72,9 @@ export const loadAnalysisObj = store => next => async action => {
             ret.rawScore.push("CHECKMATE");
             ret.bestMoves.push("CHECKMATE")
         }
+
+        console.log("Evaluations:", ret);
+
         action.payload = ret;
         return next(action)
     }
@@ -86,9 +91,9 @@ const calculatePercentageScore = (ret, index) => {
 
 const labelingHelper = (offset, mateInScore) => {
     if (offset === Infinity && mateInScore) {
-        return 'BLACK FORCE MATE IN ${mateInScore}'
+        return `BLACK FORCE MATE IN ${mateInScore}`
     } else if (offset === - Infinity && mateInScore) {
-        return 'WHITE FORCE MATE IN ${mateInScore}'
+        return `WHITE FORCE MATE IN ${mateInScore}`
     }
     offset = Math.abs(offset);
     if (offset === 0) {
