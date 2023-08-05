@@ -1,7 +1,7 @@
 import {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {getRoomNumberAsync} from "../../../Redux/Thunk/getRoomNoAsync";
-import {Link, NavLink, useLocation, useNavigate} from "react-router-dom";
+import {NavLink, useLocation, useNavigate} from "react-router-dom";
 
 export function WaitingRoomForm () {
     const dispatch = useDispatch();

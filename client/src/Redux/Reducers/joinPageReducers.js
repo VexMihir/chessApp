@@ -1,4 +1,4 @@
-import {GETROOMNUMBER, initObj, SENDJOINOFFER} from "../String/JoinRoomInit";
+import {GETROOMNUMBER, initObj} from "../String/JoinRoomInit";
 
 export function joinRoomReducer(state=initObj, action) {
     switch (action.type) {
@@ -9,8 +9,6 @@ export function joinRoomReducer(state=initObj, action) {
                 userName: action.payload.userName
             }
         }
-
-        case SENDJOINOFFER: return state
 
         default: return state
     }
