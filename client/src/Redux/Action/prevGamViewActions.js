@@ -5,7 +5,7 @@ export function indiPieceUpdate(payload) {
         payload: payload
     }
 }
-//add comment
+
 export function startingPointUpdate() {
     return {
         type: STARTINGPOINT,

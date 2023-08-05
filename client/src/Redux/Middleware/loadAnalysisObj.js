@@ -1,6 +1,21 @@
 import {GETANALYSIS} from "../String/analysis";
 import {getAnalysisScore} from "./ServiceWorker/SFWorker";
-//things
+/*
+This middleware purpose is to retrieve evaluation information of FEN's string position through stockfish' AI model
+We use stockfish.js script, which is  an emscripten port of the stockfish chess engine. We further use chess universal
+interface's protocols (UCI) to communicate with the engine.
+
+How do we calculate percentage score:
+    First, we retrieve raw the centipawn score (-2000 < cp < 2000)
+    Secondly, we take absolute of the score and minus the previous score. If it is the first score, which is a start
+    position, then the score will be 0;
+    Lastly, we divide it by 100.
+    There is an alternative better signmol approach to calculate the percentage. However within the time limit, we just
+    use the simpler approach above.
+
+How we optimize the performance of stockfish:
+    We let multiple web workers (threads) run at once and sort them through the index later.
+ */
 export const loadAnalysisObj = store => next => async action => {
 
     if (action.type === GETANALYSIS) {

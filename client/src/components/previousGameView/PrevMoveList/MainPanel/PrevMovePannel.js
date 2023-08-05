@@ -1,13 +1,7 @@
 import {useSelector} from "react-redux";
-import {useNavigate} from "react-router-dom";
 
 export function PrevMoveListPannel({ prop }) {
-  const navigate = useNavigate()
   let LANArr = prop.LANMoveList;
-
-  if (!LANArr || LANArr.length === 0) {
-    navigate(-1);
-  }
 
   let currIndex = useSelector(state=>state.PrevGameView.currIdx);
   let indexArr = [];
@@ -20,7 +14,6 @@ export function PrevMoveListPannel({ prop }) {
       i++;
     }
   }
-
 
   function getFirstMove(index) {
     let firstMove = LANArr[index];
@@ -43,7 +36,6 @@ export function PrevMoveListPannel({ prop }) {
   return (
      <table className={"table-fixed border-collapse w-[90%] border border-transparent m-[1rem] " +
          "bg-custom-black  "}>
-
        <colgroup>
          <col className={"w-[10%]"} />
          <col className={"w-[40%]"} />

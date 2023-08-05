@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 export function PrevGameQueryChildPage() {
-
     const pgnData = useSelector((state) => state.PrevGameQuery.databaseArr);
     const OFFSET = 1
     const CARDSPERPAGE = 5;

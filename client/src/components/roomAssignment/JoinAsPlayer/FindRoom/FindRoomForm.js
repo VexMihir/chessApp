@@ -1,8 +1,6 @@
 import {NavLink} from "react-router-dom";
 import {useState} from "react";
 
-
-
 export function FindRoomForm() {
     const [userName, setUserName] = useState(null);
     const [roomNumber, setRoomNumber] = useState(null);

@@ -7,8 +7,6 @@ import { getAnalysis } from "../../Redux/Action/Analysis";
 import { LinearProgress } from '@mui/material';
 import { NavBar } from "../NavBar/NavBar";
 
-
-
 export default function PreviousGameView() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
