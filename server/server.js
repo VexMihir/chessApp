@@ -6,6 +6,7 @@ const ChessGame = require('./game/game.js');
 const socketHandlers = require('./socket/socketHandlers.js');
 const mongoose = require('mongoose');
 const { instrument } = require("@socket.io/admin-ui");
+const { time } = require('console');
 require('dotenv').config();
 
 const app = express();
@@ -56,6 +57,11 @@ app.get('/createGame', (req, res) => {
   };
   const roomNumber = newUniqueRoomNumber();
   let timeControl = parseInt(req.query.timeControl); // time control in minutes
+
+  if (!isNaN(timeControl)) {
+    timeControl *= 60; // to seconds
+  } 
+
   let timeIncrement = parseInt(req.query.timeIncrement); // time increment in seconds
 
   // default time controlis 5+0 if not specified 
