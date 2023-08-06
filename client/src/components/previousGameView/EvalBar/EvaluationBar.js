@@ -1,5 +1,7 @@
 import {LinearProgress, linearProgressClasses, styled} from "@mui/material";
 
+// ChatGPT was used to generate the following code:
+
 const VerticalLinearProgress = styled(LinearProgress)(() => ({
     width: "30px",
     height: "100%",
