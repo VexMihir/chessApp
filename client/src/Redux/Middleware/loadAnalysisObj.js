@@ -69,23 +69,27 @@ export const loadAnalysisObj = store => next => async action => {
             } else if (!isNaN(ret.rawScore[index]) && ret.rawScore[index] !== Infinity && ret.rawScore[index] !== - Infinity) {
                 let percentScore = calculatePercentageScore(ret.offsetScore, index);
                 let label = labelingHelper(percentScore);
-                ret.displayScore.push(percentScore);
+                ret.displayScore.push((Number(ret.offsetScore[index]) / 100) * -1);
                 ret.label.push(label)
             } else if (!isNaN(ret.mateIn[index])) {
-                ret.displayScore.push(Math.sign(ret.rawScore[index]) * 8);
+                ret.displayScore.push(`M${ret.mateIn[index]}`);
                 let label = labelingHelper(ret.rawScore, ret.mateIn);
                 ret.label.push(label)
             }
         }
 
-        if (action.payload.includes("White wins by Checkmate")) {
-            ret.displayScore.push(1);
+        if (action.payload.includes("White wins by")) {
+            ret.displayScore.push("1-0");
             ret.rawScore.push("CHECKMATE");
             ret.bestMoves.push("CHECKMATE")
-        } else if (action.payload.includes("Black wins by Checkmate")) {
-            ret.displayScore.push(-1);
+        } else if (action.payload.includes("Black wins by")) {
+            ret.displayScore.push("0-1");
             ret.rawScore.push("CHECKMATE");
             ret.bestMoves.push("CHECKMATE")
+        } else if (action.payload.includes("Draw")) {
+            ret.displayScore.push("1/2-1/2");
+            ret.rawScore.push("DRAW");
+            ret.bestMoves.push("DRAW")
         }
 
         console.log("Evaluations:", ret);
@@ -97,7 +101,7 @@ export const loadAnalysisObj = store => next => async action => {
 }
 
 const calculatePercentageScore = (ret, index) => {
-    let score = (ret[Number(index)] - ret[Number(index) -1])/100;
+    let score = (ret[Number(index)] - ret[Number(index) - 1]) / 100;
     if (index === 1) {
         score = ret[Number(index)] / 100;
     }
