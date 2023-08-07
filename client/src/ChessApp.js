@@ -9,16 +9,10 @@ import {SpectatorForm} from "./components/roomAssignment/JoinAsSpectator/Spectat
 import PreviousGameView from "./components/previousGameView/PreviousGameView";
 import {PlayerForm} from "./components/roomAssignment/JoinAsPlayer/PlayerForm";
 import {NOTFOUNDPAGE} from "./components/404NOTFOUND/404NOTFOUND";
-
 import { SocketContext, socket } from "./context/socket";
-// import {PrevMoveList} from "./components/sideboard/PrevMoveList/PrevMoveList";
 import {analysisView, normalView, playBackView} from "./RouteString/RouteString";
 import {PrevMoveList} from "./components/previousGameView/NormalView/PrevMoveList";
 import {AnalysisView} from "./components/previousGameView/AnalysisView/AnalysisView";
-import Main from "./components/Main";
-import Login from "./components/Login";
-import Register from "./components/Register";
-import RegisterSuccess from "./components/RegisterSuccess";
 
 function ChessApp() {
 
@@ -27,15 +21,10 @@ function ChessApp() {
         <SocketContext.Provider value={socket}>
         <Router>
           <Routes>
-                <Route path="/" element={<Main />} />
-                <Route path="/login" element={<Login/>} />
-                <Route path="/register" element={<Register/>} />
-                <Route path="/registerSuccess" element={<RegisterSuccess/>} />
-
-                <Route path="/roomAssignment" element={<RoomAssignment />}>
-                    <Route path="/roomAssignment/playerForm" element={<PlayerForm/>}/> 
-                    <Route path={"/roomAssignment/joinAsSpectator"} element={<SpectatorForm/>}/>
-                    <Route path="/roomAssignment/playerForm/waitingRoomForm" element={<WaitingRoomForm/>}/> 
+                <Route path="/" element={<RoomAssignment />}>
+                    <Route path="/playerForm" element={<PlayerForm/>}/>
+                    <Route path={"/joinAsSpectator"} element={<SpectatorForm/>}/>
+                    <Route path="/playerForm/waitingRoomForm" element={<WaitingRoomForm/>}/>
                 </Route>
 
                 <Route path="/previousGameView" element={<PrevGameQueryPage />}>

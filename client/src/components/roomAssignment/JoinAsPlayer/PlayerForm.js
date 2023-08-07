@@ -1,7 +1,7 @@
 import {FindRoomForm} from "./FindRoom/FindRoomForm";
 import {JoinRoomForm} from "./CreateRoom/JoinRoomForm";
 /*
-Including player form
+Including joinRoomForm and findRoomForm
  */
 export function PlayerForm(){
 

@@ -1,27 +1,14 @@
-import {useContext, useEffect} from "react";
-import { SocketContext } from "../../../../context/socket";
 import {NavLink} from "react-router-dom";
-import {useRef, useState} from "react";
-import { useDispatch, useSelector } from "react-redux";
-
+import {useState} from "react";
+/*
+Find room navigates users to specific room specified by the user.
+ */
 export function FindRoomForm() {
     const [userName, setUserName] = useState(null);
     const [roomNumber, setRoomNumber] = useState(null);
     const [userNameError, setuserNameError] = useState("invisible");
     const [roomEror, setRoomNumberError] = useState("invisible");
 
-    const [isRoomFull, setIsRoomFull] = useState('');
-
-    
-    const roomNumbers = useSelector(state=>{
-        if (state.RoomsReducer.data !== undefined) {
-            return state.RoomsReducer.data;
-        } else {
-            return null
-        }
-    })
-
-    const socket = useContext(SocketContext);
 
     const handleOnChange = (e) => {
         checkEmptyUserName(e)
@@ -57,47 +44,15 @@ export function FindRoomForm() {
         } else if (!roomNumber || roomNumber < 0 || roomNumber > 1000000) {
             e.preventDefault();
             window.alert("ROOM NUMBER IS INVALID")
-        } else if (isRoomFull) {
-            e.preventDefault();
-            window.alert("The room is full. If you want to join the room, you can join as a spectator by clicking the Join As Spectator tab.");
-        } else {
-            socket.emit('join room', roomNumber, userName, (response) => {
-
-            });
-
         }
-
     }
 
-useEffect(() => {
-
-if (roomNumber !== null) {
-    socket.emit('is room full', roomNumber);
-}
-socket.on('is room full', (isRoomFull) => {
-    console.log("line 87 room full");
-    setIsRoomFull(isRoomFull)
-})
-
-}, [roomNumber]) 
     return (
         <div className={"w-[50%] h-[100%] flex flex-col items-stretch  "}>
             <fieldset className={"flex flex-col h-[85%] " +
                 "rounded-xl border-custom-black border-10 p-0 m-0 mb-[0.5rem] pb-[1.2rem]  px-[0.5rem]"}>
                 <legend className={"rounded-2xl text-custom-black text-md text-black"}>Find Room</legend>
                 <label className = {"rounded-2xl text-custom-black text-sm"}>Enter room number</label>
-
-                 {/* Source: https://www.w3schools.com/tags/tag_option.asp */}
-                 <select id="rooms">
-                    {roomNumbers.map((roomNumber, index) => {
-                        if (roomNumber.roomNumber !== undefined) {
-                            console.log(roomNumber.roomNumber);
-                            return <option key={index} value={roomNumber.roomNumber}>{index + 1}. {roomNumber.roomNumber}</option>
-                        }
-                    })}
-                    
-                </select>
-
                 <input  required
                         min={0}
                         max={1000000}
