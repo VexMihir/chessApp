@@ -6,17 +6,10 @@ export function AnalysisView() {
 
     const info = useSelector(state=>(state.AnalyisReducer));
     const currIndex = useSelector(state=> state).PrevGameView.currIdx
-    const bestMove = info.bestMoves[currIndex - 1] || "NOT AVAILABLE";
+    const bestMove = info.bestMoves[currIndex - 1] || "N/A";
     const displayScore = info.displayScore[currIndex] || 0;
-    //const rawScore = info.rawScore[currIndex] || "NOT AVAILABLE"
+    const rawScore = info.rawScore[currIndex] || "NOT AVAILABLE"
     let percentage = Math.ceil((Math.abs(displayScore)/8)*100);
-    let color;
-
-    if (displayScore >= 0) {
-        color = "white";
-    } else {
-       color = "black";
-    }
 
     if (percentage > 100 ) {
         percentage = 100
@@ -41,14 +34,10 @@ export function AnalysisView() {
                     id={"AnalysisPanel"}
                     className={"flex flex-row  h-[90%] w-[100%] item-stretch gap-x-[5%] pl-[0.2rem] "}>
                     <div
-                        id={"EvaluationBar"}
+                        id={""}
                         className={"h-[100%] w-[5%] "}>
-                        <EvaluationBar prop={
-                            {
-                                percentage,
-                                color
-                            }
-                        }/>
+                        <EvaluationBar evaluation={displayScore} rawScore={rawScore}
+                        />
                     </div>
                     <div
                         className={"h-[100%] w-[95%] "}>
