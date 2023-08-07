@@ -3,64 +3,64 @@
  * This file sets up the Express server, Socket.IO, and MongoDB connection for the ChessApp application.
  */
 
-const express = require('express');
-const http = require('http');
-const socketIo = require('socket.io');
-const cors = require('cors');
-const ChessGame = require('./game/game.js');
-const socketHandlers = require('./socket/socketHandlers.js');
-const mongoose = require('mongoose');
+const express = require("express");
+const http = require("http");
+const socketIo = require("socket.io");
+const cors = require("cors");
+const ChessGame = require("./game/game.js");
+const socketHandlers = require("./socket/socketHandlers.js");
+const mongoose = require("mongoose");
 const { instrument } = require("@socket.io/admin-ui");
-require('dotenv').config();
+require("dotenv").config();
 
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: [ "http://localhost:3000" , "https://admin.socket.io"],    
+    origin: ["http://localhost:3000", "https://admin.socket.io"],
     // origin: [ 'https://chessfrontend-2mfh.onrender.com' , "https://admin.socket.io"],
     methods: ["GET", "POST"],
     allowedHeaders: ["my-custom-header"],
-    credentials: true
-  }
+    credentials: true,
+  },
 });
 const port = 5001;
 
 app.use(cors());
 app.use(express.json());
 
-// Source: https://github.com/gitdagray/user_auth/blob/main/server.js
-app.use('/register', require('./routes/register'))
-app.use('/auth', require('./routes/auth'))
-
-app.get('/', (req, res) => {
+app.get("/", (req, res) => {
   res.send("Welcome to the game!");
 });
 
 // List of game rooms stored in the server
 let rooms = {};
 
-mongoose.connect(process.env.MONGO_URI || 'mongodb+srv://JAMDK:3lxXgQuMgCTGsZwV@chessapp.ynnbkwt.mongodb.net/ChessGames?retryWrites=true&w=majority')
-  .then(() => console.log('...// Connected to ChessApp Cluster //...'))
-  .catch(error => console.log(error));
+mongoose
+  .connect(
+    process.env.MONGO_URI ||
+      "mongodb+srv://JAMDK:3lxXgQuMgCTGsZwV@chessapp.ynnbkwt.mongodb.net/ChessGames?retryWrites=true&w=majority"
+  )
+  .then(() => console.log("...// Connected to ChessApp Cluster //..."))
+  .catch((error) => console.log(error));
 
-  // Game Schema
+// Game Schema
 const gameSchema = new mongoose.Schema({
   history: [{}],
   playerOneData: Object,
   playerTwoData: Object,
   date: Date,
-  result: String // "White", "Black", or "Draw"
+  result: String, // "White", "Black", or "Draw"
 });
 
-const Game = mongoose.model('Games', gameSchema);
+const Game = mongoose.model("Games", gameSchema);
 
 // Initialize socketHandlers
 socketHandlers.init(io, rooms, gameSchema, Game);
 console.log("line 48");
 
 // Create a new game room
-app.get('/createGame', (req, res) => {
+app.get("/createGame", (req, res) => {
   const newUniqueRoomNumber = () => {
     const roomNumber = Math.floor(Math.random() * 1000000);
     if (rooms[roomNumber]) {
@@ -73,16 +73,15 @@ app.get('/createGame', (req, res) => {
   };
   const roomNumber = newUniqueRoomNumber();
 
-
   let timeControl = parseInt(req.query.timeControl); // Time control in minutes
 
   if (!isNaN(timeControl)) {
     timeControl *= 60; // to seconds
-  } 
+  }
 
   let timeIncrement = parseInt(req.query.timeIncrement); // time increment in seconds
 
-  // default time controlis 5 minutes + 0 seconds if not specified 
+  // default time controlis 5 minutes + 0 seconds if not specified
   if (isNaN(timeControl)) {
     timeControl = 5 * 60; // to seconds
   }
@@ -92,8 +91,15 @@ app.get('/createGame', (req, res) => {
   }
 
   // max time control is 1 hour, max increment is +3 minutes
-  if (timeControl < 1 * 60 || timeControl > 60 * 60 || timeIncrement < 0 || timeIncrement > 180) {
-    return res.status(400).json({ error: "Invalid time control or time increment" });
+  if (
+    timeControl < 1 * 60 ||
+    timeControl > 60 * 60 ||
+    timeIncrement < 0 ||
+    timeIncrement > 180
+  ) {
+    return res
+      .status(400)
+      .json({ error: "Invalid time control or time increment" });
   }
 
   rooms[roomNumber] = {
@@ -105,34 +111,31 @@ app.get('/createGame', (req, res) => {
     increment: timeIncrement,
     currentPlayer: null,
     // owner: owner, // associated with a socket id value for sever to check the person who creates the room. This allows the user creates only one room number.
-    drawOffer: null
-  }
-
-  
+    drawOffer: null,
+  };
 
   res.send({ roomNumber });
 });
 
 //Source: https://chat.openai.com/share/48692ed3-23bb-46f2-9226-6da51d2ced56
 const seenObjects = new Set();
-app.get('/rooms', (req, res) => {
-  const roomsWithoutCircularRefs = JSON.stringify({rooms}, (key, value) => {
-    if (typeof value === 'object' && value !== null) {
+app.get("/rooms", (req, res) => {
+  const roomsWithoutCircularRefs = JSON.stringify({ rooms }, (key, value) => {
+    if (typeof value === "object" && value !== null) {
       if (seenObjects.has(value)) {
-        return '[Curcular]'
+        return "[Curcular]";
       }
-      seenObjects.add(value)
+      seenObjects.add(value);
     }
-    return value
-  })
-  seenObjects.clear()
+    return value;
+  });
+  seenObjects.clear();
 
-  return res.send(JSON.parse(roomsWithoutCircularRefs))
-
-})
+  return res.send(JSON.parse(roomsWithoutCircularRefs));
+});
 
 // Retrieve list of games stored in the database
-app.get('/games', async (req, res) => {
+app.get("/games", async (req, res) => {
   const uuid = req.query.uuid;
   if (uuid) {
     try {
@@ -140,11 +143,13 @@ app.get('/games', async (req, res) => {
       if (game) {
         res.send(game);
       } else {
-        res.status(404).send({ message: 'No game found with the specified UUID.' });
+        res
+          .status(404)
+          .send({ message: "No game found with the specified UUID." });
       }
     } catch (error) {
       console.log(error);
-      res.status(500).send({ message: 'Error finding game by UUID.' });
+      res.status(500).send({ message: "Error finding game by UUID." });
     }
   } else {
     const games = await Game.find().sort({ date: -1 }).limit(100);

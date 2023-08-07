@@ -7,7 +7,7 @@ const { EVENTS } = require('../aliases');
 const { pushToMongoAndManageDB } = require('./pushToMongoAndManageDB');
 
 
-const handleJoinRoom = (io, socket, rooms, gameModel, gameSchema) => (roomNumber, username, callback) => {
+const handleJoinRoom = (io, socket, rooms, gameModel, gameSchema) => (roomNumber, username) => {
 
   console.log("line 5", roomNumber, username);
 

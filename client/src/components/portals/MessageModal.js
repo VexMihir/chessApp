@@ -1,10 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
+/**
+ * A component for MessageModal
+ * 1. It is used by the socket event when a player offer draw to other player 
+ * 2. When the player who receives the MessageModal clicks yes, the game is over and the game outcome modal appears.
+ * 3. When the player who receives the MessageModal clicks no, the player who sent the offer draw request can see the message that it says the player declined your draw offer
+ */
 export default function MessageModal({
   isOpen,
   onCloseDeclined,
-  onCloseRescinded,
   onOutcomeModalOpen,
   children,
   isOneOption,

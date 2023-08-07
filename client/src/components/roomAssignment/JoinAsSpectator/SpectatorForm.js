@@ -1,5 +1,6 @@
 import {NavLink} from "react-router-dom";
-import {useState} from "react";
+import {useContext, useState} from "react";
+import { SocketContext } from "../../../context/socket";
 
 export function SpectatorForm() {
     const [userName, setUserName] = useState(null);
@@ -7,6 +8,7 @@ export function SpectatorForm() {
     const [userNameError, setuserNameError] = useState("invisible");
     const [roomEror, setRoomNumberError] = useState("invisible");
 
+    const socket = useContext(SocketContext)
 
     const handleOnChange = (e) => {
         checkEmptyUserName(e)
@@ -50,7 +52,7 @@ export function SpectatorForm() {
         <div className={"w-[40%] h-[85%] flex flex-col m-auto  "}>
             <fieldset className={"flex flex-col h-[85%] " +
                 "rounded-xl border-custom-black border-10 p-0 m-0 mb-[0.5rem] pb-[0.5rem]  px-[0.5rem]"}>
-                <legend className={"rounded-2xl text-custom-black text-md text-black"}>Join As Spectator</legend>
+                <legend className={"rounded-2xl text-custom-black text-md"}>Join As Spectator</legend>
                 <label className = {"rounded-2xl text-custom-black text-sm"}>Enter room number</label>
                 <input  required
                         min={0}
@@ -78,6 +80,7 @@ export function SpectatorForm() {
                         "shadow shadow-md shadow-custom-black " +
                         "h-[10%] py-[0.5rem] px-4 m-auto "}
                 onClick={(e)=>{
+                    socket.emit('join as spectator', roomNumber, userName);
                     finalCheck(e)
                  }} to={"/inGameView/"+ roomNumber}
                 state={{userName: userName}}

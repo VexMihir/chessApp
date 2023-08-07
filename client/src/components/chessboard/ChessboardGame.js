@@ -5,12 +5,20 @@ import {
   BLACK_CHESS_PIECE,
   WHITE_CHESS_PIECE,
 } from "../../constants/customChessPiece";
-import { CUSTOM_CHESS_PIECES } from "../../constants/CustomChessPieces";
 
 const chess = new Chess();
 
+/*
+  A component that displays the chessboard, a part of InGameView.
+  1. It allows the players to pick a chesspiece to move to other chess square.
+  2. It allows the players to click to see any valid moves.
+  3. It allows the spectators to change the orientation of the chessboard.
+  4. It includes a list of props sent by its parent component - inGameView
+  5. One socket event fro this component is about current FEN data sent by the server
+  6. It uses the chessboard.jsx library 
+  Technologies: React, Socket.io, Tailwind CSS
+*/
 export default function ChessboardGame({
-  result,
   pawnPromotionChoice,
   setHistory,
   players,
@@ -23,7 +31,7 @@ export default function ChessboardGame({
   activePlayer,
   setActivePlayer,
   orientation,
-  setOrientation
+  setOrientation,
 }) {
   const [fen, setFen] = useState(
     "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
@@ -40,10 +48,7 @@ export default function ChessboardGame({
   }
 
   function onSquareClick(square) {
-    // if (result === "Unfinished" && 
-    console.log("line45", isGameStarted);
-    // if (isGameStarted) {
-    if (socket && !isSocketSpectator && players.length === 2) {
+    if (!isSocketSpectator && players.length === 2) {
       let currentPlayer = null;
 
       for (let i = 0; i < players.length; i++) {
@@ -53,7 +58,10 @@ export default function ChessboardGame({
         }
       }
 
-      if (currentPlayer !== null && activePlayer === currentPlayer.color[0].toLowerCase()) {
+      if (
+        currentPlayer !== null &&
+        activePlayer === currentPlayer.color[0].toLowerCase()
+      ) {
         const validMovesIncludingSelf = chess.moves({
           square: square,
           verbose: true,
@@ -86,7 +94,6 @@ export default function ChessboardGame({
 
   function onDrop({ sourceSquare, targetSquare }) {
     if (socket && !isSocketSpectator && isGameStarted) {
-
       const validMoves = chess.moves({ square: sourceSquare, verbose: true });
 
       let result = "";
@@ -150,16 +157,16 @@ export default function ChessboardGame({
         setFullMove(fen.split(" ")[5]);
       });
 
-      socket.on('game current fen', (currentFEN) => {
-        setFen(currentFEN)
-      })
-      socket.on('game current history', (currentHistory) => {
-        setHistory(currentHistory)
-      })
+      socket.on("game current fen", (currentFEN) => {
+        setFen(currentFEN);
+      });
+      socket.on("game current history", (currentHistory) => {
+        setHistory(currentHistory);
+      });
     }
   }, [roomId, socket]);
 
-    useEffect(() => {
+  useEffect(() => {
     // Find the player's color once the players array is set
     if (players.length === 2) {
       const currentPlayer = players.find((player) => player.id === socket.id);
@@ -168,7 +175,6 @@ export default function ChessboardGame({
       }
     }
   }, [players, socket]);
-
 
   useEffect(() => {
     // Update orientation based on player's color
@@ -195,7 +201,7 @@ export default function ChessboardGame({
             onMouseOverSquare={onMouseOverSquare}
             darkSquareStyle={{ backgroundColor: "#547396" }}
             lightSquareStyle={{ backgroundColor: "#eae9d4" }}
-             pieces={{
+            pieces={{
               bQ: (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

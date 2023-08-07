@@ -10,6 +10,15 @@ import { useParams } from "react-router-dom";
 import MessageModal from "../portals/MessageModal";
 import { SocketContext } from "../../context/socket";
 
+/*
+  A component about InGameView
+  1. contains 2 child components - ChessboardGame and Sideboard
+  2. there are a lot of socket events for this component to listen to the response of the server
+  3. it can handle 5 different events - forfeits, offer draw, checkmate, non-offer draw, and time out
+  4. Once the server sends back a response to a client, this component will shows 2 different types of portals or modals - one is for Offer draw, and one is for non-offer draw
+  5. It also includes the header where it shows current turn, halfmove, fullmove, room number for this chessboard game
+  Technologies: React, Socket.io, Tailwind CSS
+*/
 export default function InGameView() {
   const [isGameStarted, setIsGameStarted] = useState(false);
   const [activePlayer, setActivePlayer] = useState("w");
@@ -113,6 +122,12 @@ export default function InGameView() {
         } else if (players[1].color.toLowerCase() === "black") {
           setReason("Black player accepted the draw offer");
         }
+      } else {
+        if(players[0].color.toLowerCase() === "white") {
+          setReason("White player accepted the draw offer");
+        } else if (players[1].color.toLowerCase() === "black") {
+          setReason("Black player accepted the draw offer")
+        }
       }
     }
   }, [isDrawAccepted]);
@@ -134,6 +149,12 @@ export default function InGameView() {
           } else if (players[1].color.toLowerCase() === "black") {
             setWinnerName(players[1].username);
           }
+        } else {
+          if (players[0].color.toLowerCase() === "white") {
+            setWinnerName(players[1].username);
+          } else if (players[0].color.toLowerCase() === "black") {
+            setWinnerName(players[0].username);
+          }
         }
         setReason("White player ran out of the time");
       } else if (timeoutColor === "black") {
@@ -150,6 +171,12 @@ export default function InGameView() {
             setWinnerName(players[1].username);
           } else if (players[1].color.toLowerCase() === "black") {
             setWinnerName(players[0].username);
+          }
+        } else {
+          if (players[0].color.toLowerCase() === "white") {
+            setWinnerName(players[0].username);
+          } else if (players[0].color.toLowerCase() === "black") {
+            setWinnerName(players[1].username);
           }
         }
         setReason("Black player ran out of the time");
@@ -174,6 +201,12 @@ export default function InGameView() {
           } else if (players[1].color.toLowerCase() === "black") {
             setWinnerName(players[1].username);
           }
+        } else {
+          if (players[0].color.toLowerCase() === "white") {
+            setWinnerName(players[1].username);
+          } else if (players[0].color.toLowerCase() === "black") {
+            setWinnerName(players[0].username);
+          }
         }
         setReason("White player is checkmated");
       } else if (checkmateColor === "Black") {
@@ -190,6 +223,12 @@ export default function InGameView() {
             setWinnerName(players[1].username);
           } else if (players[1].color.toLowerCase() === "black") {
             setWinnerName(players[0].username);
+          }
+        } else {
+          if (players[0].color.toLowerCase() === "white") {
+            setWinnerName(players[0].username);
+          } else if (players[0].color.toLowerCase() === "black") {
+            setWinnerName(players[1].username);
           }
         }
         setReason("Black player is checkmated");
@@ -217,9 +256,7 @@ export default function InGameView() {
 
     socket.on("user list update", (userList) => {
       setPlayers(userList.players);
-      // console.log("line 247", userList.players);
       if (userList.spectators.length > 0) {
-        // console.log("line 249", userList.spectators);
         setSpectators(userList.spectators);
       }
       if (userList.players.length === 1) {
@@ -239,26 +276,16 @@ export default function InGameView() {
     });
 
     socket.on("time update", (timer) => {
-      // console.log("Line 158 timer", timer);
       setTimer(timer);
     });
 
     socket.on("checkmate", (checkmatedPlayerColor) => {
-      // dispatch(postPGNObj({
-      //   history: gameHistory,
-      //   playerOne: players[0],
-      //   playerTwo: players[1],
-      //   date: new Date(),
-      //   winner: winningPlayerColor
-      // }))
-      console.log("line 278 checkmate color", checkmatedPlayerColor);
       setCheckmateColor(checkmatedPlayerColor);
       setIsGameStarted(false);
       setIsModalOpen(true);
     });
 
     socket.on("game over draw", (drawReason) => {
-      // drawReason displays the 50 rules???
       setGameOverDrawReason(drawReason);
       setIsGameStarted(false);
       setIsModalOpen(true);
@@ -307,12 +334,6 @@ export default function InGameView() {
       setIsGameStarted(false);
       setIsModalOpen(true);
     });
-
-    socket.on("insufficient moves to save", () => {
-      console.log("line 25 insifficient moves to save");
-      // setIsRewatchBtnOn(false)
-    })
-    
 
     // return () => {
     //   // socket.off("moveMade");

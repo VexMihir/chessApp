@@ -1,13 +1,15 @@
-import {useEffect} from "react";
+import {useContext, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {getRoomNumberAsync} from "../../../Redux/Thunk/getRoomNoAsync";
 import {NavLink, useLocation, useNavigate} from "react-router-dom";
+import { SocketContext } from "../../../context/socket";
 
 export function WaitingRoomForm () {
     const dispatch = useDispatch();
     const roomNumber = useSelector(state=>state.JoinRoomReducer.roomNumber);
     const errorPage = useSelector(state=>(state.SetError));
     const navigate = useNavigate()
+    const socket = useContext(SocketContext)
 
     let {state} = useLocation();
 
@@ -34,6 +36,9 @@ export function WaitingRoomForm () {
                             "shadow shadow-md shadow-custom-black mt-[1rem]"}
                     to={"/inGameView/"+ roomNumber}
                     state={{userName: state.userName}}
+                    onClick={()=>{
+                        socket.emit("join room",roomNumber, state.userName)
+                    }}
                 >Start Game!</NavLink>
             </div>
         </div>

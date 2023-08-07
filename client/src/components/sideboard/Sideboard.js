@@ -1,6 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { BLACK_CHESS_PIECE, WHITE_CHESS_PIECE } from "../../constants/customChessPiece";
 
+/*
+  A child component of InGameView
+  1. It has two distinct views - one for players, one for spectators
+  2. For the view the players can see, it can display player info, spectators, previous moves, pawn promotion choice, and game result actions.
+  3. For the view the spectators can see, it can display players info, spectators, previous moves and orientation
+  4. The players info section can display the information for the name, color and timer of 2 players
+  5. Player1 is the current player while Player2 is other player
+  6. Colors can be both white and black
+  7. Timer by default is set to 300 seconds
+  8. When the game started, the timer for Player1 starts decrementing by 1 second until 0
+  9. Once Player1 finsihes moveing a piece to other target chess square, the timer for Player1 stops and the timer for Player2 begins descrementing by 1 seconds until Player 2 finishes moving a piece to other square
+  10. A room can have 2 players and many spectators.
+  11. Once one of the players finsiehs moveing a chess piece, the previous moves get updated.
+  12. By default, the pawn promotion choice is Knight.
+  13. During the game, players change the Pawn promotion choice.
+  14. The section for game result actions contains both forfeit and offer draw buttons  
+  15. As a spectator, the sideboard can diplay players info, spectators and previous moves and orientation
+  16. There are 2 options for orientation - white and black. 
+  Technologies: React, Socket.io, Tailwind CSS
+*/
 export default function Sideboard(props) {
   const socket = props.socket;
   const players = props.players;
@@ -298,7 +318,7 @@ export default function Sideboard(props) {
               <div className="text-center text-3xl text-yellow-400 font-bold bg-custom-black">
                 Players Info
               </div>
-              <div className="flex justify-around text-black text-xl text-center font-bold">
+              <div className="flex justify-around text-custom-black text-xl text-center font-bold">
                 <div className="w-1/2 border border-black border-solid">
                   <div>Player1 </div>
                   <div className="flex border-x-0 border-y border-y-black border-solid px-2">

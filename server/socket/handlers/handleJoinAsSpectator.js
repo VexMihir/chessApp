@@ -33,10 +33,6 @@ const handleJoinAsSpectator = (io, socket, rooms) => (roomNumber, username) => {
 
         console.log(`User ${socket.id} joined as a spectator in room ${roomNumber}`);
 
-        // Add the spectator to the room
-        rooms[roomNumber].spectators.push({ id: socket.id, username });
-         console.log(`User ${socket.id} joined as a spectator in room ${roomNumber}`);
-
         // Emit updated user list to all clients in the room
         const userList = {
             players: rooms[roomNumber].players,
