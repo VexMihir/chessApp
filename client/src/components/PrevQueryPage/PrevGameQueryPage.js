@@ -1,3 +1,17 @@
+/**
+ * Frontend Table for Previous Games
+ *
+ * This frontend table displays information about previous games, spanning across multiple pages for easy navigation.
+ * Users can view game details and click to access the normal view of the playback feature, enabling them to interact
+ * with each move step by step.
+ *
+ * Dependencies: SetError reducer, prevGameQuery reducer
+ *
+ * Note: Ensure the SetError reducer is implemented to handle any potential errors.
+ * PrevGameQuery is implemented to retrieve  data back from MongoDB
+ */
+
+
 import {Outlet, useNavigate} from "react-router-dom";
 import {Pagination} from "./Pagnination/Pagination";
 import {useEffect} from "react";
