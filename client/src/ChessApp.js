@@ -24,7 +24,7 @@ function ChessApp() {
                 <Route path="/" element={<RoomAssignment />}>
                     <Route path="/playerForm" element={<PlayerForm/>}/>
                     <Route path={"/joinAsSpectator"} element={<SpectatorForm/>}/>
-                    <Route path="/playerForm/waitingRoomForm" element={<WaitingRoomForm/>}/>
+                    <Route path="/waitingRoomForm" element={<WaitingRoomForm/>}/>
                 </Route>
 
                 <Route path="/previousGameView" element={<PrevGameQueryPage />}>
