@@ -1,3 +1,18 @@
+/**
+ * Normal View - Previous Game
+ *
+ * The normal view for the previous game includes the following functionalities:
+ * 1. Play button: Continuously plays moves from a specific starting position until the end.
+ * 2. Pause button: Pauses the playback at a specific position.
+ * 3. Start button: Loads the first move of the game.
+ * 4. End button: Loads the last move of the game.
+ * 5. Next button: Loads the next move from a specific position.
+ * 6. Info panel: Displays the names of two users, dates, total number of moves from both players, date, and result of
+ *    the game.
+ * 7. Chessboard: Provides a visual representation of the game with all the above functionalities.
+ *
+ * Dependencies: PrevGameView
+ */
 import { PrevMoveListPannel } from "./MainPanel/PrevMovePannel";
 import {useSelector} from "react-redux";
 import {PrevMovePlayButton} from "./MainPanel/Buttons/PrevMovePlayButton";

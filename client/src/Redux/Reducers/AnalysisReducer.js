@@ -22,11 +22,11 @@ export function analysisReducer(state=initState, action) {
                     ...action.payload.displayScore
                 ],
                 rawScore: [
-                    ...state.displayScore.slice(0, 0),
+                    ...state.rawScore.slice(0, 0),
                     ...action.payload.rawScore
                 ],
                 label: [
-                    ...state.displayScore.slice(0, 0),
+                    ...state.label.slice(0, 0),
                     ...action.payload.label
                 ]
 

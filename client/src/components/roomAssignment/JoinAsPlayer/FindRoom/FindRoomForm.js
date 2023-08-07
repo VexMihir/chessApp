@@ -1,5 +1,13 @@
 import {NavLink} from "react-router-dom";
 import {useState} from "react";
+/**
+ * Find Room Form
+ *
+ * The Find Room form allows users to enter a room number to navigate to a specific room specified by the user. If
+ * the entered room number corresponds to an existing room with available slots, the user will be directed to that
+ * room.
+ *
+ */
 
 export function FindRoomForm() {
     const [userName, setUserName] = useState(null);
