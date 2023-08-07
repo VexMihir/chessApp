@@ -1,7 +1,20 @@
+/**
+ * Handle Join Room
+ * This module handles the logic when a player joins a room.
+ */
+
 const { EVENTS } = require('../aliases');
 const { pushToMongoAndManageDB } = require('./pushToMongoAndManageDB');
 
-
+/**
+ * Handle the logic when a player joins a room.
+ * @param {Object} io - Socket.IO instance.
+ * @param {Object} socket - The socket of the connected client.
+ * @param {Object} rooms - Object containing information about rooms and players.
+ * @param {Object} gameModel - The Mongoose model for game data.
+ * @param {Object} gameSchema - The Mongoose schema for game data.
+ * @returns {Function} - The function that handles joining a room.
+ */
 const handleJoinRoom = (io, socket, rooms, gameModel, gameSchema) => (roomNumber, username) => {
 
   console.log("line 5", roomNumber, username);
@@ -9,6 +22,10 @@ const handleJoinRoom = (io, socket, rooms, gameModel, gameSchema) => (roomNumber
   const WHITE = "White";
   const BLACK = "Black";
 
+  /**
+   * Determine the starting color for the player.
+   * @returns {string} - The starting color ("White" or "Black").
+   */
   const startingColor = () => {
     const randomizer = Math.floor(Math.random() * 2);
     if (randomizer > 0.5) {
@@ -18,6 +35,11 @@ const handleJoinRoom = (io, socket, rooms, gameModel, gameSchema) => (roomNumber
     }
   };
 
+  /**
+   * Get the opposite color for the given color.
+   * @param {string} firstPlayerColor - The color of the first player.
+   * @returns {string} - The opposite color ("White" or "Black").
+   */
   const getOppositeColor = (firstPlayerColor) => {
     if (firstPlayerColor == WHITE) {
       return BLACK;
@@ -26,6 +48,10 @@ const handleJoinRoom = (io, socket, rooms, gameModel, gameSchema) => (roomNumber
     }
   };
 
+   /**
+   * Start a timer for the specified room.
+   * @param {string} roomNumber - The room number.
+   */
   const startTimer = (roomNumber) => {
     if (rooms[roomNumber].timer) return;
 
@@ -85,6 +111,7 @@ const handleJoinRoom = (io, socket, rooms, gameModel, gameSchema) => (roomNumber
       spectators: rooms[roomNumber].spectators
     };
   } else {
+    // TODO: ??
     // error handling...
     // room does not exist
   }

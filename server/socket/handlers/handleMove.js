@@ -1,6 +1,18 @@
+/**
+ * Handle Move
+ * This module handles player moves and related game logic.
+ */
+
 const {pushToMongoAndManageDB} = require('./pushToMongoAndManageDB');
 const { EVENTS, DRAW_REASONS } = require('../aliases');
 
+
+/**
+ * Check if the room exists.
+ * @param {Object} rooms - The object containing room data.
+ * @param {string|number} roomNumber - The room number to check.
+ * @returns {boolean} - True if the room exists, false otherwise.
+ */
 const checkRoomExists = (rooms, roomNumber) => {
     if (!rooms[roomNumber]) {
         console.log(`Room ${roomNumber} does not exist`);
@@ -9,6 +21,13 @@ const checkRoomExists = (rooms, roomNumber) => {
     return true;
 };
 
+/**
+ * Handle non-offered draw scenarios.
+ * @param {Object} gameState - The current game state.
+ * @param {Object} io - The Socket.IO instance.
+ * @param {string|number} roomNumber - The room number.
+ * @param {Object} rooms - The object containing room data.
+ */
 const handleNonOfferedDraw = (gameState, io, roomNumber, rooms) => {
     if (gameState.inDraw) {
         let drawReason;
@@ -30,6 +49,13 @@ const handleNonOfferedDraw = (gameState, io, roomNumber, rooms) => {
     }
 };
 
+/**
+ * Handle non-offered draw scenarios.
+ * @param {Object} gameState - The current game state.
+ * @param {Object} io - The Socket.IO instance.
+ * @param {string|number} roomNumber - The room number.
+ * @param {Object} rooms - The object containing room data.
+ */
 const handleCheckmate = (gameState, io, roomNumber, rooms) => {
     if (gameState.inCheckmate) {
         console.log("in checkmate")
@@ -42,6 +68,15 @@ const handleCheckmate = (gameState, io, roomNumber, rooms) => {
     }
 };
 
+/**
+ * Handle game over scenarios.
+ * @param {Object} io - The Socket.IO instance.
+ * @param {string|number} roomNumber - The room number.
+ * @param {Object} rooms - The object containing room data.
+ * @param {Object} gameState - The current game state.
+ * @param {Object} gameSchema - The mongoose game schema.
+ * @param {Object} gameModel - The mongoose game model.
+ */
 const handleGameOver = (io, roomNumber, rooms, gameState, gameSchema, gameModel) => {
     handleNonOfferedDraw(gameState, io, roomNumber, rooms);
     handleCheckmate(gameState, io, roomNumber, rooms);
@@ -49,6 +84,15 @@ const handleGameOver = (io, roomNumber, rooms, gameState, gameSchema, gameModel)
     clearInterval(rooms[roomNumber].timer);
 };
 
+/**
+ * Handle player move.
+ * @param {Object} io - The Socket.IO instance.
+ * @param {Object} socket - The Socket.IO socket object.
+ * @param {Object} rooms - The object containing room data.
+ * @param {Object} gameSchema - The mongoose game schema.
+ * @param {Object} gameModel - The mongoose game model.
+ * @returns {Function} - The function to handle the move operation.
+ */
 const handleMove = (io, socket, rooms, gameSchema, gameModel) => (roomNumber, from, to, promotionChoice) => {
     if (!checkRoomExists(rooms, roomNumber)) {
         socket.emit('error', `Error moving: room ${roomNumber} does not exist`);
@@ -63,10 +107,7 @@ const handleMove = (io, socket, rooms, gameSchema, gameModel) => (roomNumber, fr
         return;
     }
 
-    console.log("line 55");
     try {
-        // console.log("line 57", roomNumber, move);
-        // const pieceMove = game.movePiece(move);
         if (promotionChoice) {
             game.movePieceWithPromotion(from, to, promotionChoice)
         } else {

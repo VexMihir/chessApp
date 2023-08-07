@@ -1,4 +1,12 @@
+/**
+ * Aliases for ChessApp Socket.IO Events and Draw States
+ * This module defines various aliases for Socket.IO events and draw states used throughout the ChessApp server.
+ */
+
 module.exports = {
+    /**
+     * Socket.IO Events
+     */
     EVENTS: {
         CONNECTION: 'connection',
         DISCONNECT: 'disconnect',
@@ -20,12 +28,20 @@ module.exports = {
         RESIGNATION: 'resignation',
         GAME_OVER_DRAW: 'game over draw',
     },
+
+    /**
+     * Draw Offered States
+     */
     OFFERED_DRAW_STATES: {
         OFFERED: 'offered',
         ACCEPTED: 'accepted',
         DECLINED: 'declined',
         RESCINDED: 'rescinded'
     },
+
+    /**
+     * Draw Reasons
+     */
     DRAW_REASONS : {
         STALEMATE: 'stalemate',
         THREEFOLD_REPETITION: 'threefold repetition',
