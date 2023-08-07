@@ -10,7 +10,7 @@ import PreviousGameView from "./components/previousGameView/PreviousGameView";
 import {PlayerForm} from "./components/roomAssignment/JoinAsPlayer/PlayerForm";
 import {NOTFOUNDPAGE} from "./components/404NOTFOUND/404NOTFOUND";
 import {analysisView, normalView, playBackView} from "./RouteString/RouteString";
-import {PrevMoveList} from "./components/previousGameView/PrevMoveList/PrevMoveList";
+import {PrevMoveList} from "./components/previousGameView/NormalView/PrevMoveList";
 import {AnalysisView} from "./components/previousGameView/AnalysisView/AnalysisView";
 
 function ChessApp() {

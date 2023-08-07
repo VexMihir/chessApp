@@ -1,5 +1,9 @@
 import {LinearProgress, linearProgressClasses, styled} from "@mui/material";
 
+/*
+Evaluation bar indicates chances of winning the game between white and black players. White means that white pieces are
+having advantaged and vice versa.
+ */
 // ChatGPT was used to generate the following code:
 
 const VerticalLinearProgress = styled(LinearProgress)(() => ({
