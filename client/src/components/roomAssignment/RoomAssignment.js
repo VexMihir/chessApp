@@ -3,11 +3,18 @@ import {NavLink, Outlet} from "react-router-dom";
 import "./RoomAssignment.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faChess} from '@fortawesome/free-solid-svg-icons'
-/*
-Join Page room includes:
- createRoom form that creates new room number using userName
- findRoom form that join a room based on a room number as a player
- spectator form that join a room based on a room number as a spectator
+
+/**
+ *
+ * This page includes three forms for joining a room:
+ *
+ * 1. Create Room Form: Allows users to create a new room by providing a userName. The form generates a new room
+ *    number for the user from the backend API endpoint, allowing them to be a player in the created room.
+ *
+ * 2. Find Room Form: Enables users to join an existing room as a player by entering a room number.
+ *
+ * 3. Spectator Form: Permits users to join an existing room as a spectator by entering a room number.
+ *
  */
 export default function RoomAssignment() {
 

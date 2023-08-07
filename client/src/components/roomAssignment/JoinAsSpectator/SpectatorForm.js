@@ -2,6 +2,15 @@ import {NavLink} from "react-router-dom";
 import {useContext, useState} from "react";
 import { SocketContext } from "../../../context/socket";
 
+/**
+ * With help of chatGPT rephrasing and grammar checking
+ * Spectator Room Form
+ *
+ * The Spectator Room Form allows users to join an ongoing game as a spectator by entering a room number. Upon
+ * validation, the user is directed to the waiting page with the specified room number, where they can observe the
+ * game without actively participating as a player.
+ *
+ */
 export function SpectatorForm() {
     const [userName, setUserName] = useState(null);
     const [roomNumber, setRoomNumber] = useState(null);

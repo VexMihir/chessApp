@@ -1,21 +1,30 @@
 import {GETANALYSIS} from "../String/analysis";
 import {getAnalysisScore} from "./ServiceWorker/SFWorker";
-/*
-This middleware purpose is to retrieve evaluation information of FEN's string position through stockfish' AI model
-We use stockfish.js script, which is  an emscripten port of the stockfish chess engine. We further use chess universal
-interface's protocols (UCI) to communicate with the engine.
-
-How do we calculate percentage score:
-    First, we retrieve raw the centipawn score (-2000 < cp < 2000)
-    Secondly, we take absolute of the score and minus the previous score. If it is the first score, which is a start
-    position, then the score will be 0;
-    Lastly, we divide it by 100.
-    There is an alternative better signmol approach to calculate the percentage. However within the time limit, we just
-    use the simpler approach above.
-
-How we optimize the performance of stockfish:
-    We let multiple web workers (threads) run at once and sort them through the index later.
+/**
+ * With help of chatGPT rephrasing and grammar checking
+ * Evaluation Middleware for FEN Positions
+ *
+ * Purpose:
+ * This middleware is responsible for retrieving evaluation information of FEN (Forsyth-Edwards Notation) string positions
+ * through the Stockfish AI chess engine. It utilizes the stockfish.js script, which is an emscripten port of the Stockfish
+ * chess engine, and communicates with the engine using the Universal Chess Interface (UCI) protocols.
+ *
+ * Calculation of Percentage Score:
+ * 1. Retrieve raw centipawn score from Stockfish engine (-2000 < cp < 2000).
+ * 2. Take the absolute value of the score and subtract the previous score. If it is the first score (start position), the
+ *    score will be 0.
+ * 3. Divide the result by 100 to obtain the percentage score.
+ *
+ * Performance Optimization:
+ * To optimize the performance of Stockfish, the middleware leverages multiple web workers (threads) running simultaneously.
+ * The results from these workers are then sorted through the index later, ensuring efficient evaluation of multiple positions
+ * in parallel.
+ *
+ * Note:
+ * While an alternative better sigmoid approach exists for calculating the percentage score, the current implementation
+ * utilizes a simpler approach due to time constraints.
  */
+
 export const loadAnalysisObj = store => next => async action => {
 
     if (action.type === GETANALYSIS) {

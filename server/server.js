@@ -3,15 +3,15 @@
  * This file sets up the Express server, Socket.IO, and MongoDB connection for the ChessApp application.
  */
 
-const express = require("express");
-const http = require("http");
-const socketIo = require("socket.io");
-const cors = require("cors");
-const ChessGame = require("./game/game.js");
-const socketHandlers = require("./socket/socketHandlers.js");
-const mongoose = require("mongoose");
+const express = require('express');
+const http = require('http');
+const socketIo = require('socket.io');
+const cors = require('cors');
+const ChessGame = require('./game/game.js');
+const socketHandlers = require('./socket/socketHandlers.js');
+const mongoose = require('mongoose');
 const { instrument } = require("@socket.io/admin-ui");
-require("dotenv").config();
+require('dotenv').config();
 
 const app = express();
 const server = http.createServer(app);
@@ -29,22 +29,20 @@ const port = 5001;
 app.use(cors());
 app.use(express.json());
 
-app.get("/", (req, res) => {
+// Route to check if the server is functional and responding
+app.get('/', (req, res) => {
   res.send("Welcome to the game!");
 });
 
 // List of game rooms stored in the server
 let rooms = {};
 
-mongoose
-  .connect(
-    process.env.MONGO_URI ||
-      "mongodb+srv://JAMDK:3lxXgQuMgCTGsZwV@chessapp.ynnbkwt.mongodb.net/ChessGames?retryWrites=true&w=majority"
-  )
-  .then(() => console.log("...// Connected to ChessApp Cluster //..."))
-  .catch((error) => console.log(error));
+// Database Connection
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log('...// Connected to ChessApp Cluster //...'))
+  .catch(error => console.log(error));
 
-// Game Schema
+  // Game Schema
 const gameSchema = new mongoose.Schema({
   history: [{}],
   playerOneData: Object,
@@ -60,7 +58,7 @@ socketHandlers.init(io, rooms, gameSchema, Game);
 console.log("line 48");
 
 // Create a new game room
-app.get("/createGame", (req, res) => {
+app.get('/createGame', (req, res) => {
   const newUniqueRoomNumber = () => {
     const roomNumber = Math.floor(Math.random() * 1000000);
     if (rooms[roomNumber]) {
@@ -81,7 +79,7 @@ app.get("/createGame", (req, res) => {
 
   let timeIncrement = parseInt(req.query.timeIncrement); // time increment in seconds
 
-  // default time controlis 5 minutes + 0 seconds if not specified
+  // default time controlis 5 minutes + 0 seconds if not specified 
   if (isNaN(timeControl)) {
     timeControl = 5 * 60; // to seconds
   }
@@ -117,25 +115,14 @@ app.get("/createGame", (req, res) => {
   res.send({ roomNumber });
 });
 
-//Source: https://chat.openai.com/share/48692ed3-23bb-46f2-9226-6da51d2ced56
-const seenObjects = new Set();
-app.get("/rooms", (req, res) => {
-  const roomsWithoutCircularRefs = JSON.stringify({ rooms }, (key, value) => {
-    if (typeof value === "object" && value !== null) {
-      if (seenObjects.has(value)) {
-        return "[Curcular]";
-      }
-      seenObjects.add(value);
-    }
-    return value;
-  });
-  seenObjects.clear();
-
-  return res.send(JSON.parse(roomsWithoutCircularRefs));
-});
+// Create a new game room
+app.get('/rooms', (req, res) => {
+  // return rooms
+  res.send(rooms)
+})
 
 // Retrieve list of games stored in the database
-app.get("/games", async (req, res) => {
+app.get('/games', async (req, res) => {
   const uuid = req.query.uuid;
   if (uuid) {
     try {

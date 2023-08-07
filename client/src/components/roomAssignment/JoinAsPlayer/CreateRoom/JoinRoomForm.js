@@ -1,7 +1,12 @@
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
-/*
-Join Room forms navigate users to waiting with retrieved number from backend
+/**
+ * With help of chatGPT rephrasing and grammar checking
+ * Join Room Forms
+ *
+ * This set of forms allows users to join different types of rooms and navigate to a waiting page with the retrieved
+ * room number from the backend's API endpoint.
+ *
  */
 export function JoinRoomForm() {
     const [userName, setUserName] = useState(null);

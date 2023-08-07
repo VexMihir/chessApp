@@ -6,7 +6,15 @@
 const { EVENTS } = require('../aliases');
 const { pushToMongoAndManageDB } = require('./pushToMongoAndManageDB');
 
-
+/**
+ * Handle the logic when a player joins a room.
+ * @param {Object} io - Socket.IO instance.
+ * @param {Object} socket - The socket of the connected client.
+ * @param {Object} rooms - Object containing information about rooms and players.
+ * @param {Object} gameModel - The Mongoose model for game data.
+ * @param {Object} gameSchema - The Mongoose schema for game data.
+ * @returns {Function} - The function that handles joining a room.
+ */
 const handleJoinRoom = (io, socket, rooms, gameModel, gameSchema) => (roomNumber, username) => {
 
   console.log("line 5", roomNumber, username);

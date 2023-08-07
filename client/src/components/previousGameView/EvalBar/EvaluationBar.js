@@ -1,3 +1,11 @@
+/**
+ * With help of chatGPT rephrasing and grammar checking
+ * Evaluation Bar
+ *
+ * The evaluation bar indicates the chances of winning the game between white and black players. A favorable
+ * evaluation for white means that white pieces have an advantage, and vice versa.
+ *
+ */
 import {LinearProgress, linearProgressClasses, styled} from "@mui/material";
 
 /*

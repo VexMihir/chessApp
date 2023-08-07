@@ -1,3 +1,19 @@
+/**
+ * With help of chatGPT rephrasing and grammar checking
+ * Game Evaluation View Documentation
+ *
+ * This component provides players with insights and analysis during gameplay:
+ * - Evaluating bar shows chances of winning for both players.
+ * - Best moves for each position are displayed.
+ * - Percentage score shows the likelihood of winning for each player. Positive means that white pieces are having
+ * advantages.
+ * - Retains standard functionalities of normal view.
+ *
+ * Dependencies: PrevGameView, Analysis Reducer
+ *
+ * Note: Optimize analysis algorithms for smooth performance.
+ */
+
 import {useSelector} from "react-redux";
 import {PrevMoveList} from "../NormalView/PrevMoveList";
 import {EvaluationBar} from "../EvalBar/EvaluationBar";

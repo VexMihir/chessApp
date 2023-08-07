@@ -1,3 +1,23 @@
+/**
+ * With help of chatGPT rephrasing and grammar checking
+ * Previous Games View
+ *
+ * This component includes two big components: Normal View and Analysis View of previous games.
+ *
+ * 1. Normal View: Allows users to review and replay previous games with functionalities like play, pause, start,
+ *    end, and next move buttons. The info panel displays game details such as usernames, dates, total number of
+ *    moves, and the game's result. The chessboard visually represents the game board and all the functionalities.
+ *
+ * 2. Analysis View: Provides users with insights and analysis of previous games. It includes an evaluating bar
+ *    indicating the chances of winning for both players, best moves for each position, and a percentage score for
+ *    the current player's likelihood of winning. The Analysis View relies on the PrevGameView and Analysis reducers
+ *    to retrieve necessary data for analysis.
+ *
+ * Dependencies: PrevGameView reducer
+ *
+ *
+ */
+
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Chessboard from "chessboardjsx";
