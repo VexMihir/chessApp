@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BLACK_CHESS_PIECE, WHITE_CHESS_PIECE } from "../constant/customChessPiece";
+import { BLACK_CHESS_PIECE, WHITE_CHESS_PIECE } from "../../constants/customChessPiece";
 
 export default function Sideboard(props) {
   const socket = props.socket;

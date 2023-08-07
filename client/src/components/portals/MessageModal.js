@@ -27,13 +27,7 @@ export default function MessageModal({
                   className="w-[140px] text-2xl bg-custom-black hover:bg-yellow-300 text-yellow-400 font-bold hover:text-custom-black py-1 px-3 mx-2 rounded-md rounded"
                   onClick={onCloseDeclined}
                 >
-                  Declined
-                </button>
-                <button
-                  className="w-[140px] text-2xl bg-custom-black hover:bg-yellow-300 text-yellow-400 font-bold hover:text-custom-black py-1 px-3 mx-2 rounded-md rounded"
-                  onClick={onCloseRescinded}
-                >
-                  Rescined
+                  No
                 </button>
                 <button
                   className="w-[140px] text-2xl bg-custom-black hover:bg-yellow-300 text-yellow-400 font-bold hover:text-custom-black py-1 px-3 mx-2 rounded-md rounded"

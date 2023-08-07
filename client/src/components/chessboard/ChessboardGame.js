@@ -4,11 +4,13 @@ import React, { useState, useEffect } from "react";
 import {
   BLACK_CHESS_PIECE,
   WHITE_CHESS_PIECE,
-} from "../constant/customChessPiece";
+} from "../../constants/customChessPiece";
+import { CUSTOM_CHESS_PIECES } from "../../constants/CustomChessPieces";
 
 const chess = new Chess();
 
 export default function ChessboardGame({
+  result,
   pawnPromotionChoice,
   setHistory,
   players,
@@ -37,10 +39,11 @@ export default function ChessboardGame({
     }
   }
 
-
   function onSquareClick(square) {
+    // if (result === "Unfinished" && 
+    console.log("line45", isGameStarted);
+    // if (isGameStarted) {
     if (socket && !isSocketSpectator && players.length === 2) {
-      // && isGameStarted) {
       let currentPlayer = null;
 
       for (let i = 0; i < players.length; i++) {
@@ -50,8 +53,7 @@ export default function ChessboardGame({
         }
       }
 
-      // activePlayer always = w or b
-      if (activePlayer === currentPlayer.color[0].toLowerCase()) {
+      if (currentPlayer !== null && activePlayer === currentPlayer.color[0].toLowerCase()) {
         const validMovesIncludingSelf = chess.moves({
           square: square,
           verbose: true,
@@ -139,11 +141,6 @@ export default function ChessboardGame({
   useEffect(() => {
     if (socket) {
       socket.on("moveMade", (move, fen, validMoves, history) => {
-        console.log("line 202--------");
-        console.log("line 159", move);
-        console.log("validMoves", validMoves);
-        console.log("history", history);
-
         // Here you can handle updates of the game state
         setFen(fen); // Update FEN state
         setHistory(history);

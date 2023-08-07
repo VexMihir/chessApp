@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import { loadGameDB } from '../../Redux/Action/prevGamViewActions';
 import { getDBObj } from '../../Redux/Thunk/PrevGameDB';
-
+import { normalView, queryPage } from '../../RouteString/RouteString';
+import { SocketContext } from '../../context/socket';
 
 export default function OutcomeModal({isOpen, score, result, winnerName, reason}) {
 
@@ -14,14 +15,13 @@ export default function OutcomeModal({isOpen, score, result, winnerName, reason}
   function navigateToMoveList(e) {
    e.preventDefault();
    dispatch(loadGameDB(0));
-   navigate("/prevMoveList", {replace: false})
+   navigate(queryPage, {replace: false})
   }
 
   //Source: https://stackoverflow.com/questions/50644976/react-button-onclick-redirect-page
   const routeChange = (e) => {
-    console.log("line 10");
     e.preventDefault();
-    let path = "/";
+    let path = "/roomAssignment/playerForm";
     navigate(path);
   };
 
@@ -61,9 +61,15 @@ export default function OutcomeModal({isOpen, score, result, winnerName, reason}
             </div>
           </div>
 
+
+          <>
           {/* Source: https://v1.tailwindcss.com/components/buttons */}
-          <button className="w-auto text-2xl bg-custom-black hover:bg-yellow-300 text-yellow-400 font-bold hover:text-custom-black py-1 px-3 mx-2 rounded-md rounded" onClick={routeChange}>Back</button>
-          <button className="w-auto text-2xl bg-custom-black hover:bg-yellow-300 text-yellow-400 font-bold hover:text-custom-black py-1 px-3 mx-2 rounded-md rounded" onClick={navigateToMoveList}>Rewatch</button>
+            <button className="w-auto text-2xl bg-custom-black hover:bg-yellow-300 text-yellow-400 font-bold hover:text-custom-black py-1 px-3 mx-2 rounded-md rounded" onClick={routeChange}>Back</button>
+            <button className="w-auto text-2xl bg-custom-black hover:bg-yellow-300 text-yellow-400 font-bold hover:text-custom-black py-1 px-3 mx-2 rounded-md rounded" onClick={navigateToMoveList}>Game List</button>
+          </>
+
+          
+
         </div>
       </div>
       </>

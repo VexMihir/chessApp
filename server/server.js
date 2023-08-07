@@ -90,7 +90,7 @@ app.post('/createGame', (req, res) => {
     timeControl: timeControl,
     increment: timeIncrement,
     currentPlayer: null,
-    owner: owner, // associated with a socket id value for sever to check the person who creates the room. This allows the user creates only one room number.
+    // owner: owner, // associated with a socket id value for sever to check the person who creates the room. This allows the user creates only one room number.
     drawOffer: null
   }
 
@@ -132,7 +132,7 @@ app.get('/games', async (req, res) => {
       res.status(500).send({ message: 'Error finding game by UUID.' });
     }
   } else {
-    const games = await Game.find().sort({ date: -1 }).limit(10);
+    const games = await Game.find().sort({ date: -1 }).limit(100);
     res.send(games);
   }
 });

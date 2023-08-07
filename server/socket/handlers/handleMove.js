@@ -64,7 +64,7 @@ const handleGameOver = (io, roomNumber, rooms, gameState, gameSchema, gameModel)
     pushToMongoAndManageDB(rooms[roomNumber], gameSchema, gameModel);
     clearInterval(rooms[roomNumber].timer);
     // console.log("line 50");
-    delete rooms[roomNumber]
+    // delete rooms[roomNumber]
     // console.log("line 52");
 };
 
@@ -132,7 +132,9 @@ const handleMove = (io, socket, rooms, gameSchema, gameModel) => (roomNumber, fr
     // add increment to currentPlayer's timer
     rooms[roomNumber].timers[currentPlayer] += rooms[roomNumber].increment;
   
+    console.log("line 135");
     if (gameState.gameOver) {
+
         handleGameOver(io, roomNumber, rooms, gameState, gameSchema, gameModel) 
     }
 };

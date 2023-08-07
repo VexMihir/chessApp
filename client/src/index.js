@@ -4,17 +4,8 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import {Provider} from "react-redux";
 import ChessApp from "./ChessApp.js"
-import App from "./App.js"
 import {mainStore} from "./Redux/Store/mainStore";
 
-
-// playground environment
-
-// const socket = io(process.env.REACT_APP_BACKEND_URL || 'http://localhost:5001');
-
-// socket.on('connect', function() {
-//   console.log('Connected to server');
-// });
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

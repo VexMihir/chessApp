@@ -3,7 +3,7 @@ import Sideboard from "../sideboard/Sideboard";
 import ChessboardGame from "../chessboard/ChessboardGame";
 import {
   WHITE_CHESS_PIECE,
-} from "../constant/customChessPiece";
+} from "../../constants/customChessPiece";
 
 import OutcomeModal from "../portals/OutcomeModal";
 import { useParams } from "react-router-dom";
@@ -298,14 +298,21 @@ export default function InGameView() {
     });
 
     socket.on("timeout", (winningPlayerColor) => {
-      if (winningPlayerColor === "white") {
+      console.log("##line 301", winningPlayerColor);
+      if (winningPlayerColor.toLowerCase() === "white") {
         setTimeoutColor("black");
-      } else if (winningPlayerColor === "black") {
+      } else if (winningPlayerColor.toLowerCase() === "black") {
         setTimeoutColor("white");
       }
       setIsGameStarted(false);
       setIsModalOpen(true);
     });
+
+    socket.on("insufficient moves to save", () => {
+      console.log("line 25 insifficient moves to save");
+      // setIsRewatchBtnOn(false)
+    })
+    
 
     // return () => {
     //   // socket.off("moveMade");
@@ -386,6 +393,7 @@ export default function InGameView() {
 
           <div className="flex">
             <ChessboardGame
+              result={result}
               pawnPromotionChoice={pawnPromotionChoice}
               players={players}
               setHistory={setHistory}

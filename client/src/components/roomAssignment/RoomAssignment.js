@@ -1,11 +1,12 @@
 import React from "react";
-import {NavLink, Outlet} from "react-router-dom";
+import {NavLink, Outlet, useNavigate} from "react-router-dom";
 import "./RoomAssignment.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faChess} from '@fortawesome/free-solid-svg-icons'
 
 
 export default function RoomAssignment() {
+    const navigate = useNavigate()
 
     return (
         <div className={
@@ -15,6 +16,13 @@ export default function RoomAssignment() {
             "overflow-y: auto"
         }>
             <div className={"flex flex-col"}>
+                <div className="logout-button cursor-pointer"
+                    onClick={() => {
+                        // localStorage.clear()
+                        navigate('/')
+                    }}>
+                    Logout
+                </div>
                 <div
                     className={"w-[5px] "}
                 >
