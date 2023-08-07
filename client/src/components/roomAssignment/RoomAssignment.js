@@ -3,8 +3,12 @@ import {NavLink, Outlet, useNavigate} from "react-router-dom";
 import "./RoomAssignment.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faChess} from '@fortawesome/free-solid-svg-icons'
-
-
+/*
+Join Page room includes:
+ createRoom form that creates new room number using userName
+ findRoom form that join a room based on a room number as a player
+ spectator form that join a room based on a room number as a spectator
+ */
 export default function RoomAssignment() {
     const navigate = useNavigate()
 
@@ -50,7 +54,7 @@ export default function RoomAssignment() {
                 </NavLink>
             </div>
             <div
-                className={"h-[220px] p-[0.5rem] w-[95.55%] items-center"}
+                className={"h-[220px] p-[0.5rem] w-[95.55%] items-center backdrop-blur-md"}
             >
                 <Outlet />
             </div>

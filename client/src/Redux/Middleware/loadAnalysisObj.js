@@ -1,6 +1,21 @@
 import {GETANALYSIS} from "../String/analysis";
 import {getAnalysisScore} from "./ServiceWorker/SFWorker";
-//things
+/*
+This middleware purpose is to retrieve evaluation information of FEN's string position through stockfish' AI model
+We use stockfish.js script, which is  an emscripten port of the stockfish chess engine. We further use chess universal
+interface's protocols (UCI) to communicate with the engine.
+
+How do we calculate percentage score:
+    First, we retrieve raw the centipawn score (-2000 < cp < 2000)
+    Secondly, we take absolute of the score and minus the previous score. If it is the first score, which is a start
+    position, then the score will be 0;
+    Lastly, we divide it by 100.
+    There is an alternative better signmol approach to calculate the percentage. However within the time limit, we just
+    use the simpler approach above.
+
+How we optimize the performance of stockfish:
+    We let multiple web workers (threads) run at once and sort them through the index later.
+ */
 export const loadAnalysisObj = store => next => async action => {
 
     if (action.type === GETANALYSIS) {
@@ -54,23 +69,27 @@ export const loadAnalysisObj = store => next => async action => {
             } else if (!isNaN(ret.rawScore[index]) && ret.rawScore[index] !== Infinity && ret.rawScore[index] !== - Infinity) {
                 let percentScore = calculatePercentageScore(ret.offsetScore, index);
                 let label = labelingHelper(percentScore);
-                ret.displayScore.push(percentScore);
+                ret.displayScore.push((Number(ret.offsetScore[index]) / 100) * -1);
                 ret.label.push(label)
             } else if (!isNaN(ret.mateIn[index])) {
-                ret.displayScore.push(Math.sign(ret.rawScore[index]) * 8);
+                ret.displayScore.push(`M${ret.mateIn[index]}`);
                 let label = labelingHelper(ret.rawScore, ret.mateIn);
                 ret.label.push(label)
             }
         }
 
-        if (action.payload.includes("White wins by Checkmate")) {
-            ret.displayScore.push(1);
+        if (action.payload.includes("White wins by")) {
+            ret.displayScore.push("1-0");
             ret.rawScore.push("CHECKMATE");
             ret.bestMoves.push("CHECKMATE")
-        } else if (action.payload.includes("Black wins by Checkmate")) {
-            ret.displayScore.push(-1);
+        } else if (action.payload.includes("Black wins by")) {
+            ret.displayScore.push("0-1");
             ret.rawScore.push("CHECKMATE");
             ret.bestMoves.push("CHECKMATE")
+        } else if (action.payload.includes("Draw")) {
+            ret.displayScore.push("1/2-1/2");
+            ret.rawScore.push("DRAW");
+            ret.bestMoves.push("DRAW")
         }
 
         console.log("Evaluations:", ret);
@@ -82,7 +101,7 @@ export const loadAnalysisObj = store => next => async action => {
 }
 
 const calculatePercentageScore = (ret, index) => {
-    let score = (ret[Number(index)] - ret[Number(index) -1])/100;
+    let score = (ret[Number(index)] - ret[Number(index) - 1]) / 100;
     if (index === 1) {
         score = ret[Number(index)] / 100;
     }

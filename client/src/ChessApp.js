@@ -13,7 +13,7 @@ import {NOTFOUNDPAGE} from "./components/404NOTFOUND/404NOTFOUND";
 import { SocketContext, socket } from "./context/socket";
 // import {PrevMoveList} from "./components/sideboard/PrevMoveList/PrevMoveList";
 import {analysisView, normalView, playBackView} from "./RouteString/RouteString";
-import {PrevMoveList} from "./components/previousGameView/PrevMoveList/PrevMoveList";
+import {PrevMoveList} from "./components/previousGameView/NormalView/PrevMoveList";
 import {AnalysisView} from "./components/previousGameView/AnalysisView/AnalysisView";
 import Main from "./components/Main";
 import Login from "./components/Login";

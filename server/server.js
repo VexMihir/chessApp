@@ -1,3 +1,8 @@
+/**
+ * ChessApp Server
+ * This file sets up the Express server, Socket.IO, and MongoDB connection for the ChessApp application.
+ */
+
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
@@ -32,12 +37,14 @@ app.get('/', (req, res) => {
   res.send("Welcome to the game!");
 });
 
+// List of game rooms stored in the server
 let rooms = {};
 
 mongoose.connect(process.env.MONGO_URI || 'mongodb+srv://JAMDK:3lxXgQuMgCTGsZwV@chessapp.ynnbkwt.mongodb.net/ChessGames?retryWrites=true&w=majority')
   .then(() => console.log('...// Connected to ChessApp Cluster //...'))
   .catch(error => console.log(error));
 
+  // Game Schema
 const gameSchema = new mongoose.Schema({
   history: [{}],
   playerOneData: Object,
@@ -48,12 +55,12 @@ const gameSchema = new mongoose.Schema({
 
 const Game = mongoose.model('Games', gameSchema);
 
-console.log("line 46");
+// Initialize socketHandlers
 socketHandlers.init(io, rooms, gameSchema, Game);
 console.log("line 48");
 
-app.post('/createGame', (req, res) => {
-  console.log("line 49");
+// Create a new game room
+app.get('/createGame', (req, res) => {
   const newUniqueRoomNumber = () => {
     const roomNumber = Math.floor(Math.random() * 1000000);
     if (rooms[roomNumber]) {
@@ -65,10 +72,17 @@ app.post('/createGame', (req, res) => {
     }
   };
   const roomNumber = newUniqueRoomNumber();
-  let timeControl = parseInt(req.query.timeControl); // time control in minutes
+
+
+  let timeControl = parseInt(req.query.timeControl); // Time control in minutes
+
+  if (!isNaN(timeControl)) {
+    timeControl *= 60; // to seconds
+  } 
+
   let timeIncrement = parseInt(req.query.timeIncrement); // time increment in seconds
 
-  // default time controlis 5+0 if not specified 
+  // default time controlis 5 minutes + 0 seconds if not specified 
   if (isNaN(timeControl)) {
     timeControl = 5 * 60; // to seconds
   }
@@ -117,6 +131,7 @@ app.get('/rooms', (req, res) => {
 
 })
 
+// Retrieve list of games stored in the database
 app.get('/games', async (req, res) => {
   const uuid = req.query.uuid;
   if (uuid) {
@@ -137,13 +152,15 @@ app.get('/games', async (req, res) => {
   }
 });
 
+// Start the server
 server.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
 
+// Admin UI instrumentation
 instrument(io, {
   auth: false,
   mode: "development",
 });
 
-module.exports = app; // for testing purposes
+module.exports = app;

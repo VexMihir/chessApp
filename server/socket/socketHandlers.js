@@ -1,3 +1,8 @@
+/**
+ * Socket Handlers
+ * This file initializes Socket.IO event handlers for various game actions and interactions.
+ */
+
 const { handleJoinRoom } = require('./handlers/handleJoinRoom');
 const { handleJoinAsSpectator } = require('./handlers/handleJoinAsSpectator');
 const { handleMove } = require('./handlers/handleMove');
@@ -13,6 +18,14 @@ const { handleCheckUserCreateRoom } = require('./handlers/handleCheckUserCreateR
 const { EVENTS } = require('./aliases');
 
 let rooms;
+
+/**
+ * Initialize socket handlers for different events.
+ * @param {SocketIO.Server} io - Socket.IO server instance.
+ * @param {object} roomInstance - The room instance.
+ * @param {object} gameSchema - The game schema.
+ * @param {object} gameModel - The game model.
+ */
 
 const init = (io, roomInstance, gameSchema, gameModel) => {
     rooms = roomInstance;

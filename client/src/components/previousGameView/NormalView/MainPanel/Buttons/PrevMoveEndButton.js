@@ -3,7 +3,6 @@ import {endingPointUpdate, pauseMoveList} from "../../../../../Redux/Action/prev
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faForward } from '@fortawesome/free-solid-svg-icons'
 
-
 export function PrevMoveEndButton() {
     const dispatch = useDispatch()
 
