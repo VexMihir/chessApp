@@ -1,7 +1,19 @@
+/**
+ * Push to Mongo and Manage Database
+ * This module handles saving game data to MongoDB and managing the database size.
+ */
+
 const { MongoClient } = require("mongodb");
 
+// Maximum number of elements in the database
 const MAX_ELEMENT_LIMIT = 100;
 
+/**
+ * Push game data to MongoDB and manage the database size.
+ * @param {Object} gameRoom - The game room object.
+ * @param {Object} gameSchema - The mongoose game schema.
+ * @param {Object} Game - The mongoose game model.
+ */
 async function pushToMongoAndManageDB(gameRoom, gameSchema, Game) {
   const gameHistory = gameRoom.game.getGameHistory();
 

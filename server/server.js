@@ -1,3 +1,8 @@
+/**
+ * ChessApp Server
+ * This file sets up the Express server, Socket.IO, and MongoDB connection for the ChessApp application.
+ */
+
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
@@ -6,7 +11,6 @@ const ChessGame = require('./game/game.js');
 const socketHandlers = require('./socket/socketHandlers.js');
 const mongoose = require('mongoose');
 const { instrument } = require("@socket.io/admin-ui");
-const { time } = require('console');
 require('dotenv').config();
 
 const app = express();
@@ -24,16 +28,20 @@ const port = 5001;
 app.use(cors());
 app.use(express.json());
 
+// Route to check if the server is functional and responding
 app.get('/', (req, res) => {
   res.send("Welcome to the game!");
 });
 
+// List of game rooms stored in the server
 let rooms = {};
 
+// Database Connection
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('...// Connected to ChessApp Cluster //...'))
   .catch(error => console.log(error));
 
+  // Game Schema
 const gameSchema = new mongoose.Schema({
   history: [{}],
   playerOneData: Object,
@@ -44,8 +52,10 @@ const gameSchema = new mongoose.Schema({
 
 const Game = mongoose.model('Games', gameSchema);
 
+// Initialize socketHandlers
 socketHandlers.init(io, rooms, gameSchema, Game);
 
+// Create a new game room
 app.get('/createGame', (req, res) => {
   const newUniqueRoomNumber = () => {
     const roomNumber = Math.floor(Math.random() * 1000000);
@@ -56,7 +66,9 @@ app.get('/createGame', (req, res) => {
     }
   };
   const roomNumber = newUniqueRoomNumber();
-  let timeControl = parseInt(req.query.timeControl); // time control in minutes
+
+
+  let timeControl = parseInt(req.query.timeControl); // Time control in minutes
 
   if (!isNaN(timeControl)) {
     timeControl *= 60; // to seconds
@@ -64,7 +76,7 @@ app.get('/createGame', (req, res) => {
 
   let timeIncrement = parseInt(req.query.timeIncrement); // time increment in seconds
 
-  // default time controlis 5+0 if not specified 
+  // default time controlis 5 minutes + 0 seconds if not specified 
   if (isNaN(timeControl)) {
     timeControl = 5 * 60; // to seconds
   }
@@ -92,11 +104,13 @@ app.get('/createGame', (req, res) => {
   res.send({ roomNumber });
 });
 
+// Create a new game room
 app.get('/rooms', (req, res) => {
   // return rooms
   res.send(rooms)
 })
 
+// Retrieve list of games stored in the database
 app.get('/games', async (req, res) => {
   const uuid = req.query.uuid;
   if (uuid) {
@@ -117,68 +131,15 @@ app.get('/games', async (req, res) => {
   }
 });
 
-// app.post('/games', async (req, res, next) => {
-//   console.log("line 89");
-//   // console.log("line 89", req.body);
-
-
-//   var newGame = new Game(req.body).save()
-//   res.status(200).send('Successful')
-//   // res.send("")
-
-
-//   // var newGame = new Game({
-
-//   //   history: [
-//   //     {
-//   //       color: "w",
-//   //       piece: "p",
-//   //       from: "f2",
-//   //       to: "f4",
-//   //       san: "f4",
-//   //       flags: "b",
-//   //       lan: "f2f4",
-//   //       before: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
-//   //       after: "rnbqkbnr/pppppppp/8/8/5P2/8/PPPPP1PP/RNBQKBNR b KQkq - 0 1"
-//   //     },
-//   //     {
-//   //       color: "b",
-//   //       piece: "p",
-//   //       from: "e7",
-//   //       to: "e5",
-//   //       san: "e5",
-//   //       flags: "b",
-//   //       lan: "e7e5",
-//   //       before: "rnbqkbnr/pppppppp/8/8/5P2/8/PPPPP1PP/RNBQKBNR b KQkq - 0 1",
-//   //       after: "rnbqkbnr/pppp1ppp/8/4p3/5P2/8/PPPPP1PP/RNBQKBNR w KQkq - 0 2"
-//   //     }
-//   //   ],
-//   //   playerOneData: {
-//   //     //Socket id
-//   //     id: "1234",
-//   //     username: "Dan",
-//   //     color: "black"
-//   //   },
-//   //   playerTwoData: {
-//   //     id: "2342",
-//   //     username: "Jason",
-//   //     color: "white"
-//   //   },
-//   //   date: new Date(),
-//   //   winner: "Dan" // "White", "Black", or "Draw"
-
-//   // }).save()
-//   // console.log("line 89", newGame);
-//   // res.send(newGame)
-// })
-
+// Start the server
 server.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
 
+// Admin UI instrumentation
 instrument(io, {
   auth: false,
   mode: "development",
 });
 
-module.exports = app; // for testing purposes
+module.exports = app;
