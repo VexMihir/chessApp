@@ -6,9 +6,9 @@ Join Room forms navigate users to waiting with retrieved number from backend
 export function JoinRoomForm() {
   const [userName, setUserName] = useState(null);
   const [userNameError, setuserNameError] = useState("invisible");
-  const [selectedTimeControl, setSelectedTimeControl] = useState(null);
+  const [selectedTimeControl, setSelectedTimeControl] = useState("5");
   const [selectedIncrementControl, setSelectedIncrementControl] =
-    useState(null);
+    useState("0");
 
   const handleOnChange = (e) => {
     checkEmptyUserName(e);
@@ -80,73 +80,91 @@ export function JoinRoomForm() {
           <button
               onClick={() => handleTimeControlSelection("20")}
               className={`py-[0.1rem] px-3 rounded-lg text-xs ${
-                  selectedTimeControl === "20" ? "bg-gray-400" : ""
+                  selectedTimeControl === "20" ? "bg-yellow-400" : ""
               }`}
+              style={{ fontFamily: 'Grenze'}}
           >20</button>
           <button
               onClick={() => handleTimeControlSelection("15")}
               className={`py-[0.1rem] px-3 rounded-lg text-xs ${
-                  selectedTimeControl === "15" ? "bg-gray-400" : ""
+                  selectedTimeControl === "15" ? "bg-yellow-400" : ""
               }`}
+              style={{ fontFamily: 'Grenze'}}
           >15</button>
           <button
               onClick={() => handleTimeControlSelection("10")}
               className={`py-[0.1rem] px-3 rounded-lg text-xs ${
-                  selectedTimeControl === "10" ? "bg-gray-400" : ""
+                  selectedTimeControl === "10" ? "bg-yellow-400" : ""
               }`}
+              style={{ fontFamily: 'Grenze'}}
           >10</button>
           <button
               onClick={() => handleTimeControlSelection("5")}
               className={`py-[0.1rem] px-4 rounded-lg text-xs ${
-                  selectedTimeControl === "5" ? "bg-gray-400" : ""
+                  selectedTimeControl === "5" ? "bg-yellow-400" : ""
               }`}
+              style={{ fontFamily: 'Grenze'}}
           >5</button>
           <button
               onClick={() => handleTimeControlSelection("3")}
               className={`py-[0.1rem] px-4 rounded-lg text-xs ${
-                  selectedTimeControl === "3" ? "bg-gray-400" : ""
+                  selectedTimeControl === "3" ? "bg-yellow-400" : ""
               }`}
+              style={{ fontFamily: 'Grenze'}}
           >3</button>
           <button
               onClick={() => handleTimeControlSelection("1")}
               className={`py-[0.1rem] px-4 rounded-lg text-xs ${
-                  selectedTimeControl === "1" ? "bg-gray-400" : ""
+                  selectedTimeControl === "1" ? "bg-yellow-400" : ""
               }`}
+              style={{ fontFamily: 'Grenze'}}
           >1</button>
         </div>
         <legend className={"rounded-2xl text-custom-black text-xs text-black "}>
           Increment Selection (Secs)
         </legend>
         <div className="flex flex-row justify-around items-center ">
+        <button
+              onClick={() => handleIncrementSelection("1")}
+              className={`py-[0.1rem] px-4 rounded-lg text-xs ${
+                  selectedIncrementControl === "0" ? "bg-yellow-400" : ""
+              }`}
+              style={{ fontFamily: 'Grenze'}}
+          >+0</button>
           <button
               onClick={() => handleIncrementSelection("1")}
               className={`py-[0.1rem] px-4 rounded-lg text-xs ${
-                  selectedIncrementControl === "1" ? "bg-gray-400" : ""
+                  selectedIncrementControl === "1" ? "bg-yellow-400" : ""
               }`}
+              style={{ fontFamily: 'Grenze'}}
           >+1</button>
           <button
               onClick={() => handleIncrementSelection("3")}
               className={`py-[0.1rem] px-4 rounded-lg text-xs ${
-                  selectedIncrementControl === "3" ? "bg-gray-400" : ""
+                  selectedIncrementControl === "3" ? "bg-yellow-400" : ""
               }`}
+              style={{ fontFamily: 'Grenze'}}
           >+3</button>
           <button
               onClick={() => handleIncrementSelection("5")}
               className={`py-[0.1rem] px-4 rounded-lg text-xs ${
-                  selectedIncrementControl === "5" ? "bg-gray-400" : ""
+                  selectedIncrementControl === "5" ? "bg-yellow-400" : ""
               }`}
+              style={{ fontFamily: 'Grenze'}}
           >+5</button>
           <button
               onClick={() => handleIncrementSelection("10")}
               className={`py-[0.1rem] px-4 rounded-lg text-xs ${
-                  selectedIncrementControl === "10" ? "bg-gray-400" : ""
+                  selectedIncrementControl === "10" ? "bg-yellow-400" : ""
               }`}
+              style={{ fontFamily: 'Grenze'}}
           >+10</button>
           <button
               onClick={() => handleIncrementSelection("30")}
               className={`py-[0.1rem] px-4 rounded-lg text-xs ${
-                  selectedIncrementControl === "30" ? "bg-gray-400" : ""
+                  selectedIncrementControl === "30" ? "bg-yellow-400" : ""
               }`}
+              style={{ fontFamily: 'Grenze'}}
           >+30</button>
         </div>
       </fieldset>
