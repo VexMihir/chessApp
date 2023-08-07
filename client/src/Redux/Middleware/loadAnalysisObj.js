@@ -1,6 +1,7 @@
 import {GETANALYSIS} from "../String/analysis";
 import {getAnalysisScore} from "./ServiceWorker/SFWorker";
 /**
+ * With help of chatGPT rephrasing and grammar checking
  * Evaluation Middleware for FEN Positions
  *
  * Purpose:
@@ -23,13 +24,6 @@ import {getAnalysisScore} from "./ServiceWorker/SFWorker";
  * While an alternative better sigmoid approach exists for calculating the percentage score, the current implementation
  * utilizes a simpler approach due to time constraints.
  */
-
-
-
-
-Regenerate
-
-Regenerate
 
 export const loadAnalysisObj = store => next => async action => {
 

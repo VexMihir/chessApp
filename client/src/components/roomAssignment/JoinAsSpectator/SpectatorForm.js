@@ -1,6 +1,7 @@
 import {NavLink} from "react-router-dom";
 import {useState} from "react";
 /**
+ * With help of chatGPT rephrasing and grammar checking
  * Spectator Room Form
  *
  * The Spectator Room Form allows users to join an ongoing game as a spectator by entering a room number. Upon

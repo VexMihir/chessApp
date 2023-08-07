@@ -1,4 +1,5 @@
 /**
+ * With help of chatGPT rephrasing and grammar checking
  * Frontend Table for Previous Games
  *
  * This frontend table displays information about previous games, spanning across multiple pages for easy navigation.
@@ -8,7 +9,7 @@
  * Dependencies: SetError reducer, prevGameQuery reducer
  *
  * Note: Ensure the SetError reducer is implemented to handle any potential errors.
- * PrevGameQuery is implemented to retrieve  data back from MongoDB
+ * PrevGameQuery is implemented to retrieve data back from MongoDB
  */
 
 

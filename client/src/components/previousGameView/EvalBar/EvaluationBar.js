@@ -1,4 +1,5 @@
 /**
+ * With help of chatGPT rephrasing and grammar checking
  * Evaluation Bar
  *
  * The evaluation bar indicates the chances of winning the game between white and black players. A favorable

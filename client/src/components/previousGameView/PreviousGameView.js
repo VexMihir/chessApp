@@ -1,4 +1,5 @@
 /**
+ * With help of chatGPT rephrasing and grammar checking
  * Previous Games View
  *
  * This component includes two big components: Normal View and Analysis View of previous games.

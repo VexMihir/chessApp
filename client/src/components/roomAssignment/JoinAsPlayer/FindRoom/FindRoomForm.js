@@ -1,6 +1,7 @@
 import {NavLink} from "react-router-dom";
 import {useState} from "react";
 /**
+ * With help of chatGPT rephrasing and grammar checking
  * Find Room Form
  *
  * The Find Room form allows users to enter a room number to navigate to a specific room specified by the user. If

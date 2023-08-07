@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
 /**
+ * With help of chatGPT rephrasing and grammar checking
  * Join Room Forms
  *
  * This set of forms allows users to join different types of rooms and navigate to a waiting page with the retrieved
