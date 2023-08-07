@@ -5,7 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {getDBObj} from "../../Redux/Thunk/PrevGameDB";
 import {NavBar} from "../NavBar/NavBar";
 /*
-Frontend table to display number of previous games, including two pages.
+Frontend table to display number of previous games as form of a table, including two pages.
 Relies on SetError reducer
  */
 export function PrevGameQueryPage() {

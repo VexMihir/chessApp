@@ -9,11 +9,11 @@ import {PrevMoveNextButton} from "./MainPanel/Buttons/PrevMoveNextButton";
 import {InfoPanel} from "./MainPanel/InfoPanel/InfoPanel";
 /*
 Normal view for the previous game view including:
-1. play button, loading continuously moves from specific starting position till end.
+1. play button,to load continuously moves from specific starting position till end.
 2. pause button to pause at specific position.
-3. start button, loading the first move
-4. end button, loading the last move
-5. next button, load the next move from a specific position
+3. start button, to load the first move
+4. end button, to load the last move
+5. next button, to load the next move from a specific position
 6. info panel: names of two users, dates, number of moves (total from both players), date and result
 7. Chessboard to show the visual all the functionalities
  */

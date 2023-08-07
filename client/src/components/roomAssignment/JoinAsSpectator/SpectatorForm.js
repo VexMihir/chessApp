@@ -1,6 +1,8 @@
 import {NavLink} from "react-router-dom";
 import {useState} from "react";
-
+/*
+Navigates users to a room as a spectator
+ */
 export function SpectatorForm() {
     const [userName, setUserName] = useState(null);
     const [roomNumber, setRoomNumber] = useState(null);

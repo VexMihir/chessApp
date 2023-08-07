@@ -8,7 +8,6 @@ Join Page room includes:
  createRoom form that creates new room number using userName
  findRoom form that join a room based on a room number as a player
  spectator form that join a room based on a room number as a spectator
-
  */
 export default function RoomAssignment() {
 

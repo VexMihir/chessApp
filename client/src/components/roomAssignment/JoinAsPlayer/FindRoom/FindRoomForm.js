@@ -1,6 +1,8 @@
 import {NavLink} from "react-router-dom";
 import {useState} from "react";
-
+/*
+Find room navigates users to specific room specified by the user.
+ */
 export function FindRoomForm() {
     const [userName, setUserName] = useState(null);
     const [roomNumber, setRoomNumber] = useState(null);

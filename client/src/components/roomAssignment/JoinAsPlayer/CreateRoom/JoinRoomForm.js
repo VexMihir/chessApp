@@ -1,6 +1,8 @@
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
-
+/*
+Join Room forms navigate users to waiting with retrieved number from backend
+ */
 export function JoinRoomForm() {
   const [userName, setUserName] = useState(null);
   const [userNameError, setuserNameError] = useState("invisible");
