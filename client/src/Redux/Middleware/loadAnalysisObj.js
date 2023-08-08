@@ -81,6 +81,16 @@ export const loadAnalysisObj = store => next => async action => {
                 ret.displayScore.push((Number(ret.offsetScore[index]) / 100) * -1);
                 ret.label.push(label)
             } else if (!isNaN(ret.mateIn[index])) {
+                if (ret.rawScore[Number(index) -1] !== 2000 ||  ret.rawScore[Number(index) -1] !== -2000) {
+                    if (Number(index) % 2 === 0) {
+                        ret.rawScore[index] = 2000;
+                    } else {
+                        ret.rawScore[index] = -2000;
+                    }
+                } else {
+                    ret.rawScore[index] = ret.rawScore[Number(index) -1];
+                    ret.offsetScore[index] = 2000;
+                }
                 ret.displayScore.push(`M${ret.mateIn[index]}`);
                 let label = labelingHelper(ret.rawScore, ret.mateIn);
                 ret.label.push(label)
