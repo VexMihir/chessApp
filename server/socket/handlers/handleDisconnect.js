@@ -1,4 +1,4 @@
-const { EVENTS } = required('../aliases') 
+const { EVENTS } = require('../aliases') 
 
 const handleDisconnect = (io, socket, rooms) => () => {
     console.log('Client disconnected');

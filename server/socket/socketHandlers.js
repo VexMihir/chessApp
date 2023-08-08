@@ -14,7 +14,7 @@ const { handleDeclineDraw } = require('./handlers/handleDeclineDraw');
 const { handleResignation } = require('./handlers/handleResignation')
 const { handleCheckRoomFull } = require('./handlers/handleCheckRoomFull')
 
-const { EVENTS } = require('../../aliases');
+const { EVENTS } = require('./aliases');
 
 let rooms;
 
