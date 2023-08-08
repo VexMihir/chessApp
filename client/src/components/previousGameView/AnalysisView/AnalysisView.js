@@ -19,14 +19,6 @@ import {PrevMoveList} from "../NormalView/PrevMoveList";
 import {EvaluationBar} from "../EvalBar/EvaluationBar";
 import React, { useEffect } from 'react';
 
-/*
-Evaluation view of the game includes
-1. An evaluating bar showing chances of winning for both players.
-2. Best moves for each position
-3. Percentage score
-4. Normal views' functionalities.
-Relies on PrevGameView and Analysis reducer
- */
 export function AnalysisView() {
 
     const info = useSelector(state=>(state.AnalyisReducer));

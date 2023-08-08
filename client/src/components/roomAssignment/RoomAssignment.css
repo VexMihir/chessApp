@@ -46,32 +46,6 @@
     }
   }
 
-  .logout-button, .logout-button:link, .logout-button:visited {
-    padding: 13px 0;
-    border: 1px solid #333;
-    color: #333;
-    font-weight: 700;
-    text-transform: uppercase;
-    font-size: 13px;
-    letter-spacing: 3px;
-    transition: all .2s ease-in-out;
-    text-align: center;
-    position: absolute;
-    top: 5%;
-    left: 1.5%;
-    padding: 10px 20px;
-    text-decoration: none;
-    font-size: 18px;
-    width: 5rem;
-    
-    &:hover {
-      background: #333;
-      border: 1px solid #333;
-      color: #fefefe;
-      border-radius: 30px;
-    }
-  }
-
   .join-1 {
     position: absolute;
     top: 20%;

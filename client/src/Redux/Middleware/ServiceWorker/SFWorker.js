@@ -59,9 +59,6 @@ export async function getAnalysisScore(fenStr, index) {
                     mate = parseInt(mate[0]);
                     ret.rawScore =  Infinity;
                     ret.offsetScore = Infinity;
-                    if (index % 2 !== 0 ) {
-                        ret.offsetScore *= OFFSET;
-                    }
                     ret.mateIn = mate;
                 }
                 if (ret.bestMove && ((ret.rawScore && ret.offsetScore) || ret.mateIn)) {
