@@ -60,7 +60,7 @@ export function JoinRoomForm() {
           "rounded-xl border-custom-black border-10 p-0 m-0 mb-[0.2rem] pb-[0.2rem]  px-[0.5rem]"
         }
       >
-        <legend className={"rounded-2xl text-custom-black text-md text-black"}>
+        <legend className={"rounded-2xl text-custom-black text-md text-black-custom"}>
           Create Room
         </legend>
         <label className={"rounded-2xl text-custom-black text-sm"}>
