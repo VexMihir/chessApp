@@ -69,7 +69,7 @@ Our app has the capabilities of real-time communication between a server and mul
 ## 🌟 Contributors
 - [Dan Blustein](https://github.com/wallstarr):
    - Worked with Mihir Bhandari to design and implement the entire backend, primarily handling chess game logic.
-   - Implemented game storage and retrieval in the backend from our MongoDB database.
+   - Implemented game storage and retrieval in the backend from our MongoDB database with Kevin Dang.
    - Collaborated with Alex Nguyen to implement the analysis feature using the Stockfish.js library.
    - Major bug finding and fixes towards the end of the project.
 - [Mihir Bhandari](https://github.com/VexMihir):
@@ -78,6 +78,11 @@ Our app has the capabilities of real-time communication between a server and mul
    - Collaborated with Alex Nguyen to style and format the front end for the PrevGameView component.
    - Major bug finding and fixes towards the end of the project.
    - Served as the point of contact in order to ensure timely progress to meet deadlines.
+- [Kevin Dang](https://github.com/kdang243):
+  - Implemented game storage and retrieval in the backend from our MongoDB database with Dan Bluestein.
+  - Implemented chess game logic using chess.js library to the backend, includes validing legal moves of chess pieces, game states and handling end-game scenarios.
+  - Created UI elements for timer and its increment options.
+  - Deployed the backend as a web service and frontend as a static site using Render.
 - [Alex Nguyen](https://github.com/AlexNgGit): 
   - Parsed information from the database and implemented the front end to display the information using React and Redux.
   - Implemented the playback feature based on the information from the MongoDB database.
@@ -89,10 +94,6 @@ Our app has the capabilities of real-time communication between a server and mul
    - Implemented the valid-moves feature that allowed users to see the available moves per piece.
    - Designed the side panel, a part of the in-game view that showed player and game information.
    - Developed a bare-bones login system that had to be scraped from the final release due to time constraints.
-- [Kevin Dang](https://github.com/kdang243):
-  - Deployed the front-end and the backend using render.
-  - Added UI elements, like timer control and timer increment.
-  - Worked with Dan Blustein to import the chess.js library to the backend, in game.js.
 ---
 
 📣 Please refer to old.README.md for the design document of the app, including prototype sketches.
