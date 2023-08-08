@@ -37,7 +37,8 @@ function ChessApp() {
               </Route>
 
               <Route path="/inGameView/:id" element={<InGameView/>}/> 
-              <Route path="/404NOTFOUND" element={<NOTFOUNDPAGE />} />
+              {/* Source: https://naveenda.medium.com/creating-a-custom-404-notfound-page-with-react-routers-56af9ad67807 */}
+              <Route path="*" element={<NOTFOUNDPAGE/>} />
           </Routes>
         </Router>
         </SocketContext.Provider>

@@ -75,6 +75,13 @@ export default function InGameView() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    //Source: https://stackoverflow.com/questions/71369320/how-to-controling-browser-back-button-with-react-router-dom-v6
+    window.onpopstate = () => {
+      navigate("/");
+    }  
+  }, [])
+
+  useEffect(() => {
     for (let i = 0; i < spectators.length; i++) {
       if (socket.id === spectators[i].id) {
         setIsSocketSpectator(true);

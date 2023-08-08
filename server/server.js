@@ -17,7 +17,8 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: [process.env.FRONTEND_URL || "http://localhost:3000", "https://admin.socket.io"],
+    origin: "http://localhost:3000",
+    // origin: [process.env.FRONTEND_URL || "http://localhost:3000", "https://admin.socket.io"],
     methods: ["GET", "POST"],
     allowedHeaders: ["my-custom-header"],
     credentials: true,
@@ -69,11 +70,16 @@ app.get('/createGame', (req, res) => {
 
   let timeControl = parseInt(req.query.timeControl); // Time control in minutes
 
+  console.log("line 72", timeControl);
+
   if (!isNaN(timeControl)) {
     timeControl *= 60; // to seconds
   }
 
   let timeIncrement = parseInt(req.query.timeIncrement); // time increment in seconds
+
+  console.log("line 80", timeIncrement);
+
 
   // default time controlis 5 minutes + 0 seconds if not specified 
   if (isNaN(timeControl)) {
