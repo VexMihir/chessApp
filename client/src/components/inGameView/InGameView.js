@@ -9,7 +9,6 @@ import OutcomeModal from "../portals/OutcomeModal";
 import { useNavigate, useParams } from "react-router-dom";
 import MessageModal from "../portals/MessageModal";
 import { SocketContext } from "../../context/socket";
-import { useNavigate } from 'react-router-dom';
 
 /*
   A component about InGameView
@@ -49,7 +48,8 @@ export default function InGameView() {
 
   // flags
   const [isRoomExist, setIsRoomExist] = useState(true)
-
+  const [isPlayerGetDisconnected, setIsPlayerGetDisconnected] = useState(false)
+ 
   const [isOneOption, setIsOneOption] = useState(false)
   const [message, setMessage] = useState("")
 
@@ -72,6 +72,12 @@ export default function InGameView() {
   const [roomId, setRoomId] = useState(id);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (players.length === 0) {
+      navigate('/')
+    }
+  }, [players])
 
   useEffect(() => {
     for (let i = 0; i < spectators.length; i++) {
@@ -255,8 +261,12 @@ export default function InGameView() {
     socket.on("player disconnected", (roomNumber) => {
       console.log("line 251");
       if (roomId === roomNumber) {
-        alert("Game abandoned by opponent");
-        navigate('/');
+
+        setIsPlayerGetDisconnected(true)
+        setIsOneOption(true)
+        setMessage("Game abandoned by opponent")
+        setIsMessageModalOpen(true);
+        
       }
     });
 
@@ -375,6 +385,13 @@ export default function InGameView() {
       setIsMessageModalOpen(true);
     })
 
+    return () => {
+      // socket.emit("room not exist", () => {
+      //   console.log("line 384...");
+      // })
+      // socket.disconnect()
+    }
+
 
     // return () => {
     //   // socket.off("moveMade");
@@ -392,7 +409,9 @@ export default function InGameView() {
           isOpen={isMessageModalOpen}
           onOk={() => {
             // reset
-            if (isRoomExist) {
+            if (isPlayerGetDisconnected) {
+              navigate('/')
+            } else if (isRoomExist) {
               setIsMessageModalOpen(false);
             } else if (!isRoomExist) {
               navigate('/')

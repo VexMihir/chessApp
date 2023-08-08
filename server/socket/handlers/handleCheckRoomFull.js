@@ -11,13 +11,13 @@ const handleCheckRoomFull = (io, socket, rooms) => (roomNumber) => {
 
     if (room.players.length !== 2) {
         console.log(`Not full in room ${roomNumber}`);
-        socket.emit('is room full', false);
+        socket.emit(EVENTS.CHECK_IF_ROOM_FULL, false);
         return;
     }
 
     if (room.players.length === 2) {
         console.log(`Full in room ${roomNumber}`);
-        socket.emit('is room full', true);
+        socket.emit(EVENTS.CHECK_IF_ROOM_FULL, true);
         return;
     }
 

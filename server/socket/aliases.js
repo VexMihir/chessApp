@@ -19,6 +19,7 @@ module.exports = {
         START_GAME: 'start game',
         USER_LIST_UPDATE: 'user list update',
         ROOM_FULL: 'room full',
+        CHECK_IF_ROOM_FULL: 'is room full',
         MOVE_MADE: 'moveMade',
         DRAW_OFFERED: 'drawOffered',
         DRAW_ACCEPTED: 'drawAccepted',
