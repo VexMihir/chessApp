@@ -13,7 +13,6 @@ const handleDisconnect = (io, socket, rooms) => () => {
         
         rooms[roomNumber].players = rooms[roomNumber].players.filter(player => player.id !== socket.id);
         rooms[roomNumber].spectators = rooms[roomNumber].spectators.filter(spectator => spectator.id !== socket.id);
-        console.log("line 14");
         const userList = {
             players: rooms[roomNumber].players,
             spectators: rooms[roomNumber].spectators

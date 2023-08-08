@@ -22,9 +22,6 @@ import {setERROR} from "../Action/errorAction";
 
 export function postPGNObj(PGNObj) {
 
-    console.log("PGNObj");
-    console.log("line25");
-    console.log(PGNObj);
 
     //if you do not return the following, it will redirect you to the middleware function
     return async (dispatch, getState) => {

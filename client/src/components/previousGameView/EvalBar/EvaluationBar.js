@@ -22,7 +22,7 @@ const VerticalLinearProgress = styled(LinearProgress)(() => ({
     }
 }));
 
-export function EvaluationBar({evaluation, rawScore}) {
+export function EvaluationBar({evaluation, offsetScore}) {
     // Default color and percentage
     let color = '#000'; // Black color
     let percentage = 0;
@@ -38,7 +38,7 @@ export function EvaluationBar({evaluation, rawScore}) {
         if (evaluation.startsWith('M')) {
             // If it's mate, we consider it as 100% for the winning side
             percentage = 100;
-            color = rawScore >= 0 ? '#fff' : '#000'; // White color for positive rawScore, black for negative
+            color = offsetScore >= 0 ? '#fff' : '#000'; // White color for positive f, black for negative
         } else if (['1-0', '0-1'].includes(evaluation)) {
             // If it's a game result, bar is fully colored for the winner
             percentage = 100;

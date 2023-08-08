@@ -66,7 +66,6 @@ const handleNonOfferedDraw = (gameState, io, roomNumber, rooms) => {
  */
 const handleCheckmate = (gameState, io, roomNumber, rooms) => {
     if (gameState.inCheckmate) {
-        console.log("in checkmate")
         const currentPlayer = rooms[roomNumber].players.find(player => player.id === rooms[roomNumber].currentPlayer);
         const winningPlayerColor = currentPlayer.color === 'White' ? 'Black' : 'White';
         // For the room, set the winner to the player who is not the current player
@@ -98,9 +97,6 @@ const handleGameOver = (io, roomNumber, rooms, gameState, gameSchema, gameModel)
     handleCheckmate(gameState, io, roomNumber, rooms);
     pushToMongoAndManageDB(rooms[roomNumber], gameSchema, gameModel);
     clearInterval(rooms[roomNumber].timer);
-    // console.log("line 50");
-    // delete rooms[roomNumber]
-    // console.log("line 52");
 };
 
 /**
@@ -144,11 +140,6 @@ const handleMove = (io, socket, rooms, gameSchema, gameModel) => (roomNumber, fr
         room.spectators.forEach(spectator => {
             io.to(spectator.id).emit(EVENTS.MOVE_MADE, to, currentFen, validMoves, history);
         });
-
-        console.log("move", to);
-        console.log("currentFen", currentFen);
-        console.log("validMoves", validMoves);
-        console.log("history", history);
     } catch (error) {
         // io.to(roomNumber).emit(EVENTS.ERROR_MOVING, `Error moving: ${error}`);
 
@@ -173,7 +164,6 @@ const handleMove = (io, socket, rooms, gameSchema, gameModel) => (roomNumber, fr
     // add increment to currentPlayer's timer
     rooms[roomNumber].timers[currentPlayer] += rooms[roomNumber].increment;
   
-    console.log("line 135");
     if (gameState.gameOver) {
 
         handleGameOver(io, roomNumber, rooms, gameState, gameSchema, gameModel) 

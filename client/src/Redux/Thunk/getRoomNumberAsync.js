@@ -14,8 +14,6 @@ export function getRoomNumberAsync(socketId) {
                     },
                 })
 
-                console.log("line 18");
-                console.log(response);
 
                 if (response.data && response.data.roomNumber) {
                     // setERROR(false)
