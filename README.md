@@ -56,9 +56,13 @@
 
 ## 🌟 Contributors
 
-- [Mihir Bhandari](https://github.com/VexMihir): 
+- [Mihir Bhandari](https://github.com/VexMihir):
 - [Dan Blustein](https://github.com/wallstarr): 
 - [Alex Nguyen](https://github.com/AlexNgGit): 
+  - Parsed information from the database and implemented the frontend to display the information using React and Redux.
+  - Implemented the playback feature based on the information from MongoDB database.
+  - Collaborated with Dan Blustein to implement the analysis feature using Stockfish.js library.
+  - Collaborated with Mihir Bhandari to style and format the frontend for PrevGameView component.
 - [Jason Lai](https://github.com/jason0770): 
 - [Kevin Dang](https://github.com/kdang243): 
 
