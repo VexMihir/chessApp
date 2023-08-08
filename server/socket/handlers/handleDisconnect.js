@@ -13,11 +13,23 @@ const handleDisconnect = (io, socket, rooms) => () => {
         
         rooms[roomNumber].players = rooms[roomNumber].players.filter(player => player.id !== socket.id);
         rooms[roomNumber].spectators = rooms[roomNumber].spectators.filter(spectator => spectator.id !== socket.id);
-
+        console.log("line 14");
         const userList = {
             players: rooms[roomNumber].players,
             spectators: rooms[roomNumber].spectators
         };
+
+        // const room = rooms[roomNumber];
+
+        // room.players.forEach(player => {
+        //     console.log("line 23", player);
+        //     io.to(player.id).emit(EVENTS.USER_LIST_UPDATE, userList)
+        // });
+        // room.spectators.forEach(spectator => {
+        //     console.log("line 27", spectator);
+        //     io.to(spectator.id).emit(EVENTS.PLAYER_DISCONNECTED, roomNumber);
+        // });
+
         
         // make roomNumber a number, currently a string
         let roomNumberAsNumber = Number(roomNumber);
