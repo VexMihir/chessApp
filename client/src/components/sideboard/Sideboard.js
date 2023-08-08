@@ -222,7 +222,7 @@ export default function Sideboard(props) {
                     <div>{pawnPromotionChoice}</div>
                     <div className="bg-custom-cream flex justify-around">
                       <button
-                        className="text-2xl text-black font-bold bg-custom-black rounded-md"
+                        className="text-2xl text-black font-bold bg-custom-cream rounded-md"
                         onClick={() =>
                           setPawnPromotionChoice(BLACK_CHESS_PIECE.ROOK)
                         }
@@ -230,7 +230,7 @@ export default function Sideboard(props) {
                         {BLACK_CHESS_PIECE.ROOK}
                       </button>
                       <button
-                        className="text-2xl text-black font-bold bg-custom-black rounded-md"
+                        className="text-2xl text-black font-bold bg-custom-cream rounded-md"
                         onClick={() =>
                           setPawnPromotionChoice(BLACK_CHESS_PIECE.KNIGHT)
                         }
@@ -238,7 +238,7 @@ export default function Sideboard(props) {
                         {BLACK_CHESS_PIECE.KNIGHT}
                       </button>
                       <button
-                        className="text-2xl text-black font-bold bg-custom-black rounded-md"
+                        className="text-2xl text-black font-bold bg-custom-cream rounded-md"
                         onClick={() =>
                           setPawnPromotionChoice(BLACK_CHESS_PIECE.BISHOP)
                         }
@@ -246,7 +246,7 @@ export default function Sideboard(props) {
                         {BLACK_CHESS_PIECE.BISHOP}
                       </button>
                       <button
-                        className="text-2xl text-black font-bold bg-custom-black rounded-md"
+                        className="text-2xl text-black font-bold bg-custom-cream rounded-md"
                         onClick={() =>
                           setPawnPromotionChoice(BLACK_CHESS_PIECE.QUEEN)
                         }
@@ -260,7 +260,7 @@ export default function Sideboard(props) {
                     <div>{pawnPromotionChoice}</div>
                     <div className="bg-custom-cream flex justify-around">
                       <button
-                        className="text-2xl text-white font-bold bg-custom-black rounded-md"
+                        className="text-2xl text-custom-cream font-bold bg-custom-black rounded-md"
                         onClick={() =>
                           setPawnPromotionChoice(WHITE_CHESS_PIECE.ROOK)
                         }
@@ -268,7 +268,7 @@ export default function Sideboard(props) {
                         {WHITE_CHESS_PIECE.ROOK}
                       </button>
                       <button
-                        className="text-2xl text-white font-bold bg-custom-black rounded-md"
+                        className="text-2xl text-custom-cream font-bold bg-custom-black rounded-md"
                         onClick={() =>
                           setPawnPromotionChoice(WHITE_CHESS_PIECE.KNIGHT)
                         }
@@ -276,7 +276,7 @@ export default function Sideboard(props) {
                         {WHITE_CHESS_PIECE.KNIGHT}
                       </button>
                       <button
-                        className="text-2xl text-white font-bold bg-custom-black rounded-md"
+                        className="text-2xl text-custom-cream font-bold bg-custom-black rounded-md"
                         onClick={() =>
                           setPawnPromotionChoice(WHITE_CHESS_PIECE.BISHOP)
                         }
@@ -284,7 +284,7 @@ export default function Sideboard(props) {
                         {WHITE_CHESS_PIECE.BISHOP}
                       </button>
                       <button
-                        className="text-2xl text-white font-bold bg-custom-black rounded-md"
+                        className="text-2xl text-custom-cream font-bold bg-custom-black rounded-md"
                         onClick={() =>
                           setPawnPromotionChoice(WHITE_CHESS_PIECE.QUEEN)
                         }
