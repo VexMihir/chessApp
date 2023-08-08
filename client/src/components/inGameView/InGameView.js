@@ -9,7 +9,6 @@ import OutcomeModal from "../portals/OutcomeModal";
 import { useNavigate, useParams } from "react-router-dom";
 import MessageModal from "../portals/MessageModal";
 import { SocketContext } from "../../context/socket";
-import { useNavigate } from 'react-router-dom';
 
 /*
   A component about InGameView
@@ -253,7 +252,6 @@ export default function InGameView() {
   useEffect(() => {
 
     socket.on("player disconnected", (roomNumber) => {
-      console.log("line 251");
       if (roomId === roomNumber) {
         alert("Game abandoned by opponent");
         navigate('/');
@@ -300,14 +298,12 @@ export default function InGameView() {
 
     // Forfeit
     socket.on("resignation", (resigningPlayer) => {
-      console.log("line 270 time out", resigningPlayer);
       setResigningPlayer(resigningPlayer);
       setIsGameStarted(false);
       setIsModalOpen(true);
     });
 
     socket.on("drawOffered", (socketId) => {
-      console.log("Offer event line 184");
 
       setIsOneOption(false)
       if (selfColor === "white") {
@@ -339,7 +335,6 @@ export default function InGameView() {
     });
 
     socket.on("timeout", (winningPlayerColor) => {
-      console.log("##line 301", winningPlayerColor);
       if (winningPlayerColor.toLowerCase() === "white") {
         setTimeoutColor("black");
       } else if (winningPlayerColor.toLowerCase() === "black") {

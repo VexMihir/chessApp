@@ -17,8 +17,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: ["http://localhost:3000", "https://admin.socket.io"],
-    // origin: [ 'https://chessfrontend-2mfh.onrender.com' , "https://admin.socket.io"],
+    origin: [process.env.FRONTEND_URL || "http://localhost:3000", "https://admin.socket.io"],
     methods: ["GET", "POST"],
     allowedHeaders: ["my-custom-header"],
     credentials: true,
@@ -55,17 +54,14 @@ const Game = mongoose.model("Games", gameSchema);
 
 // Initialize socketHandlers
 socketHandlers.init(io, rooms, gameSchema, Game);
-console.log("line 48");
 
 // Create a new game room
 app.get('/createGame', (req, res) => {
   const newUniqueRoomNumber = () => {
     const roomNumber = Math.floor(Math.random() * 1000000);
     if (rooms[roomNumber]) {
-      console.log("line 52");
       return newUniqueRoomNumber();
     } else {
-      console.log("line 55");
       return roomNumber;
     }
   };
@@ -108,7 +104,6 @@ app.get('/createGame', (req, res) => {
     timeControl: timeControl,
     increment: timeIncrement,
     currentPlayer: null,
-    // owner: owner, // associated with a socket id value for sever to check the person who creates the room. This allows the user creates only one room number.
     drawOffer: null,
   };
 
