@@ -5,6 +5,11 @@
 >_This project implements an online chess game with multiplayer functionality. The application will allow its users to match and play chess games over the internet. The application will provide real-time updates, handle network issues and allow the retrieval and playback of saved games._
 
 ---
+
+&emsp; &emsp; &emsp; &emsp; &emsp; [![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/) [![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB)](https://expressjs.com/) [![Socket.io](https://img.shields.io/badge/Socket.io-black?style=for-the-badge&logo=socket.io&badgeColor=010101)](https://socket.io/) [![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)](https://react.dev/) [![MongoDB](https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/) [![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/) [![Render](https://img.shields.io/badge/Render-%46E3B7.svg?style=for-the-badge&logo=render&logoColor=white)](https://render.com/)
+
+---
+ 
 ## 📝 Project Task Requirements
 
 #### 🎯Minimal Requirements:
@@ -42,9 +47,8 @@
 - [Jason Lai](https://github.com/jason0770): 
 - [Kevin Dang](https://github.com/kdang243): 
 
-🔵 **Primary Technologies:** Node.js, Express.js, Socket.io, React.js, MongoDB and CSS (Tailwind).
-
+---
 
 📣 Please refer to old.README.md for the design document of the app.
 
-📣 This application was designed and developed using AI tools like ChatGPT
+📣 This application was designed and developed using AI tools like ![ChatGPT](https://img.shields.io/badge/chatGPT-74aa9c?style=for-the-badge&logo=openai&logoColor=white)
