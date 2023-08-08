@@ -17,6 +17,8 @@
 import {useSelector} from "react-redux";
 import {PrevMoveList} from "../NormalView/PrevMoveList";
 import {EvaluationBar} from "../EvalBar/EvaluationBar";
+import React, { useEffect } from 'react';
+
 /*
 Evaluation view of the game includes
 1. An evaluating bar showing chances of winning for both players.
@@ -31,7 +33,9 @@ export function AnalysisView() {
     const currIndex = useSelector(state=> state).PrevGameView.currIdx
     const bestMove = info.bestMoves[currIndex - 1] || "N/A";
     const displayScore = info.displayScore[currIndex] || 0;
-    const rawScore = info.rawScore[currIndex] || "NOT AVAILABLE"
+    const rawScore = (info.offsetScore && info.offsetScore.length > currIndex && info.offsetScore[currIndex]) 
+    ? info.offsetScore[currIndex] 
+    : (info.rawScore[currIndex] || "N/A");
     let percentage = Math.ceil((Math.abs(displayScore)/8)*100);
 
     if (percentage > 100 ) {
@@ -39,6 +43,10 @@ export function AnalysisView() {
     } else if (currIndex === 0) {
         percentage = 50
     }
+
+    useEffect(() => {
+        console.log('info:', info);
+    }, [rawScore]);    
 
 
     return (
@@ -59,7 +67,7 @@ export function AnalysisView() {
                     <div
                         id={""}
                         className={"h-[100%] w-[5%] "}>
-                        <EvaluationBar evaluation={displayScore} rawScore={rawScore}
+                        <EvaluationBar evaluation={displayScore} offsetScore={rawScore}
                         />
                     </div>
                     <div
