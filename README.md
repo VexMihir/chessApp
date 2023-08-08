@@ -36,9 +36,13 @@
 ## 🧑‍💻 Technologies
 
  ### **HTML, CSS, and JS**
-> -
+- HTML syntax was a significant language part of the frontend's structure.
  ### **React.js and Redux**
-> -
+- For previousGame View and roomAssignment components:
+  - React's available hooks are utilized to manage components states 
+  - Redux's reducers was significantly made use of to store data retrieved from backend and pass information between different components. 
+  - In addition, redux's middleware and Middlethunk was used to handle asynchronous actions between backend and frontend.
+  - Reducers are used are: prevGameQueryReducers, prevGameViewReducer, AnalysisReducer, joinPageReducer and Analysis Reducers
  ### **Node.js and Express.js**
 > - 
  ### **MongoDB**
@@ -46,8 +50,11 @@
  ### **Render (Deployment)**
 > - Castle & Conquer is deployed on Render, segmented into two parts—the frontend website, accessible at [Castle & Conquer](https://jamdk-chess-frontend.onrender.com/), and our backend servers — running NodeJS & Express and instances of chess.js engines, also hosted on Render.
 
-## ✨ Above and Beyond
-
+## ✨ Above and Beyond:
+- Evaluation (analysis view) feature of the playback integrated an AI engine model:
+  - Make extensive research on how to communicate with universal chess interface's protocols
+  - Optimize features on how to optimize the performance of this by applying concurrency programming with JavaScript's web workers
+  - Learn and implement methods to scale and normalize information from stockfish engine information
 ## 🔮 Future of Castle & Conquer
 - Add a login system that allows users to save their games in our chess database. This also allows for a username-based invite system and a friend system. A barebones login system was in the works by Jason Lai, but was scrapped due to logistical reasons.
 - Extend our existing Stockfish AI framework (being used for game analysis) to enable players to play against an AI-controlled bot with varying difficulties.
