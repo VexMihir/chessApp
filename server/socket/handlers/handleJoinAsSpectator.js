@@ -17,20 +17,8 @@ const handleJoinAsSpectator = (io, socket, rooms) => (roomNumber, username) => {
     if (rooms[roomNumber]) {
         // Join the socket to the room
         socket.join(roomNumber);
-        // 
-        let isSpectatorsFound = false
-        for (let i = 0; i < rooms[roomNumber].spectators.length; i++) {
-            if (socket.id === rooms[roomNumber].spectators[i].id) {
-                isSpectatorsFound = true
-                break;
-            }
-        } 
-        if (!isSpectatorsFound) {
-            rooms[roomNumber].spectators.push({ id: socket.id, username });
-        } else {
-            socket.emit('error', `Error: User ${socket.id} already joined the room as a spectator in room ${roomNumber}`);
-        }
-
+        rooms[roomNumber].spectators.push({ id: socket.id, username });
+        
         console.log(`User ${socket.id} joined as a spectator in room ${roomNumber}`);
 
         // Emit updated user list to all clients in the room
@@ -43,9 +31,9 @@ const handleJoinAsSpectator = (io, socket, rooms) => (roomNumber, username) => {
         const game = rooms[roomNumber].game;
 
         const currentFEN = game.getCurrentFEN();
-        socket.emit('game current fen', currentFEN)
+        socket.emit(EVENTS.GAME_CURRENT_FEN, currentFEN)
         const currentHistory = game.getGameHistory()
-        socket.emit('game current history', currentHistory)
+        socket.emit(EVENTS.GAME_CURRENT_HISTORY, currentHistory)
 
 
     } else {

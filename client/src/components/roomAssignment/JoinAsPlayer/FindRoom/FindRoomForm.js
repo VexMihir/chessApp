@@ -1,6 +1,8 @@
 import {NavLink} from "react-router-dom";
 import {useContext, useEffect, useState} from "react";
 import { SocketContext } from "../../../../context/socket";
+import { EVENTS } from "../../../../constants/aliases";
+
 /**
  * With help of chatGPT rephrasing and grammar checking
  * Find Room Form
@@ -60,15 +62,15 @@ export function FindRoomForm() {
             e.preventDefault();
             window.alert("The room is full. If you want to join the room, you can join as a spectator by clicking the Join As Spectator tab.");
         } else {
-            socket.emit('join room', roomNumber, userName)
+            socket.emit(EVENTS.JOIN_ROOM, roomNumber, userName)
         }
     }
 
     useEffect(() => {
         if (roomNumber !== null) {
-            socket.emit('is room full', roomNumber);
+            socket.emit(EVENTS.CHECK_IF_ROOM_FULL, roomNumber);
         }
-        socket.on('is room full', (isRoomFull) => {
+        socket.on(EVENTS.CHECK_IF_ROOM_FULL, (isRoomFull) => {
             setIsRoomFull(isRoomFull)
         })
 

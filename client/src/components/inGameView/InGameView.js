@@ -9,6 +9,7 @@ import OutcomeModal from "../portals/OutcomeModal";
 import { useNavigate, useParams } from "react-router-dom";
 import MessageModal from "../portals/MessageModal";
 import { SocketContext } from "../../context/socket";
+import { EVENTS } from "../../constants/aliases";
 
 /*
   A component about InGameView
@@ -72,12 +73,6 @@ export default function InGameView() {
   const [roomId, setRoomId] = useState(id);
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (players.length === 0) {
-      navigate('/')
-    }
-  }, [players])
 
   useEffect(() => {
     for (let i = 0; i < spectators.length; i++) {
@@ -258,9 +253,8 @@ export default function InGameView() {
 
   useEffect(() => {
 
-    socket.on("player disconnected", (roomNumber) => {
+    socket.on(EVENTS.PLAYER_DISCONNECTED, (roomNumber) => {
       if (roomId === roomNumber) {
-
         setIsPlayerGetDisconnected(true)
         setIsOneOption(true)
         setMessage("Game abandoned by opponent")
@@ -269,7 +263,7 @@ export default function InGameView() {
       }
     });
 
-    socket.on("user list update", (userList) => {
+    socket.on(EVENTS.USER_LIST_UPDATE, (userList) => {
       // localStorage.setItem("players", JSON.stringify(userList.players))
       setPlayers(userList.players);
       if (userList.spectators.length > 0) {
@@ -287,35 +281,33 @@ export default function InGameView() {
       }
     });
 
-    socket.on("start game", () => {
+    socket.on(EVENTS.START_GAME, () => {
       setIsGameStarted(true);
     });
 
-    socket.on("time update", (timer) => {
+    socket.on(EVENTS.TIME_UPDATES, (timer) => {
       setTimer(timer);
     });
 
-    socket.on("checkmate", (checkmatedPlayerColor) => {
+    socket.on(EVENTS.CHECKMATE, (checkmatedPlayerColor) => {
       setCheckmateColor(checkmatedPlayerColor);
       setIsGameStarted(false);
       setIsModalOpen(true);
     });
 
-    socket.on("game over draw", (drawReason) => {
+    socket.on(EVENTS.GAME_OVER_DRAW, (drawReason) => {
       setGameOverDrawReason(drawReason);
       setIsGameStarted(false);
       setIsModalOpen(true);
     });
 
-    // Forfeit
-    socket.on("resignation", (resigningPlayer) => {
+    socket.on(EVENTS.RESIGNATION, (resigningPlayer) => {
       setResigningPlayer(resigningPlayer);
       setIsGameStarted(false);
       setIsModalOpen(true);
     });
 
-    socket.on("drawOffered", (socketId) => {
-
+    socket.on(EVENTS.DRAW_OFFERED, (socketId) => {
       setIsOneOption(false)
       if (selfColor === "white") {
         setMessage("Do you want to accept the draw offer from black player?")
@@ -326,16 +318,15 @@ export default function InGameView() {
       setIsMessageModalOpen(true);
     });
 
-    socket.on("drawAccepted", () => {
+    socket.on(EVENTS.DRAW_ACCEPTED, () => {
       setIsDrawAccepted(true);
       setIsGameStarted(false);
       setIsModalOpen(true);
       setIsMessageModalOpen(false);
     });
 
-    socket.on("drawDeclined", () => {
+    socket.on(EVENTS.DRAW_DECLINED, () => {
       setIsOneOption(true)
-
       if (selfColor === "white") {
         setMessage("The black player declined your draw offer")
       } else {
@@ -345,7 +336,7 @@ export default function InGameView() {
       setIsMessageModalOpen(true);
     });
 
-    socket.on("timeout", (winningPlayerColor) => {
+    socket.on(EVENTS.TIMEOUT, (winningPlayerColor) => {
       if (winningPlayerColor.toLowerCase() === "white") {
         setTimeoutColor("black");
       } else if (winningPlayerColor.toLowerCase() === "black") {
@@ -354,52 +345,19 @@ export default function InGameView() {
       setIsGameStarted(false);
       setIsModalOpen(true);
     });
-  
-    // //Source: https://stackoverflow.com/questions/37461495/socket-io-rejoin-rooms-on-reconnect
-    // socket.on("connect", function() {
-    //   console.log("Connecting");
-    //   // console.log(players);
-    //   const players = JSON.parse(localStorage.getItem("players"))
-    //   console.log("line359");
-    //   console.log(players);
-    //   let username = ""
-    //   let color = ""
-    //   if (players.length === 1) {
-    //     username = players[0].username
-    //     color = players[0].color
-    //   } else if (players.length === 2) {
-    //     username = players[1].username
-    //     color = players[1].color
-    //   }
-    //   socket.emit("join room", roomId, username, color)
-    // });
 
-    socket.on("room not exist", () => {
+    socket.on(EVENTS.ROOM_NOT_EXIST, () => {
       setIsRoomExist(false)
       setIsOneOption(true)
       setMessage("The room does not exist.")
       setIsMessageModalOpen(true);
     })
 
-    return () => {
-      // socket.emit("room not exist", () => {
-      //   console.log("line 384...");
-      // })
-      // socket.disconnect()
-    }
-
-
-    // return () => {
-    //   // socket.off("moveMade");
-    //   socket.disconnect();
-
-    // };
   }, [roomId]);
 
 
   return (
     <>
-
       {isOneOption === true ? (
         <MessageModal
           isOpen={isMessageModalOpen}
@@ -421,11 +379,11 @@ export default function InGameView() {
         <MessageModal
           isOpen={isMessageModalOpen}
           onCloseDeclined={() => {
-            socket.emit("drawDeclined", roomId);
+            socket.emit(EVENTS.DRAW_DECLINED, roomId);
             setIsMessageModalOpen(false);
           }}
           onOutcomeModalOpen={() => {
-            socket.emit("drawAccepted", roomId);
+            socket.emit(EVENTS.DRAW_ACCEPTED, roomId);
           }}
           isOneOption={false}
         >

@@ -3,6 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {getRoomNumberAsync} from "../../../Redux/Thunk/getRoomNoAsync";
 import {NavLink, useLocation, useNavigate} from "react-router-dom";
 import { SocketContext } from "../../../context/socket";
+import { EVENTS } from "../../../constants/aliases";
 
 export function WaitingRoomForm () {
     const dispatch = useDispatch();
@@ -37,7 +38,7 @@ export function WaitingRoomForm () {
                     to={"/inGameView/"+ roomNumber}
                     state={{userName: state.userName}}
                     onClick={()=>{
-                        socket.emit("join room",roomNumber, state.userName)
+                        socket.emit(EVENTS.JOIN_ROOM, roomNumber, state.userName)
                     }}
                 >Start Game!</NavLink>
             </div>

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { BLACK_CHESS_PIECE, WHITE_CHESS_PIECE } from "../../constants/customChessPiece";
+import { EVENTS } from "../../constants/aliases";
+
 
 /*
   A child component of InGameView
@@ -302,13 +304,13 @@ export default function Sideboard(props) {
             <div className="flex justify-around">
               <button
                 className="bg-custom-black hover:bg-yellow-300 text-yellow-400 font-bold hover:text-custom-black rounded-md text-2xl w-1/2 p-1"
-                onClick={() => socket.emit("resignation", roomId)}
+                onClick={() => socket.emit(EVENTS.RESIGNATION, roomId)}
               >
                 Forfeit
               </button>
               <button
                 className="bg-custom-black hover:bg-yellow-300 text-yellow-400 font-bold hover:text-custom-black rounded-md text-2xl w-1/2 p-1"
-                onClick={() => socket.emit("drawOffered", roomId)}
+                onClick={() => socket.emit(EVENTS.DRAW_OFFERED, roomId)}
               >
                 Offer Draw
               </button>

@@ -1,6 +1,7 @@
 import {NavLink} from "react-router-dom";
 import {useContext, useState} from "react";
 import { SocketContext } from "../../../context/socket";
+import { EVENTS } from "../../../constants/aliases";
 
 /**
  * With help of chatGPT rephrasing and grammar checking
@@ -89,7 +90,7 @@ export function SpectatorForm() {
                         "shadow shadow-md shadow-custom-black " +
                         "h-[10%] py-[0.5rem] px-4 m-auto "}
                 onClick={(e)=>{
-                    socket.emit('join as spectator', roomNumber, userName);
+                    socket.emit(EVENTS.JOIN_AS_SPECTATOR, roomNumber, userName);
                     finalCheck(e)
                  }} to={"/inGameView/"+ roomNumber}
                 state={{userName: userName}}

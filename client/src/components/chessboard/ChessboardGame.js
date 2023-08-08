@@ -5,6 +5,7 @@ import {
   BLACK_CHESS_PIECE,
   WHITE_CHESS_PIECE,
 } from "../../constants/customChessPiece";
+import { EVENTS } from "../../constants/aliases";
 
 const chess = new Chess();
 
@@ -40,12 +41,6 @@ export default function ChessboardGame({
   const [sqaureStyles, setSqaureStyles] = useState();
 
   const [playerColor, setPlayerColor] = useState(null);
-
-  function onMouseOverSquare(square) {
-    if (socket && !isSocketSpectator && isGameStarted) {
-      socket.emit("valid move", roomId, square);
-    }
-  }
 
   function onSquareClick(square) {
     if (!isSocketSpectator && players.length === 2) {
@@ -109,24 +104,24 @@ export default function ChessboardGame({
           pawnPromotionChoice === BLACK_CHESS_PIECE.ROOK ||
           pawnPromotionChoice === WHITE_CHESS_PIECE.ROOK
         ) {
-          socket.emit("move", roomId, sourceSquare, targetSquare, "r");
+          socket.emit(EVENTS.MOVE, roomId, sourceSquare, targetSquare, "r");
         } else if (
           pawnPromotionChoice === BLACK_CHESS_PIECE.BISHOP ||
           pawnPromotionChoice === WHITE_CHESS_PIECE.BISHOP
         ) {
-          socket.emit("move", roomId, sourceSquare, targetSquare, "b");
+          socket.emit(EVENTS.MOVE, roomId, sourceSquare, targetSquare, "b");
         } else if (
           pawnPromotionChoice === BLACK_CHESS_PIECE.KNIGHT ||
           pawnPromotionChoice === WHITE_CHESS_PIECE.KNIGHT
         ) {
-          socket.emit("move", roomId, sourceSquare, targetSquare, "n");
+          socket.emit(EVENTS.MOVE, roomId, sourceSquare, targetSquare, "n");
         } else if (
           pawnPromotionChoice === BLACK_CHESS_PIECE.QUEEN ||
           pawnPromotionChoice === WHITE_CHESS_PIECE.QUEEN
         ) {
-          socket.emit("move", roomId, sourceSquare, targetSquare, "q");
+          socket.emit(EVENTS.MOVE, roomId, sourceSquare, targetSquare, "q");
         } else {
-          socket.emit("move", roomId, sourceSquare, targetSquare, "q");
+          socket.emit(EVENTS.MOVE, roomId, sourceSquare, targetSquare, "q");
         }
       }
       setSqaureStyles("");
@@ -141,13 +136,13 @@ export default function ChessboardGame({
       players.length === 2 &&
       !isGameStarted
     ) {
-      socket.emit("game start", roomId);
+      socket.emit(EVENTS.START_GAME, roomId);
     }
   }
 
   useEffect(() => {
     if (socket) {
-      socket.on("moveMade", (move, fen, validMoves, history) => {
+      socket.on(EVENTS.MOVE_MADE, (move, fen, validMoves, history) => {
         // Here you can handle updates of the game state
         setFen(fen); // Update FEN state
         setHistory(history);
@@ -157,10 +152,10 @@ export default function ChessboardGame({
         setFullMove(fen.split(" ")[5]);
       });
 
-      socket.on("game current fen", (currentFEN) => {
+      socket.on(EVENTS.GAME_CURRENT_FEN, (currentFEN) => {
         setFen(currentFEN);
       });
-      socket.on("game current history", (currentHistory) => {
+      socket.on(EVENTS.GAME_CURRENT_HISTORY, (currentHistory) => {
         setHistory(currentHistory);
       });
     }
@@ -198,7 +193,6 @@ export default function ChessboardGame({
             onDragOverSquare={onDragOverSquare}
             squareStyles={sqaureStyles}
             onSquareClick={onSquareClick}
-            onMouseOverSquare={onMouseOverSquare}
             darkSquareStyle={{ backgroundColor: "#547396" }}
             lightSquareStyle={{ backgroundColor: "#eae9d4" }}
             pieces={{
