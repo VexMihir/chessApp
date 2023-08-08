@@ -53,7 +53,7 @@ export default function RoomAssignment() {
                 </NavLink>
             </div>
             <div
-                className={"h-[250px] p-[0.5rem] w-[95.55%] items-center "}
+                className={"h-[270px] p-[0.5rem] w-[95.55%] items-center "}
             >
                 <Outlet />
             </div>
