@@ -40,6 +40,7 @@ const init = (io, roomInstance, gameSchema, gameModel) => {
         socket.on(EVENTS.RESIGNATION, handleResignation(io, socket, rooms, gameModel, gameSchema));
         socket.on(EVENTS.DISCONNECT, handleDisconnect(io, socket, rooms));
         socket.on("is room full", handleCheckRoomFull(io, socket, rooms));
+        // socket.on("is user in room")
     });
 };
 

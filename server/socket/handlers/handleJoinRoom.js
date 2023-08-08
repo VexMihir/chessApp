@@ -15,9 +15,9 @@ const { pushToMongoAndManageDB } = require('./pushToMongoAndManageDB');
  * @param {Object} gameSchema - The Mongoose schema for game data.
  * @returns {Function} - The function that handles joining a room.
  */
-const handleJoinRoom = (io, socket, rooms, gameModel, gameSchema) => (roomNumber, username) => {
+const handleJoinRoom = (io, socket, rooms, gameModel, gameSchema) => (roomNumber, username, color) => {
 
-  console.log("line 5", roomNumber, username);
+  console.log("line 5", roomNumber, username, color);
 
   const WHITE = "White";
   const BLACK = "Black";
@@ -27,11 +27,17 @@ const handleJoinRoom = (io, socket, rooms, gameModel, gameSchema) => (roomNumber
    * @returns {string} - The starting color ("White" or "Black").
    */
   const startingColor = () => {
-    const randomizer = Math.floor(Math.random() * 2);
-    if (randomizer > 0.5) {
-      return BLACK;
+    if (color === WHITE.toLowerCase()) {
+      return color
+    } else if (color === BLACK.toLowerCase()) {
+      return color
     } else {
-      return WHITE;
+      const randomizer = Math.floor(Math.random() * 2);
+      if (randomizer > 0.5) {
+        return BLACK;
+      } else {
+        return WHITE;
+      }
     }
   };
 
@@ -113,6 +119,7 @@ const handleJoinRoom = (io, socket, rooms, gameModel, gameSchema) => (roomNumber
       console.log(`User ${socket.id} attempted to join room ${roomNumber}, which is full`);
     }
   } else {
+    socket.emit("room not exist");
     console.log(`Room ${roomNumber} does not exist`);
   }
 

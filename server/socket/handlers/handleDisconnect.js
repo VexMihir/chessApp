@@ -6,16 +6,28 @@ const handleDisconnect = (io, socket, rooms) => () => {
         rooms[key].players.some(player => player.id === socket.id) ||
         rooms[key].spectators.some(spectator => spectator.id === socket.id)
     );
+    console.log("line 9", roomNumber);
     if (roomNumber) {
+        console.log("line 11");
         rooms[roomNumber].players = rooms[roomNumber].players.filter(player => player.id !== socket.id);
         rooms[roomNumber].spectators = rooms[roomNumber].spectators.filter(spectator => spectator.id !== socket.id);
-
+        console.log("line 14");
         const userList = {
             players: rooms[roomNumber].players,
             spectators: rooms[roomNumber].spectators
         };
-        io.to(roomNumber).emit(EVENTS.USER_LIST_UPDATE, userList);
-        io.to(roomNumber).emit(EVENTS.PLAYER_DISCONNECTED, roomNumber);
+
+        const room = rooms[roomNumber];
+
+        room.players.forEach(player => {
+            console.log("line 23", player);
+            io.to(player.id).emit(EVENTS.USER_LIST_UPDATE, userList)
+        });
+        room.spectators.forEach(spectator => {
+            console.log("line 27", spectator);
+            io.to(spectator.id).emit(EVENTS.PLAYER_DISCONNECTED, roomNumber);
+        });
+
     }
 };
 

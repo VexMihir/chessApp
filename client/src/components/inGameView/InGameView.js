@@ -6,7 +6,7 @@ import {
 } from "../../constants/customChessPiece";
 
 import OutcomeModal from "../portals/OutcomeModal";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import MessageModal from "../portals/MessageModal";
 import { SocketContext } from "../../context/socket";
 
@@ -47,8 +47,10 @@ export default function InGameView() {
   const [timer, setTimer] = useState();
 
   // flags
-  const [isDrawDeclined, setIsDrawDeclined] = useState(false);
-  const [isDrawRescined, setIsDrawRescined] = useState(false);
+  const [isRoomExist, setIsRoomExist] = useState(true)
+
+  const [isOneOption, setIsOneOption] = useState(false)
+  const [message, setMessage] = useState("")
 
   // flags of game outcomes
   const [resigningPlayer, setResigningPlayer] = useState("");
@@ -67,6 +69,8 @@ export default function InGameView() {
   //Source: https://stackoverflow.com/questions/66506891/useparams-hook-returns-undefined-in-react-functional-component
   const { id } = useParams();
   const [roomId, setRoomId] = useState(id);
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     for (let i = 0; i < spectators.length; i++) {
@@ -248,6 +252,7 @@ export default function InGameView() {
   useEffect(() => {
 
     socket.on("player disconnected", (roomNumber) => {
+      console.log("line 251");
       if (roomId === roomNumber) {
         alert("Opponent disconnected");
         // navigate('/');
@@ -255,6 +260,7 @@ export default function InGameView() {
     });
 
     socket.on("user list update", (userList) => {
+      // localStorage.setItem("players", JSON.stringify(userList.players))
       setPlayers(userList.players);
       if (userList.spectators.length > 0) {
         setSpectators(userList.spectators);
@@ -301,6 +307,14 @@ export default function InGameView() {
 
     socket.on("drawOffered", (socketId) => {
       console.log("Offer event line 184");
+
+      setIsOneOption(false)
+      if (selfColor === "white") {
+        setMessage("Do you want to accept the draw offer from black player?")
+      } else {
+        setMessage("Do you want to accept the draw offer from white player?")
+      }
+      
       setIsMessageModalOpen(true);
     });
 
@@ -312,15 +326,14 @@ export default function InGameView() {
     });
 
     socket.on("drawDeclined", () => {
-      console.log("line 335 player declined your draw offer");
-      setIsDrawDeclined(true);
-      setIsMessageModalOpen(true);
-    });
+      setIsOneOption(true)
 
-    // drawRescinded
-    socket.on("drawRescinded", () => {
-      console.log("line 335 player rescined your draw offer");
-      setIsDrawRescined(true);
+      if (selfColor === "white") {
+        setMessage("The black player declined your draw offer")
+      } else {
+        setMessage("The white player declined your draw offer")
+      }
+
       setIsMessageModalOpen(true);
     });
 
@@ -334,53 +347,65 @@ export default function InGameView() {
       setIsGameStarted(false);
       setIsModalOpen(true);
     });
+  
+    // //Source: https://stackoverflow.com/questions/37461495/socket-io-rejoin-rooms-on-reconnect
+    // socket.on("connect", function() {
+    //   console.log("Connecting");
+    //   // console.log(players);
+    //   const players = JSON.parse(localStorage.getItem("players"))
+    //   console.log("line359");
+    //   console.log(players);
+    //   let username = ""
+    //   let color = ""
+    //   if (players.length === 1) {
+    //     username = players[0].username
+    //     color = players[0].color
+    //   } else if (players.length === 2) {
+    //     username = players[1].username
+    //     color = players[1].color
+    //   }
+    //   socket.emit("join room", roomId, username, color)
+    // });
+
+    socket.on("room not exist", () => {
+      setIsRoomExist(false)
+      setIsOneOption(true)
+      setMessage("The room does not exist.")
+      setIsMessageModalOpen(true);
+    })
+
 
     // return () => {
     //   // socket.off("moveMade");
     //   socket.disconnect();
+
     // };
   }, [roomId]);
 
 
   return (
     <>
-      {isDrawDeclined === true ? (
+
+      {isOneOption === true ? (
         <MessageModal
           isOpen={isMessageModalOpen}
           onOk={() => {
             // reset
-            setIsDrawDeclined(false);
-            setIsMessageModalOpen(false);
+            if (isRoomExist) {
+              setIsMessageModalOpen(false);
+            } else if (!isRoomExist) {
+              navigate('/')
+            }
           }}
-          isOneOption={true}
+          isOneOption={isOneOption}
         >
-          {selfColor === "white"
-            ? "The black player declined your draw offer"
-            : "The white player declined your draw offer"}
-        </MessageModal>
-      ) : isDrawRescined === true ? (
-        <MessageModal
-          isOpen={isMessageModalOpen}
-          onOk={() => {
-            // reset
-            setIsDrawRescined(false);
-            setIsMessageModalOpen(false);
-          }}
-          isOneOption={true}
-        >
-          {selfColor === "white"
-            ? "The black player rescinded your draw offer"
-            : "The white player resclided your draw offer"}
+          {message}
         </MessageModal>
       ) : (
         <MessageModal
           isOpen={isMessageModalOpen}
           onCloseDeclined={() => {
             socket.emit("drawDeclined", roomId);
-            setIsMessageModalOpen(false);
-          }}
-          onCloseRescinded={() => {
-            socket.emit("drawRescinded", roomId);
             setIsMessageModalOpen(false);
           }}
           onOutcomeModalOpen={() => {

@@ -73,9 +73,13 @@ export default function Sideboard(props) {
       players !== undefined &&
       players !== null
     ) {
-      if (players.length === 1) {
+      if (players.length === 0) {
+        // setSelf("Unjoined");
+        // setChallenger("Unjoined")
+      } else if (players.length === 1) {
         if (socket.id === players[0].id) {
           setSelf(players[0]);
+          // setChallenger("Unjoined")
           if (players[0].color.toLowerCase() === 'black') {
             setPawnPromotionChoice(BLACK_CHESS_PIECE.KNIGHT)
           }
