@@ -32,7 +32,7 @@ export function EvaluationBar({evaluation, rawScore}) {
         // Normalize the score to percentage, assuming -10 to +10 scale for scores
         // If the score is not within this range, the percentage is capped at 97, to indicate the game is winning/lost 
         // but not theoretically guaranteed to go some way in the depth searched
-        percentage = Math.min(Math.max((evaluation + 10) * 4.5, 0), 97);
+        percentage = Math.min(Math.max((evaluation + 10) * 5, 0), 97);
         color = evaluation >= 0 ? '#fff' : '#000'; // White color for positive, black for negative
     } else if (typeof evaluation === 'string') {
         if (evaluation.startsWith('M')) {

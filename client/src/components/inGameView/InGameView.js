@@ -9,6 +9,7 @@ import OutcomeModal from "../portals/OutcomeModal";
 import { useNavigate, useParams } from "react-router-dom";
 import MessageModal from "../portals/MessageModal";
 import { SocketContext } from "../../context/socket";
+import { useNavigate } from 'react-router-dom';
 
 /*
   A component about InGameView
@@ -70,7 +71,7 @@ export default function InGameView() {
   const { id } = useParams();
   const [roomId, setRoomId] = useState(id);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     for (let i = 0; i < spectators.length; i++) {
@@ -254,8 +255,8 @@ export default function InGameView() {
     socket.on("player disconnected", (roomNumber) => {
       console.log("line 251");
       if (roomId === roomNumber) {
-        alert("Opponent disconnected");
-        // navigate('/');
+        alert("Game abandoned by opponent");
+        navigate('/');
       }
     });
 
