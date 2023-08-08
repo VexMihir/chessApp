@@ -17,8 +17,6 @@ const { pushToMongoAndManageDB } = require('./pushToMongoAndManageDB');
  */
 const handleJoinRoom = (io, socket, rooms, gameModel, gameSchema) => (roomNumber, username) => {
 
-  console.log("line 5", roomNumber, username);
-
   const WHITE = "White";
   const BLACK = "Black";
 

@@ -58,7 +58,6 @@ const handleNonOfferedDraw = (gameState, io, roomNumber, rooms) => {
  */
 const handleCheckmate = (gameState, io, roomNumber, rooms) => {
     if (gameState.inCheckmate) {
-        console.log("in checkmate")
         const currentPlayer = rooms[roomNumber].players.find(player => player.id === rooms[roomNumber].currentPlayer);
         const winningPlayerColor = currentPlayer.color === 'White' ? 'Black' : 'White';
         // For the room, set the winner to the player who is not the current player
@@ -117,10 +116,6 @@ const handleMove = (io, socket, rooms, gameSchema, gameModel) => (roomNumber, fr
         const validMoves = game.validMoves();
         const history = game.getGameHistory();
         io.to(roomNumber).emit(EVENTS.MOVE_MADE, to, currentFen, validMoves, history);
-        console.log("move", to);
-        console.log("currentFen", currentFen);
-        console.log("validMoves", validMoves);
-        console.log("history", history);
     } catch (error) {
         io.to(roomNumber).emit(EVENTS.ERROR_MOVING, `Error moving: ${error}`);
         console.log(`Error moving: ${error}`)
