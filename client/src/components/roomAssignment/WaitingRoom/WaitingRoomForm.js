@@ -1,7 +1,7 @@
 import {useContext, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {getRoomNumberAsync} from "../../../Redux/Thunk/getRoomNoAsync";
-import {NavLink, useLocation, useNavigate} from "react-router-dom";
+import {NavLink, useLocation} from "react-router-dom";
 import { SocketContext } from "../../../context/socket";
 import { EVENTS } from "../../../constants/aliases";
 import { clearError } from "../../../Redux/Action/clearErrorAction";
@@ -12,7 +12,6 @@ export function WaitingRoomForm () {
     let error = useSelector(state=>(state.SetError));
     const socket = useContext(SocketContext)
     let {state} = useLocation();
-    const navigate = useNavigate()
 
     useEffect(()=> {
         dispatch(getRoomNumberAsync(state.userName, state.selectedTimeControl, state.selectedDecrementControl))
@@ -20,9 +19,6 @@ export function WaitingRoomForm () {
     }, [])
 
     useEffect(() => {
-        if (error) {
-            navigate("*")
-        }
         return () => {
             dispatch(clearError())
         }
@@ -30,7 +26,8 @@ export function WaitingRoomForm () {
 
     return (
         <div className="flex flex-col items-center justify-start h-[100%]">
-            <h2 className={"rounded text-custom-black"}>{`Your Room Number is ${roomNumber}`}
+            <h2 className={"rounded text-custom-black"}>
+                {error ? "Failed to featch the room number from the server." : `Your Room Number is ${roomNumber}`}
             </h2>
             <div className="text-center">
                 <NavLink
