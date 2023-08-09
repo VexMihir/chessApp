@@ -1,3 +1,5 @@
+// 404 NOT FOUND PAGE
+
 import {NavLink} from "react-router-dom";
 
 export function NOTFOUNDPAGE () {

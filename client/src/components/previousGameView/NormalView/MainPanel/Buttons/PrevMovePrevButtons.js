@@ -1,3 +1,7 @@
+/**  Button to go back a move in the replay in the previous game view. 
+ * Make uses of redux reducers to parse through the moves.
+*/
+
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {indiPieceUpdate, pauseMoveList} from "../../../../../Redux/Action/prevGamViewActions";

@@ -1,3 +1,7 @@
+/**  Button to go to the ending move in the replay in the previous game view. 
+ * Make uses of redux reducers to parse through the moves.
+*/
+
 import {useDispatch} from "react-redux";
 import {endingPointUpdate, pauseMoveList} from "../../../../../Redux/Action/prevGamViewActions";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
