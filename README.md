@@ -34,7 +34,7 @@
 -   ❌ Login system for users.
 -   ❌ ELO Rating System.
 
-## 🧑‍💻 Technologies
+## 🧑‍💻 Technologies (Utilizes tech from Unit 1-5)
 
  ### **HTML, CSS, and JS**
 > - Castle & Conquer employs React to produce HTML elements, employing JavaScript components that engage with the Document Object Model (DOM). Our application embraces CSS via the widely recognized TailwindCSS framework. Leveraging Tailwind, we implement styling across diverse components without conventional CSS, streamlining comprehensive theme administration. Since React is intrinsically rooted in JavaScript, we extensively utilize JavaScript both in our front-end and our NodeJS/Express backend.
@@ -47,7 +47,7 @@
  ### **Render (Deployment)**
 > - Castle & Conquer is deployed on Render, segmented into two parts—the frontend website, accessible at [Castle & Conquer](https://jamdk-chess-frontend.onrender.com/), and our backend servers — running NodeJS & Express and instances of chess.js engines, also hosted on Render.
 
-## ✨ Above and Beyond:
+## ✨ Above and Beyond: (Above and Beyond Functionality)
 ### Stockfish AI
 Our app features an Analysis view, accessible while replaying a game. This view integrates an AI engine model (Stockfish AI) to enable the game's per-move evaluation feature.
 In order to achieve this we had to -
@@ -62,13 +62,13 @@ Our app has the capabilities of real-time communication between a server and mul
 - Establish guidelines for the emitting and receiving socket events using aliases.
 - Compartmentalize socket events based on chess events into various socket handlers.
 
-## 🔮 Future of Castle & Conquer
+## 🔮 Future of Castle & Conquer (Description of Next Steps)
 - Add a login system that allows users to save their games in our chess database. This also allows for a username-based invite system and a friend system. A barebones login system was in the works by Jason Lai but was scrapped due to logistical reasons.
 - Extend our existing Stockfish AI framework (being used for game analysis) to enable players to play against an AI-controlled bot with varying difficulties.
 - Develop and deploy a persistent leaderboard or player rating system, built upon the login system.
 - Other QOL changes, like allowing players to change the theme of the board.
 
-## 🌟 Contributors
+## 🌟 Contributors (List of Contributions)
 - [Dan Blustein](https://github.com/wallstarr):
    - Worked with Mihir Bhandari to design and implement the entire backend, primarily handling chess game logic.
    - Implemented game storage and retrieval in the backend from our MongoDB database with Kevin Dang.
