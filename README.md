@@ -22,9 +22,9 @@
 	-   ✅ Users will be able to select a game room to play another player in. The only input really required from the user is some temporary username.
 3. ✅ Be able to represent a chess game on a UI using React and CSS.
 #### 🎯 Standard Requirements:
-   - ✅ Users should be able to offer a draw or resign (forfeit) the game
+-   ✅ Users should be able to offer a draw or resign (forfeit) the game
 -   ✅ Having the last 100 games on the website posted somewhere, where users can click and playback the game.
--   ✅ Handle network issues like disconnects and reconnects.
+-   ✅ Handle a network issue like disconnects.
 -   ✅ Be able to see the legal moves of a piece in the UI.
 -   ✅ Allows users to retrieve and play back their previous games, step by step.
 #### 🎯 Stretch Requirements:
@@ -60,6 +60,14 @@ Our app has the capabilities of real-time communication between a server and mul
 - Define a payload that could transfer all necessary data between the backend and the frontend effectively in real-time without being load intensive on the server.
 - Establish guidelines for the emitting and receiving socket events using aliases.
 - Compartmentalize socket events based on chess events into various socket handlers.
+
+### Sideboard information
+Our app has the functionalities to show the two distinct sideboard information. It provides both players and spectators access to the information relevant to them. 
+In order to achieve this, 
+- Think about what information matters to players and spectators.
+- Provide a piece of specific information to both players and spectators
+     - only players can see - Pawn Promotion Choice. This allows players can change and pick a Pawn promotion choice during the game,
+     - only spectators can see - Orientation. This allows spectators can change and pick a new color for the orientation of the chessboard
 ## 🔮 Future of Castle & Conquer
 - Add a login system that allows users to save their games in our chess database. This also allows for a username-based invite system and a friend system. A barebones login system was in the works by Jason Lai but was scrapped due to logistical reasons.
 - Extend our existing Stockfish AI framework (being used for game analysis) to enable players to play against an AI-controlled bot with varying difficulties.
@@ -92,8 +100,8 @@ Our app has the capabilities of real-time communication between a server and mul
 - [Jason Lai](https://github.com/jason0770):
    - Implemented the main chessboard that serves as the primary part of the application.
    - Implemented the valid-moves feature that allowed users to see the available moves per piece.
-   - Designed the side panel, a part of the in-game view that showed player and game information.
-   - Developed a bare-bones login system that had to be scraped from the final release due to time constraints.
+   - Implemented the two buttons which allow players to forfeit and make a draw offer 
+   - Designed the side panel, a part of the in-game view that showed player, spectator, and game information
 ---
 
 📣 Please refer to old.README.md for the design document of the app, including prototype sketches.
