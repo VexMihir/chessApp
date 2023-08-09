@@ -77,6 +77,7 @@ export default function InGameView() {
   useEffect(() => {
     //Source: https://stackoverflow.com/questions/71369320/how-to-controling-browser-back-button-with-react-router-dom-v6
     window.onpopstate = () => {
+      socket.off(EVENTS.TIME_UPDATES)
       navigate("/");
     }  
   }, [])
@@ -361,6 +362,10 @@ export default function InGameView() {
       setMessage("The room does not exist.")
       setIsMessageModalOpen(true);
     })
+
+    return () => {
+      socket.off(EVENTS.TIME_UPDATES)
+    }
 
   }, [roomId]);
 

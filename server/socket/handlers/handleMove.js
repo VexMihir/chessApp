@@ -152,8 +152,8 @@ const handleMove = (io, socket, rooms, gameSchema, gameModel) => (roomNumber, fr
     const nextPlayer = rooms[roomNumber].players.find(player => player.id !== currentPlayer).id;
     rooms[roomNumber].currentPlayer = nextPlayer;
 
-    // add decrement to currentPlayer's timer
-    rooms[roomNumber].timers[currentPlayer] += rooms[roomNumber].decrement;
+    // add increment to currentPlayer's timer
+    rooms[roomNumber].timers[currentPlayer] += rooms[roomNumber].increment;
   
     if (gameState.gameOver) {
 

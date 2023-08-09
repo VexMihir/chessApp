@@ -55,7 +55,7 @@ const handleJoinRoom =
 
       const timer = setInterval(() => {
         const currentPlayer = rooms[roomNumber].currentPlayer;
-        rooms[roomNumber].timers[currentPlayer] -= rooms[roomNumber].decrement;
+        rooms[roomNumber].timers[currentPlayer] -= 1;
         io.to(roomNumber).emit(EVENTS.TIME_UPDATES, rooms[roomNumber].timers);
 
         // Check if a player's timer has run out

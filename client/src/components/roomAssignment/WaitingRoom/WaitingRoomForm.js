@@ -15,7 +15,7 @@ export function WaitingRoomForm () {
     const navigate = useNavigate()
 
     useEffect(()=> {
-        dispatch(getRoomNumberAsync(state.userName, state.selectedTimeControl, state.selectedDecrementControl))
+        dispatch(getRoomNumberAsync(state.userName, state.selectedTimeControl, state.selectedIncrementControl))
 
     }, [])
 
