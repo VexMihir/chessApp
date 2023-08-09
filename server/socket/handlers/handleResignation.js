@@ -50,6 +50,7 @@ const handleResignation = (io, socket, rooms, gameModel, gameSchema) => (roomNum
     room.spectators.forEach(spectator => {
         io.to(spectator.id).emit(EVENTS.RESIGNATION, resigningPlayer.username);
     });
+    delete rooms[roomNumber];
 };
 
 module.exports = { handleResignation };

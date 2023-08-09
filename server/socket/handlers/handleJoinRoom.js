@@ -71,6 +71,7 @@ const handleJoinRoom = (io, socket, rooms, gameModel, gameSchema) => (roomNumber
           rooms[roomNumber].winner = winningColor + " wins by Timeout"; // other player wins
           pushToMongoAndManageDB(rooms[roomNumber], gameSchema, gameModel);
           clearInterval(rooms[roomNumber].timer);
+          delete rooms[roomNumber];
         }
         // Emit a socket event to notify the clients that the game is over
       }, 1000);

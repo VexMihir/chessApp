@@ -94,6 +94,7 @@ const handleGameOver = (io, roomNumber, rooms, gameState, gameSchema, gameModel)
     handleCheckmate(gameState, io, roomNumber, rooms);
     pushToMongoAndManageDB(rooms[roomNumber], gameSchema, gameModel);
     clearInterval(rooms[roomNumber].timer);
+    delete rooms[roomNumber];
 };
 
 /**
