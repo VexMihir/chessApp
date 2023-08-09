@@ -1,6 +1,7 @@
 /**
  * Handle Accept Draw
  * This module handles the acceptance of a draw offer in a room.
+ * Emits appropriate socket events and pushed the game to the databse if the draw is accepeted
  */
 
 const { EVENTS, OFFERED_DRAW_STATES } = require('../aliases');

@@ -1,6 +1,6 @@
 /**
  * ChessApp Server
- * This file sets up the Express server, Socket.IO, and MongoDB connection for the ChessApp application.
+ * This file sets up the Node Endpoints, Express server, Socket.IO, and MongoDB connection for the ChessApp application.
  */
 
 const express = require('express');

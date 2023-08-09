@@ -1,6 +1,7 @@
 /**
  * Handle Resignation
  * This module handles a player's resignation from a game room.
+ * Pushes the game to the database when a game is finished.
  */
 
 const { EVENTS } = require('../aliases');
