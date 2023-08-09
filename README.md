@@ -29,6 +29,7 @@
 -   ✅ Allows users to retrieve and play back their previous games, step by step.
 #### 🎯 Stretch Requirements:
 -   ✅ Use some Chess Engine package to evaluate the game at each step during playback.
+-   ✅ Different time controls and increment options for players.
 -   ❌ Computer-controlled chess bot players can play against.
 -   ❌ Login system for users.
 -   ❌ ELO Rating System.
@@ -61,13 +62,6 @@ Our app has the capabilities of real-time communication between a server and mul
 - Establish guidelines for the emitting and receiving socket events using aliases.
 - Compartmentalize socket events based on chess events into various socket handlers.
 
-### Sideboard information
-Our app has the functionalities to show the two distinct sideboard information. It provides both players and spectators access to the information relevant to them. 
-In order to achieve this, 
-- Think about what information matters to players and spectators.
-- Provide a piece of specific information to both players and spectators
-     - only players can see - Pawn Promotion Choice. This allows players can change and pick a Pawn promotion choice during the game,
-     - only spectators can see - Orientation. This allows spectators can change and pick a new color for the orientation of the chessboard
 ## 🔮 Future of Castle & Conquer
 - Add a login system that allows users to save their games in our chess database. This also allows for a username-based invite system and a friend system. A barebones login system was in the works by Jason Lai but was scrapped due to logistical reasons.
 - Extend our existing Stockfish AI framework (being used for game analysis) to enable players to play against an AI-controlled bot with varying difficulties.
@@ -102,6 +96,10 @@ In order to achieve this,
    - Implemented the valid-moves feature that allowed users to see the available moves per piece.
    - Implemented the two buttons which allow players to forfeit and make a draw offer 
    - Designed the side panel, a part of the in-game view that showed player, spectator, and game information
+ 
+## 👾 Known Bugs
+> - Currently reloading a page on some elements leads to 404 Not Found. This is due to React and Render's limited capacity while deploying static webpages. A potential fix was in the works but was left unfinished due to time constraints
+> - Render's free service has occasionally issues keeping up with the number of requests our backend can actively handle.
 ---
 
 📣 Please refer to old.README.md for the design document of the app, including prototype sketches.
