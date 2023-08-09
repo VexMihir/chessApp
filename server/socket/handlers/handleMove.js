@@ -67,8 +67,8 @@ const handleCheckmate = (gameState, io, roomNumber, rooms) => {
     if (gameState.inCheckmate) {
         const currentPlayer = rooms[roomNumber].players.find(player => player.id === rooms[roomNumber].currentPlayer);
         const winningPlayerColor = currentPlayer.color === 'White' ? 'Black' : 'White';
-        // For the room, set the winner to the player who is not the current player
         
+        // For the room, set the winner to the player who is not the current player
         rooms[roomNumber].winner = winningPlayerColor + " wins by Checkmate";
 
         const room = rooms[roomNumber];

@@ -41,7 +41,7 @@ mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('...// Connected to ChessApp Cluster //...'))
   .catch(error => console.log(error));
 
-  // Game Schema
+// Game Schema
 const gameSchema = new mongoose.Schema({
   history: [{}],
   playerOneData: Object,

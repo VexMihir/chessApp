@@ -264,7 +264,6 @@ export default function InGameView() {
     });
 
     socket.on(EVENTS.USER_LIST_UPDATE, (userList) => {
-      // localStorage.setItem("players", JSON.stringify(userList.players))
       setPlayers(userList.players);
       if (userList.spectators.length > 0) {
         setSpectators(userList.spectators);
