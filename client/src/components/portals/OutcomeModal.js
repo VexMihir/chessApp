@@ -31,6 +31,7 @@ export default function OutcomeModal({
     e.preventDefault();
     dispatch(loadGameDB(0));
     navigate(queryPage, { replace: false });
+    window.location.reload();
   }
 
   //Source: https://stackoverflow.com/questions/50644976/react-button-onclick-redirect-page
@@ -38,6 +39,7 @@ export default function OutcomeModal({
     e.preventDefault();
     let path = "/";
     navigate(path);
+    window.location.reload();
   };
 
   let flag = false;

@@ -365,11 +365,15 @@ export default function InGameView() {
             // reset
             if (isPlayerGetDisconnected) {
               navigate('/')
+              window.location.reload();
+
             } else if (isRoomExist) {
               setIsMessageModalOpen(false);
             } else if (!isRoomExist) {
               navigate('/')
+              window.location.reload();
             }
+
           }}
           isOneOption={isOneOption}
         >
