@@ -176,9 +176,8 @@ export function JoinRoomForm() {
             <NavLink
                 className={
                     " text-center " +
-                    "no-underline border border-custom-black rounded-xl hover:shadow-transparent " +
-                    "text-custom-black font-bold rounded " +
-                    "shadow shadow-md shadow-custom-black " +
+                    "no-underline border border-custom-black  hover:shadow-transparent " +
+                    "text-custom-black font-bold " +
                     "h-[10%] py-[0.5rem] px-4 m-auto join-button "
                 }
                 onClick={(e) => {
