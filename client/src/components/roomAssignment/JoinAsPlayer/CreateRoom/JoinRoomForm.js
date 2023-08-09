@@ -12,7 +12,7 @@ export function JoinRoomForm() {
     const [userName, setUserName] = useState(null);
     const [userNameError, setuserNameError] = useState("invisible");
     const [selectedTimeControl, setSelectedTimeControl] = useState("5");
-    const [selectedDecrementControl, setSelectedDecrementControl] =
+    const [selectedIncrementControl, setSelectedIncrementControl] =
         useState("0");
 
     const handleOnChange = (e) => {
@@ -33,9 +33,9 @@ export function JoinRoomForm() {
         if (!userName || userName.length === 0) {
             e.preventDefault();
             window.alert("USERNAME CANNOT BE EMPTY");
-        } else if (!selectedDecrementControl) {
+        } else if (!selectedIncrementControl) {
             e.preventDefault();
-            window.alert("PLEASE SELECT DECREMENT CONTROL");
+            window.alert("PLEASE SELECT INCREMENT CONTROL");
         } else if (!selectedTimeControl) {
             e.preventDefault();
             window.alert("PLEASE SELECT TIME CONTROL");
@@ -46,8 +46,8 @@ export function JoinRoomForm() {
         setSelectedTimeControl(timeControl);
     };
 
-    const handleDecrementSelection = (decrement) => {
-        setSelectedDecrementControl(decrement);
+    const handleIncrementSelection = (increment) => {
+        setSelectedIncrementControl(increment);
     };
 
     return (
@@ -126,51 +126,51 @@ export function JoinRoomForm() {
                     >1</button>
                 </div>
                 <legend className={"rounded-2xl text-custom-black text-xs text-black "}>
-                    Decrement Selection (Secs)
+                    Increment Selection (Secs)
                 </legend>
                 <div className="flex flex-row justify-around items-center ">
                     <button
-                        onClick={() => handleDecrementSelection("0")}
+                        onClick={() => handleIncrementSelection("0")}
                         className={`py-[0.1rem] px-4 rounded-lg text-xs ${
-                            selectedDecrementControl === "0" ? "bg-yellow-400" : ""
+                            selectedIncrementControl === "0" ? "bg-yellow-400" : ""
                         }`}
                         style={{ fontFamily: 'Grenze'}}
-                    >-0</button>
+                    >+0</button>
                     <button
-                        onClick={() => handleDecrementSelection("1")}
+                        onClick={() => handleIncrementSelection("1")}
                         className={`py-[0.1rem] px-4 rounded-lg text-xs ${
-                            selectedDecrementControl === "1" ? "bg-yellow-400" : ""
+                            selectedIncrementControl === "1" ? "bg-yellow-400" : ""
                         }`}
                         style={{ fontFamily: 'Grenze'}}
-                    >-1</button>
+                    >+1</button>
                     <button
-                        onClick={() => handleDecrementSelection("3")}
+                        onClick={() => handleIncrementSelection("3")}
                         className={`py-[0.1rem] px-4 rounded-lg text-xs ${
-                            selectedDecrementControl === "3" ? "bg-yellow-400" : ""
+                            selectedIncrementControl === "3" ? "bg-yellow-400" : ""
                         }`}
                         style={{ fontFamily: 'Grenze'}}
-                    >-3</button>
+                    >+3</button>
                     <button
-                        onClick={() => handleDecrementSelection("5")}
+                        onClick={() => handleIncrementSelection("5")}
                         className={`py-[0.1rem] px-4 rounded-lg text-xs ${
-                            selectedDecrementControl === "5" ? "bg-yellow-400" : ""
+                            selectedIncrementControl === "5" ? "bg-yellow-400" : ""
                         }`}
                         style={{ fontFamily: 'Grenze'}}
-                    >-5</button>
+                    >+5</button>
                     <button
-                        onClick={() => handleDecrementSelection("10")}
+                        onClick={() => handleIncrementSelection("10")}
                         className={`py-[0.1rem] px-4 rounded-lg text-xs ${
-                            selectedDecrementControl === "10" ? "bg-yellow-400" : ""
+                            selectedIncrementControl === "10" ? "bg-yellow-400" : ""
                         }`}
                         style={{ fontFamily: 'Grenze'}}
-                    >-10</button>
+                    >+10</button>
                     <button
-                        onClick={() => handleDecrementSelection("30")}
+                        onClick={() => handleIncrementSelection("30")}
                         className={`py-[0.1rem] px-4 rounded-lg text-xs ${
-                            selectedDecrementControl === "30" ? "bg-yellow-400" : ""
+                            selectedIncrementControl === "30" ? "bg-yellow-400" : ""
                         }`}
                         style={{ fontFamily: 'Grenze'}}
-                    >-30</button>
+                    >+30</button>
                 </div>
             </fieldset>
             <NavLink
@@ -189,7 +189,7 @@ export function JoinRoomForm() {
                     {
                         userName,
                         selectedTimeControl,
-                        selectedDecrementControl
+                        selectedIncrementControl
                     }
                 }
             >

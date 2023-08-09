@@ -55,7 +55,7 @@ const handleJoinRoom =
 
       const timer = setInterval(() => {
         const currentPlayer = rooms[roomNumber].currentPlayer;
-        rooms[roomNumber].timers[currentPlayer] -= rooms[roomNumber].decrement;
+        rooms[roomNumber].timers[currentPlayer]--;
         io.to(roomNumber).emit(EVENTS.TIME_UPDATES, rooms[roomNumber].timers);
 
         // Check if a player's timer has run out
@@ -106,9 +106,6 @@ const handleJoinRoom =
               rooms[roomNumber].timeControl;
             timers[rooms[roomNumber].players[1].id] =
               rooms[roomNumber].timeControl;
-
-              console.log("line 110");
-              console.log(rooms[roomNumber]);
           }
           io.to(roomNumber).emit(EVENTS.START_GAME);
           startTimer(roomNumber);
