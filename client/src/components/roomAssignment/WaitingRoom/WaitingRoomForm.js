@@ -32,9 +32,9 @@ export function WaitingRoomForm () {
                 <NavLink
                     className=
                         {"m-auto text-center " +
-                            "no-underline border border-custom-black rounded-xl py-3 px-4 hover:shadow-transparent " +
-                            "text-custom-black text-right font-bold rounded" +
-                            "shadow shadow-md shadow-custom-black mt-[1rem] join-button"}
+                            "no-underline border border-custom-black py-3 px-4 hover:shadow-transparent " +
+                            "text-custom-black text-right font-bold " +
+                            "mt-[1rem] join-button"}
                     to={"/inGameView/"+ roomNumber}
                     state={{userName: state.userName}}
                     onClick={()=>{
