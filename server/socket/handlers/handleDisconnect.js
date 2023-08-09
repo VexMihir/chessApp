@@ -2,14 +2,14 @@ const { EVENTS } = require('../aliases')
 
 const handleDisconnect = (io, socket, rooms) => () => {
     console.log('Client disconnected');
+    
     const roomNumber = Object.keys(rooms).find((key) =>
-    rooms[key].players.some(player => player.id === socket.id) ||
-    rooms[key].spectators.some(spectator => spectator.id === socket.id)
+        rooms[key].players.some(player => player.id === socket.id) ||
+        rooms[key].spectators.some(spectator => spectator.id === socket.id)
     );
     
     if (roomNumber) {
-        clearInterval(rooms[roomNumber].timer);
-        // the following was for the reconnect functionality but do we still need the following since we have not built it yet?
+
         rooms[roomNumber].players = rooms[roomNumber].players.filter(player => player.id !== socket.id);
         rooms[roomNumber].spectators = rooms[roomNumber].spectators.filter(spectator => spectator.id !== socket.id);
         const userList = {

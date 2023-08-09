@@ -75,7 +75,7 @@ app.post('/createGame', (req, res) => {
     timeControl *= 60; // to seconds
   }
 
-  let timeIncrement = parseInt(req.body.data.timeIncrement); // time increment in seconds
+  let timeDecrement = parseInt(req.body.data.timeDecrement); // time decrement in seconds
 
 
   // default time controlis 5 minutes + 0 seconds if not specified 
@@ -83,20 +83,20 @@ app.post('/createGame', (req, res) => {
     timeControl = 5 * 60; // to seconds
   }
 
-  if (isNaN(timeIncrement)) {
-    timeIncrement = 0;
+  if (isNaN(timeDecrement)) {
+    timeDecrement = 0;
   }
 
-  // max time control is 1 hour, max increment is +3 minutes
+  // max time control is 1 hour, max decrement is +3 minutes
   if (
     timeControl < 1 * 60 ||
     timeControl > 60 * 60 ||
-    timeIncrement < 0 ||
-    timeIncrement > 180
+    timeDecrement < 0 ||
+    timeDecrement > 180
   ) {
     return res
       .status(400)
-      .json({ error: "Invalid time control or time increment" });
+      .json({ error: "Invalid time control or time decrement" });
   }
 
   rooms[roomNumber] = {
@@ -105,7 +105,7 @@ app.post('/createGame', (req, res) => {
     spectators: [],
     timers: {},
     timeControl: timeControl,
-    increment: timeIncrement,
+    decrement: timeDecrement,
     currentPlayer: null,
     drawOffer: null,
   };
