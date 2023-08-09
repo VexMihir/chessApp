@@ -18,9 +18,10 @@ async function pushToMongoAndManageDB(gameRoom, gameSchema, Game) {
   const gameHistory = gameRoom.game.getGameHistory();
 
   if (gameHistory.length < 2) { // push to mongo only if both players have made at least one move
-      console.log('Not enough moves to save the game');
-      return;
+    console.log('Not enough moves to save the game');
+    return;
   }
+
 
   console.log("PUSHING TO MONGO")
 

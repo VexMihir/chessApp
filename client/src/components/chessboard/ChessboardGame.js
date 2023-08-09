@@ -3,14 +3,23 @@ import Chessboard from "chessboardjsx";
 import React, { useState, useEffect } from "react";
 import {
   BLACK_CHESS_PIECE,
-  RESULT,
   WHITE_CHESS_PIECE,
-} from "../inGameView/InGameView";
+} from "../../constants/customChessPiece";
+import { EVENTS } from "../../constants/aliases";
 
 const chess = new Chess();
 
+/*
+  A component that displays the chessboard, a part of InGameView.
+  1. It allows the players to pick a chesspiece to move to other chess square.
+  2. It allows the players to click to see any valid moves.
+  3. It allows the spectators to change the orientation of the chessboard.
+  4. It includes a list of props sent by its parent component - inGameView
+  5. One socket event fro this component is about current FEN data sent by the server
+  6. It uses the chessboard.jsx library 
+  Technologies: React, Socket.io, Tailwind CSS
+*/
 export default function ChessboardGame({
-  haveTwoPlayers,
   pawnPromotionChoice,
   setHistory,
   players,
@@ -20,9 +29,10 @@ export default function ChessboardGame({
   socket,
   roomId,
   isGameStarted,
-  setIsGameStarted,
   activePlayer,
   setActivePlayer,
+  orientation,
+  setOrientation,
 }) {
   const [fen, setFen] = useState(
     "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
@@ -30,20 +40,10 @@ export default function ChessboardGame({
 
   const [sqaureStyles, setSqaureStyles] = useState();
 
-  // make the bottom of the chessboard the player where it is you?
-  const [orientation, setOrientation] = useState("white");
-
   const [playerColor, setPlayerColor] = useState(null);
 
-  function onMouseOverSquare(square) {
-    if (socket && !isSocketSpectator && isGameStarted) {
-      socket.emit("valid move", roomId, square);
-    }
-  }
-
   function onSquareClick(square) {
-    if (socket && !isSocketSpectator && players.length === 2) {
-      // && isGameStarted) {
+    if (!isSocketSpectator && players.length === 2) {
       let currentPlayer = null;
 
       for (let i = 0; i < players.length; i++) {
@@ -52,11 +52,11 @@ export default function ChessboardGame({
           break;
         }
       }
-      console.log("line 97", players);
-      console.log("line 90", currentPlayer);
-      console.log("line 91", activePlayer);
 
-      if (activePlayer === currentPlayer.color[0]) {
+      if (
+        currentPlayer !== null &&
+        activePlayer === currentPlayer.color[0].toLowerCase()
+      ) {
         const validMovesIncludingSelf = chess.moves({
           square: square,
           verbose: true,
@@ -72,17 +72,15 @@ export default function ChessboardGame({
         const styles = {};
         const self = String(square);
         if (validMovesExclusingSelf.length > 0) {
-          styles[self] = { backgroundColor: "#bbcb2b" };
+          styles[self] = { backgroundColor: "#d1d5db" };
         }
         for (let i = 0; i < validMovesExclusingSelf.length; i++) {
           const property = String(validMovesExclusingSelf[i]);
           // Source: https://codesandbox.io/s/x332zqpkl4?from-embed=&file=/src/integrations/WithMoveValidation.js:1229-1284
           styles[property] = {
-            background: "radial-gradient(circle, #d6d6bd 36%, transparent 40%)",
+            background: "radial-gradient(circle, #FACC15 36%, transparent 40%)",
           };
         }
-
-        console.log("line 114", validMovesExclusingSelf);
 
         setSqaureStyles(styles);
       }
@@ -91,12 +89,7 @@ export default function ChessboardGame({
 
   function onDrop({ sourceSquare, targetSquare }) {
     if (socket && !isSocketSpectator && isGameStarted) {
-      console.log("line 134");
-      console.log(chess.history());
-
       const validMoves = chess.moves({ square: sourceSquare, verbose: true });
-
-      console.log("line 139", validMoves);
 
       let result = "";
       for (let i = 0; i < validMoves.length; i++) {
@@ -105,33 +98,30 @@ export default function ChessboardGame({
           break;
         }
       }
-      console.log("line 142");
 
       if (result !== "" && sourceSquare !== targetSquare) {
-        console.log("line 144");
-        // socket.emit('move', roomId, result);
         if (
           pawnPromotionChoice === BLACK_CHESS_PIECE.ROOK ||
           pawnPromotionChoice === WHITE_CHESS_PIECE.ROOK
         ) {
-          socket.emit("move", roomId, sourceSquare, targetSquare, "r");
+          socket.emit(EVENTS.MOVE, roomId, sourceSquare, targetSquare, "r");
         } else if (
           pawnPromotionChoice === BLACK_CHESS_PIECE.BISHOP ||
           pawnPromotionChoice === WHITE_CHESS_PIECE.BISHOP
         ) {
-          socket.emit("move", roomId, sourceSquare, targetSquare, "b");
+          socket.emit(EVENTS.MOVE, roomId, sourceSquare, targetSquare, "b");
         } else if (
           pawnPromotionChoice === BLACK_CHESS_PIECE.KNIGHT ||
           pawnPromotionChoice === WHITE_CHESS_PIECE.KNIGHT
         ) {
-          socket.emit("move", roomId, sourceSquare, targetSquare, "n");
+          socket.emit(EVENTS.MOVE, roomId, sourceSquare, targetSquare, "n");
         } else if (
           pawnPromotionChoice === BLACK_CHESS_PIECE.QUEEN ||
           pawnPromotionChoice === WHITE_CHESS_PIECE.QUEEN
         ) {
-          socket.emit("move", roomId, sourceSquare, targetSquare, "q");
+          socket.emit(EVENTS.MOVE, roomId, sourceSquare, targetSquare, "q");
         } else {
-          socket.emit("move", roomId, sourceSquare, targetSquare, "q");
+          socket.emit(EVENTS.MOVE, roomId, sourceSquare, targetSquare, "q");
         }
       }
       setSqaureStyles("");
@@ -146,18 +136,13 @@ export default function ChessboardGame({
       players.length === 2 &&
       !isGameStarted
     ) {
-      socket.emit("game start", roomId);
+      socket.emit(EVENTS.START_GAME, roomId);
     }
   }
 
   useEffect(() => {
     if (socket) {
-      socket.on("moveMade", (move, fen, validMoves, history) => {
-        console.log("line 202--------");
-        console.log("line 159", move);
-        console.log("validMoves", validMoves);
-        console.log("history", history);
-
+      socket.on(EVENTS.MOVE_MADE, (move, fen, validMoves, history) => {
         // Here you can handle updates of the game state
         setFen(fen); // Update FEN state
         setHistory(history);
@@ -166,10 +151,17 @@ export default function ChessboardGame({
         setHalfMove(fen.split(" ")[4]);
         setFullMove(fen.split(" ")[5]);
       });
+
+      socket.on(EVENTS.GAME_CURRENT_FEN, (currentFEN) => {
+        setFen(currentFEN);
+      });
+      socket.on(EVENTS.GAME_CURRENT_HISTORY, (currentHistory) => {
+        setHistory(currentHistory);
+      });
     }
   }, [roomId, socket]);
 
-    useEffect(() => {
+  useEffect(() => {
     // Find the player's color once the players array is set
     if (players.length === 2) {
       const currentPlayer = players.find((player) => player.id === socket.id);
@@ -178,7 +170,6 @@ export default function ChessboardGame({
       }
     }
   }, [players, socket]);
-
 
   useEffect(() => {
     // Update orientation based on player's color
@@ -196,16 +187,15 @@ export default function ChessboardGame({
           <Chessboard
             position={fen.split(" ")[0]}
             orientation={orientation}
-            width={900}
+            width={700}
             draggable={true}
             onDrop={onDrop}
             onDragOverSquare={onDragOverSquare}
             squareStyles={sqaureStyles}
             onSquareClick={onSquareClick}
-            onMouseOverSquare={onMouseOverSquare}
             darkSquareStyle={{ backgroundColor: "#547396" }}
             lightSquareStyle={{ backgroundColor: "#eae9d4" }}
-             pieces={{
+            pieces={{
               bQ: (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

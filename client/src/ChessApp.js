@@ -9,6 +9,7 @@ import {SpectatorForm} from "./components/roomAssignment/JoinAsSpectator/Spectat
 import PreviousGameView from "./components/previousGameView/PreviousGameView";
 import {PlayerForm} from "./components/roomAssignment/JoinAsPlayer/PlayerForm";
 import {NOTFOUNDPAGE} from "./components/404NOTFOUND/404NOTFOUND";
+import { SocketContext, socket } from "./context/socket";
 import {analysisView, normalView, playBackView} from "./RouteString/RouteString";
 import {PrevMoveList} from "./components/previousGameView/NormalView/PrevMoveList";
 import {AnalysisView} from "./components/previousGameView/AnalysisView/AnalysisView";
@@ -17,12 +18,13 @@ function ChessApp() {
 
   return (
       <>
+        <SocketContext.Provider value={socket}>
         <Router>
           <Routes>
                 <Route path="/" element={<RoomAssignment />}>
-                    <Route path="/playerForm" element={<PlayerForm/>}/> 
+                    <Route path="/playerForm" element={<PlayerForm/>}/>
                     <Route path={"/joinAsSpectator"} element={<SpectatorForm/>}/>
-                    <Route path="/waitingRoomForm" element={<WaitingRoomForm/>}/> 
+                    <Route path="/waitingRoomForm" element={<WaitingRoomForm/>}/>
                 </Route>
 
                 <Route path="/previousGameView" element={<PrevGameQueryPage />}>
@@ -38,6 +40,7 @@ function ChessApp() {
               <Route path="/404NOTFOUND" element={<NOTFOUNDPAGE />} />
           </Routes>
         </Router>
+        </SocketContext.Provider>
       </>
   );
 }

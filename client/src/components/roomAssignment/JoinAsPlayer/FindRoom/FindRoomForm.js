@@ -1,5 +1,8 @@
 import {NavLink} from "react-router-dom";
-import {useState} from "react";
+import {useContext, useEffect, useState} from "react";
+import { SocketContext } from "../../../../context/socket";
+import { EVENTS } from "../../../../constants/aliases";
+
 /**
  * With help of chatGPT rephrasing and grammar checking
  * Find Room Form
@@ -10,12 +13,16 @@ import {useState} from "react";
  *
  */
 
+/*
+Find room navigates users to specific room specified by the user.
+ */
 export function FindRoomForm() {
     const [userName, setUserName] = useState(null);
     const [roomNumber, setRoomNumber] = useState(null);
     const [userNameError, setuserNameError] = useState("invisible");
     const [roomEror, setRoomNumberError] = useState("invisible");
-
+    const [isRoomFull, setIsRoomFull] = useState('');
+    const socket = useContext(SocketContext);
 
     const handleOnChange = (e) => {
         checkEmptyUserName(e)
@@ -51,14 +58,29 @@ export function FindRoomForm() {
         } else if (!roomNumber || roomNumber < 0 || roomNumber > 1000000) {
             e.preventDefault();
             window.alert("ROOM NUMBER IS INVALID")
+        } else if (isRoomFull) {
+            e.preventDefault();
+            window.alert("The room is full. If you want to join the room, you can join as a spectator by clicking the Join As Spectator tab.");
+        } else {
+            socket.emit(EVENTS.JOIN_ROOM, roomNumber, userName)
         }
     }
+
+    useEffect(() => {
+        if (roomNumber !== null) {
+            socket.emit(EVENTS.CHECK_IF_ROOM_FULL, roomNumber);
+        }
+        socket.on(EVENTS.CHECK_IF_ROOM_FULL, (isRoomFull) => {
+            setIsRoomFull(isRoomFull)
+        })
+
+    }, [roomNumber]) 
 
     return (
         <div className={"w-[50%] h-[100%] flex flex-col items-stretch  "}>
             <fieldset className={"flex flex-col h-[85%] " +
                 "rounded-xl border-custom-black border-10 p-0 m-0 mb-[0.5rem] pb-[1.2rem]  px-[0.5rem]"}>
-                <legend className={"rounded-2xl text-custom-black text-md text-black"}>Find Room</legend>
+                <legend className={"rounded-2xl text-custom-black text-md "}>Find Room</legend>
                 <label className = {"rounded-2xl text-custom-black text-sm"}>Enter room number</label>
                 <input  required
                         min={0}

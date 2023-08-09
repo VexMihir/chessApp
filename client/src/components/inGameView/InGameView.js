@@ -1,46 +1,32 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Sideboard from "../sideboard/Sideboard";
 import ChessboardGame from "../chessboard/ChessboardGame";
+import {
+  WHITE_CHESS_PIECE,
+} from "../../constants/customChessPiece";
 
 import OutcomeModal from "../portals/OutcomeModal";
-import io from "socket.io-client";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import MessageModal from "../portals/MessageModal";
+import { SocketContext } from "../../context/socket";
+import { EVENTS } from "../../constants/aliases";
 
-export const RESULT = {
-  WHITE: "1-0", // black forfeits or black king is in checkmate
-  BLACK: "0-1", // white forfeits or white king is in checkmate
-  DRAW: "1/2-1/2", // stalemate, offer a draw
-  UNFINISHED: "*", // internet disconnection or user closes the app or login out or a default value
-};
-
-// Source: https://www.i2symbol.com/symbols/chess
-export const WHITE_CHESS_PIECE = {
-  KING: "♔",
-  QUEEN: "♕",
-  BISHOP: "♗",
-  KNIGHT: "♘",
-  ROOK: "♖",
-  PAWN: "♙",
-};
-
-// Source: https://www.i2symbol.com/symbols/chess
-export const BLACK_CHESS_PIECE = {
-  KING: "♚",
-  QUEEN: "♛",
-  BISHOP: "♝",
-  KNIGHT: "♞",
-  ROOK: "♜",
-  PAWN: "♟",
-};
-
+/*
+  A component about InGameView
+  1. contains 2 child components - ChessboardGame and Sideboard
+  2. there are a lot of socket events for this component to listen to the response of the server
+  3. it can handle 5 different events - forfeits, offer draw, checkmate, non-offer draw, and time out
+  4. Once the server sends back a response to a client, this component will shows 2 different types of portals or modals - one is for Offer draw, and one is for non-offer draw
+  5. It also includes the header where it shows current turn, halfmove, fullmove, room number for this chessboard game
+  Technologies: React, Socket.io, Tailwind CSS
+*/
 export default function InGameView() {
   const [isGameStarted, setIsGameStarted] = useState(false);
   const [activePlayer, setActivePlayer] = useState("w");
 
   const [selfColor, setSelfColor] = useState("white");
 
-  const [socket, setSocket] = useState(null);
+  const socket = useContext(SocketContext)
   const [isSocketSpectator, setIsSocketSpectator] = useState(false);
   const [pawnPromotionChoice, setPawnPromotionChoice] = useState(
     WHITE_CHESS_PIECE.KNIGHT
@@ -48,7 +34,6 @@ export default function InGameView() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMessageModalOpen, setIsMessageModalOpen] = useState(false);
-  const [haveTwoPlayers, setHaveTwoPLayers] = useState(false);
 
   const [halfMove, setHalfMove] = useState(0);
   const [fullMove, setFullMove] = useState(1);
@@ -56,13 +41,18 @@ export default function InGameView() {
   const [players, setPlayers] = useState([]);
   const [spectators, setSpectators] = useState([]);
 
+  const [orientation, setOrientation] = useState("white");
+
   const [history, setHistory] = useState();
 
   const [timer, setTimer] = useState();
 
   // flags
-  const [isDrawDeclined, setIsDrawDeclined] = useState(false);
-  const [isDrawRescined, setIsDrawRescined] = useState(false);
+  const [isRoomExist, setIsRoomExist] = useState(true)
+  const [isPlayerGetDisconnected, setIsPlayerGetDisconnected] = useState(false)
+ 
+  const [isOneOption, setIsOneOption] = useState(false)
+  const [message, setMessage] = useState("")
 
   // flags of game outcomes
   const [resigningPlayer, setResigningPlayer] = useState("");
@@ -81,20 +71,8 @@ export default function InGameView() {
   //Source: https://stackoverflow.com/questions/66506891/useparams-hook-returns-undefined-in-react-functional-component
   const { id } = useParams();
   const [roomId, setRoomId] = useState(id);
+
   const navigate = useNavigate();
-  const location = useLocation();
-
-  useEffect(() => {
-    console.log("line 75");
-    console.log(players);
-    console.log("line 77");
-    console.log(socket);
-
-    if (players.length === 2) {
-      //if there is 2 players, then we also make sure the sockets are alive.
-      setHaveTwoPLayers(true);
-    }
-  }, [players]);
 
   useEffect(() => {
     for (let i = 0; i < spectators.length; i++) {
@@ -108,22 +86,22 @@ export default function InGameView() {
   useEffect(() => {
     if (resigningPlayer !== "") {
       if (resigningPlayer === players[0].username) {
-        if (players[0].color === "white") {
+        if (players[0].color.toLowerCase() === "white") {
           setScore("1-0");
           setResult("White");
           setReason("Black player forfeits");
-        } else if (players[0].color === "black") {
+        } else if (players[0].color.toLowerCase() === "black") {
           setScore("0-1");
           setResult("Black");
           setReason("White player forfeits");
         }
         setWinnerName(players[1].username);
       } else if (resigningPlayer === players[1].username) {
-        if (players[0].color === "white") {
+        if (players[0].color.toLowerCase() === "white") {
           setScore("1-0");
           setResult("White");
           setReason("Black player forfeits");
-        } else if (players[0].color === "black") {
+        } else if (players[0].color.toLowerCase() === "black") {
           setScore("0-1");
           setResult("Black");
           setReason("White player forfeits");
@@ -139,16 +117,22 @@ export default function InGameView() {
       setResult("Draw");
       setWinnerName("None");
       if (socket.id === players[0].id) {
-        if (players[0].color === "white") {
+        if (players[0].color.toLowerCase() === "white") {
           setReason("White player accepted the draw offer");
-        } else if (players[1].color === "black") {
+        } else if (players[1].color.toLowerCase() === "black") {
           setReason("Black player accepted the draw offer");
         }
       } else if (socket.id === players[1].id) {
-        if (players[0].color === "white") {
+        if (players[0].color.toLowerCase() === "white") {
           setReason("White player accepted the draw offer");
-        } else if (players[1].color === "black") {
+        } else if (players[1].color.toLowerCase() === "black") {
           setReason("Black player accepted the draw offer");
+        }
+      } else {
+        if(players[0].color.toLowerCase() === "white") {
+          setReason("White player accepted the draw offer");
+        } else if (players[1].color.toLowerCase() === "black") {
+          setReason("Black player accepted the draw offer")
         }
       }
     }
@@ -160,16 +144,22 @@ export default function InGameView() {
         setScore("0-1");
         setResult("Black");
         if (socket.id === players[0].id) {
-          if (players[0].color === "white") {
+          if (players[0].color.toLowerCase() === "white") {
             setWinnerName(players[1].username);
-          } else if (players[0].color === "black") {
+          } else if (players[0].color.toLowerCase() === "black") {
             setWinnerName(players[0].username);
           }
         } else if (socket.id === players[1].id) {
-          if (players[1].color === "white") {
+          if (players[1].color.toLowerCase() === "white") {
             setWinnerName(players[0].username);
-          } else if (players[1].color === "black") {
+          } else if (players[1].color.toLowerCase() === "black") {
             setWinnerName(players[1].username);
+          }
+        } else {
+          if (players[0].color.toLowerCase() === "white") {
+            setWinnerName(players[1].username);
+          } else if (players[0].color.toLowerCase() === "black") {
+            setWinnerName(players[0].username);
           }
         }
         setReason("White player ran out of the time");
@@ -177,16 +167,22 @@ export default function InGameView() {
         setScore("1-0");
         setResult("White");
         if (socket.id === players[0].id) {
-          if (players[0].color === "white") {
+          if (players[0].color.toLowerCase() === "white") {
             setWinnerName(players[0].username);
-          } else if (players[0].color === "black") {
+          } else if (players[0].color.toLowerCase() === "black") {
             setWinnerName(players[1].username);
           }
         } else if (socket.id === players[1].id) {
-          if (players[1].color === "white") {
+          if (players[1].color.toLowerCase() === "white") {
             setWinnerName(players[1].username);
-          } else if (players[1].color === "black") {
+          } else if (players[1].color.toLowerCase() === "black") {
             setWinnerName(players[0].username);
+          }
+        } else {
+          if (players[0].color.toLowerCase() === "white") {
+            setWinnerName(players[0].username);
+          } else if (players[0].color.toLowerCase() === "black") {
+            setWinnerName(players[1].username);
           }
         }
         setReason("Black player ran out of the time");
@@ -200,16 +196,22 @@ export default function InGameView() {
         setScore("0-1");
         setResult("Black");
         if (socket.id === players[0].id) {
-          if (players[0].color === "white") {
+          if (players[0].color.toLowerCase() === "white") {
             setWinnerName(players[1].username);
-          } else if (players[0].color === "black") {
+          } else if (players[0].color.toLowerCase() === "black") {
             setWinnerName(players[0].username);
           }
         } else if (socket.id === players[1].id) {
-          if (players[1].color === "white") {
+          if (players[1].color.toLowerCase() === "white") {
             setWinnerName(players[0].username);
-          } else if (players[1].color === "black") {
+          } else if (players[1].color.toLowerCase() === "black") {
             setWinnerName(players[1].username);
+          }
+        } else {
+          if (players[0].color.toLowerCase() === "white") {
+            setWinnerName(players[1].username);
+          } else if (players[0].color.toLowerCase() === "black") {
+            setWinnerName(players[0].username);
           }
         }
         setReason("White player is checkmated");
@@ -217,16 +219,22 @@ export default function InGameView() {
         setScore("1-0");
         setResult("White");
         if (socket.id === players[0].id) {
-          if (players[0].color === "white") {
+          if (players[0].color.toLowerCase() === "white") {
             setWinnerName(players[0].username);
-          } else if (players[0].color === "black") {
+          } else if (players[0].color.toLowerCase() === "black") {
             setWinnerName(players[1].username);
           }
         } else if (socket.id === players[1].id) {
-          if (players[1].color === "white") {
+          if (players[1].color.toLowerCase() === "white") {
             setWinnerName(players[1].username);
-          } else if (players[1].color === "black") {
+          } else if (players[1].color.toLowerCase() === "black") {
             setWinnerName(players[0].username);
+          }
+        } else {
+          if (players[0].color.toLowerCase() === "white") {
+            setWinnerName(players[0].username);
+          } else if (players[0].color.toLowerCase() === "black") {
+            setWinnerName(players[1].username);
           }
         }
         setReason("Black player is checkmated");
@@ -244,176 +252,138 @@ export default function InGameView() {
   }, [gameOverDrawReason]);
 
   useEffect(() => {
-    const newSocket = io(process.env.REACT_APP_BACKEND_URL || 'http://localhost:5001');
-    // console.log("line 200");
-    setSocket(newSocket);
-    newSocket.emit("join room", roomId, getUsernameFromState());
 
-    newSocket.on("room full", () => {
-      const confirmSpectator = window.confirm(
-        "The room is full. Do you want to join as a spectator?"
-      );
-      if (confirmSpectator) {
-        newSocket.emit("join as spectator", roomId, getUsernameFromState());
-      } else {
-        // navigate('/');
-      }
-    });
-
-    newSocket.on("player disconnected", (roomNumber) => {
+    socket.on(EVENTS.PLAYER_DISCONNECTED, (roomNumber) => {
       if (roomId === roomNumber) {
-        alert("Opponent disconnected");
-        // navigate('/');
+        setIsPlayerGetDisconnected(true)
+        setIsOneOption(true)
+        setMessage("Game abandoned by opponent")
+        setIsMessageModalOpen(true);
+        
       }
     });
 
-    newSocket.on("user list update", (userList) => {
+    socket.on(EVENTS.USER_LIST_UPDATE, (userList) => {
+      // localStorage.setItem("players", JSON.stringify(userList.players))
       setPlayers(userList.players);
-      // console.log("line 247", userList.players);
       if (userList.spectators.length > 0) {
-        // console.log("line 249", userList.spectators);
         setSpectators(userList.spectators);
       }
       if (userList.players.length === 1) {
-        if (newSocket.id === userList.players[0].id) {
-          setSelfColor(userList.players[0].color);
+        if (socket.id === userList.players[0].id) {
+          setSelfColor(userList.players[0].color.toLowerCase());
         }
       }
       if (userList.players.length === 2) {
-        if (newSocket.id === userList.players[1].id) {
-          setSelfColor(userList.players[1].color);
+        if (socket.id === userList.players[1].id) {
+          setSelfColor(userList.players[1].color.toLowerCase());
         }
       }
     });
 
-    newSocket.on("start game", () => {
+    socket.on(EVENTS.START_GAME, () => {
       setIsGameStarted(true);
     });
 
-    newSocket.on("time update", (timer) => {
-      // console.log("Line 158 timer", timer);
+    socket.on(EVENTS.TIME_UPDATES, (timer) => {
       setTimer(timer);
     });
 
-    newSocket.on("checkmate", (checkmatedPlayerColor) => {
-      // dispatch(postPGNObj({
-      //   history: gameHistory,
-      //   playerOne: players[0],
-      //   playerTwo: players[1],
-      //   date: new Date(),
-      //   winner: winningPlayerColor
-      // }))
+    socket.on(EVENTS.CHECKMATE, (checkmatedPlayerColor) => {
       setCheckmateColor(checkmatedPlayerColor);
       setIsGameStarted(false);
       setIsModalOpen(true);
     });
 
-    newSocket.on("game over draw", (drawReason) => {
-      // drawReason displays the 50 rules???
+    socket.on(EVENTS.GAME_OVER_DRAW, (drawReason) => {
       setGameOverDrawReason(drawReason);
       setIsGameStarted(false);
       setIsModalOpen(true);
     });
 
-    // Forfeit
-    newSocket.on("resignation", (resigningPlayer) => {
-      console.log("line 270 time out", resigningPlayer);
+    socket.on(EVENTS.RESIGNATION, (resigningPlayer) => {
       setResigningPlayer(resigningPlayer);
       setIsGameStarted(false);
       setIsModalOpen(true);
     });
 
-    newSocket.on("drawOffered", (socketId) => {
-      console.log("Offer event line 184");
+    socket.on(EVENTS.DRAW_OFFERED, (socketId) => {
+      setIsOneOption(false)
+      if (selfColor === "white") {
+        setMessage("Do you want to accept the draw offer from black player?")
+      } else {
+        setMessage("Do you want to accept the draw offer from white player?")
+      }
+      
       setIsMessageModalOpen(true);
     });
 
-    newSocket.on("drawAccepted", () => {
+    socket.on(EVENTS.DRAW_ACCEPTED, () => {
       setIsDrawAccepted(true);
       setIsGameStarted(false);
       setIsModalOpen(true);
       setIsMessageModalOpen(false);
     });
 
-    newSocket.on("drawDeclined", () => {
-      console.log("line 335 player declined your draw offer");
-      setIsDrawDeclined(true);
+    socket.on(EVENTS.DRAW_DECLINED, () => {
+      setIsOneOption(true)
+      if (selfColor === "white") {
+        setMessage("The black player declined your draw offer")
+      } else {
+        setMessage("The white player declined your draw offer")
+      }
+
       setIsMessageModalOpen(true);
     });
 
-    // drawRescinded
-    newSocket.on("drawRescinded", () => {
-      console.log("line 335 player rescined your draw offer");
-      setIsDrawRescined(true);
-      setIsMessageModalOpen(true);
-    });
-
-    newSocket.on("timeout", (winningPlayerColor) => {
-      if (winningPlayerColor === "white") {
+    socket.on(EVENTS.TIMEOUT, (winningPlayerColor) => {
+      if (winningPlayerColor.toLowerCase() === "white") {
         setTimeoutColor("black");
-      } else if (winningPlayerColor === "black") {
+      } else if (winningPlayerColor.toLowerCase() === "black") {
         setTimeoutColor("white");
       }
       setIsGameStarted(false);
       setIsModalOpen(true);
     });
 
-    return () => {
-      newSocket.off("moveMade");
-      newSocket.disconnect();
-    };
+    socket.on(EVENTS.ROOM_NOT_EXIST, () => {
+      setIsRoomExist(false)
+      setIsOneOption(true)
+      setMessage("The room does not exist.")
+      setIsMessageModalOpen(true);
+    })
+
   }, [roomId]);
 
-  const getUsernameFromState = () => {
-    const locationState = location.state;
-    console.log("line 391", locationState);
-    //Cannot change from userName to playerName because it is tied to the state name and must follow what it is called.
-    return locationState ? locationState.userName : "";
-  };
 
   return (
     <>
-      {isDrawDeclined === true ? (
+      {isOneOption === true ? (
         <MessageModal
           isOpen={isMessageModalOpen}
           onOk={() => {
             // reset
-            setIsDrawDeclined(false);
-            setIsMessageModalOpen(false);
+            if (isPlayerGetDisconnected) {
+              navigate('/')
+            } else if (isRoomExist) {
+              setIsMessageModalOpen(false);
+            } else if (!isRoomExist) {
+              navigate('/')
+            }
           }}
-          isOneOption={true}
+          isOneOption={isOneOption}
         >
-          {selfColor === "white"
-            ? "The black player declined your draw offer"
-            : "The white player declined your draw offer"}
-        </MessageModal>
-      ) : isDrawRescined === true ? (
-        <MessageModal
-          isOpen={isMessageModalOpen}
-          onOk={() => {
-            // reset
-            setIsDrawRescined(false);
-            setIsMessageModalOpen(false);
-          }}
-          isOneOption={true}
-        >
-          {selfColor === "white"
-            ? "The black player rescinded your draw offer"
-            : "The white player resclided your draw offer"}
+          {message}
         </MessageModal>
       ) : (
         <MessageModal
           isOpen={isMessageModalOpen}
           onCloseDeclined={() => {
-            socket.emit("drawDeclined", roomId);
-            setIsMessageModalOpen(false);
-          }}
-          onCloseRescinded={() => {
-            socket.emit("drawRescinded", roomId);
+            socket.emit(EVENTS.DRAW_DECLINED, roomId);
             setIsMessageModalOpen(false);
           }}
           onOutcomeModalOpen={() => {
-            socket.emit("drawAccepted", roomId);
+            socket.emit(EVENTS.DRAW_ACCEPTED, roomId);
           }}
           isOneOption={false}
         >
@@ -443,8 +413,8 @@ export default function InGameView() {
 
           <div className="flex">
             <ChessboardGame
+              result={result}
               pawnPromotionChoice={pawnPromotionChoice}
-              haveTwoPlayers={haveTwoPlayers}
               players={players}
               setHistory={setHistory}
               isSocketSpectator={isSocketSpectator}
@@ -456,6 +426,8 @@ export default function InGameView() {
               setIsGameStarted={setIsGameStarted}
               activePlayer={activePlayer}
               setActivePlayer={setActivePlayer}
+              orientation={orientation}
+              setOrientation={setOrientation}
             />
             <Sideboard
               pawnPromotionChoice={pawnPromotionChoice}
@@ -467,6 +439,8 @@ export default function InGameView() {
               isSocketSpectator={isSocketSpectator}
               roomId={roomId}
               spectators={spectators}
+              orientation={orientation}
+              setOrientation={setOrientation}
             />
           </div>
         </div>

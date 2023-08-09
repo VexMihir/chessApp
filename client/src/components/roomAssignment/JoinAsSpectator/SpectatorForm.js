@@ -1,5 +1,8 @@
 import {NavLink} from "react-router-dom";
-import {useState} from "react";
+import {useContext, useState} from "react";
+import { SocketContext } from "../../../context/socket";
+import { EVENTS } from "../../../constants/aliases";
+
 /**
  * With help of chatGPT rephrasing and grammar checking
  * Spectator Room Form
@@ -15,6 +18,7 @@ export function SpectatorForm() {
     const [userNameError, setuserNameError] = useState("invisible");
     const [roomEror, setRoomNumberError] = useState("invisible");
 
+    const socket = useContext(SocketContext)
 
     const handleOnChange = (e) => {
         checkEmptyUserName(e)
@@ -58,7 +62,7 @@ export function SpectatorForm() {
         <div className={"w-[40%] h-[85%] flex flex-col m-auto  "}>
             <fieldset className={"flex flex-col h-[85%] " +
                 "rounded-xl border-custom-black border-10 p-0 m-0 mb-[0.5rem] pb-[0.5rem]  px-[0.5rem]"}>
-                <legend className={"rounded-2xl text-custom-black text-md text-black"}>Join As Spectator</legend>
+                <legend className={"rounded-2xl text-custom-black text-md"}>Join As Spectator</legend>
                 <label className = {"rounded-2xl text-custom-black text-sm"}>Enter room number</label>
                 <input  required
                         min={0}
@@ -71,6 +75,7 @@ export function SpectatorForm() {
                 <p className={`text-red-600  text-xs m-0 ${roomEror}`}>Invalid Number(must between 0 and 1000000)</p>
                 <label className = {"rounded text-custom-black m-0 text-sm"}>Enter username</label>
                 <input required
+                       type={'text'}
                        onChange={(e)=>(handleOnChange(e))}
                        onBlur={(e)=>{checkEmptyUserName(e)}}
                        className={"peer/Text rounded-md text-custom-black px-0.5 border-custom-black border-10 bg-transparent w-[90%]"}
@@ -85,9 +90,9 @@ export function SpectatorForm() {
                         "shadow shadow-md shadow-custom-black " +
                         "h-[10%] py-[0.5rem] px-4 m-auto "}
                 onClick={(e)=>{
+                    socket.emit(EVENTS.JOIN_AS_SPECTATOR, roomNumber, userName);
                     finalCheck(e)
-                }}
-                to={"/inGameView/"+ roomNumber}
+                 }} to={"/inGameView/"+ roomNumber}
                 state={{userName: userName}}
             >Join Room</NavLink>
         </div>

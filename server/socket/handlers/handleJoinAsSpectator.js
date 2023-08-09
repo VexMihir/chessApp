@@ -17,17 +17,25 @@ const handleJoinAsSpectator = (io, socket, rooms) => (roomNumber, username) => {
     if (rooms[roomNumber]) {
         // Join the socket to the room
         socket.join(roomNumber);
-
-        // Add the spectator to the room
         rooms[roomNumber].spectators.push({ id: socket.id, username });
-         console.log(`User ${socket.id} joined as a spectator in room ${roomNumber}`);
+        
+        console.log(`User ${socket.id} joined as a spectator in room ${roomNumber}`);
 
         // Emit updated user list to all clients in the room
         const userList = {
             players: rooms[roomNumber].players,
             spectators: rooms[roomNumber].spectators
         };
+
         io.to(roomNumber).emit(EVENTS.USER_LIST_UPDATE, userList);
+        const game = rooms[roomNumber].game;
+
+        const currentFEN = game.getCurrentFEN();
+        socket.emit(EVENTS.GAME_CURRENT_FEN, currentFEN)
+        const currentHistory = game.getGameHistory()
+        socket.emit(EVENTS.GAME_CURRENT_HISTORY, currentHistory)
+
+
     } else {
         console.log(`Room ${roomNumber} does not exist`);
     }

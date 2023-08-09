@@ -45,7 +45,13 @@ const handleNonOfferedDraw = (gameState, io, roomNumber, rooms) => {
             rooms[roomNumber].winner = "Draw by Fifty Move Rule"
         }
 
-        io.to(roomNumber).emit(EVENTS.GAME_OVER_DRAW, drawReason);
+        const room = rooms[roomNumber];
+        room.players.forEach(player => {
+            io.to(player.id).emit(EVENTS.GAME_OVER_DRAW, drawReason);
+        });
+        room.spectators.forEach(spectator => {
+            io.to(spectator.id).emit(EVENTS.GAME_OVER_DRAW, drawReason);
+        });
     }
 };
 
@@ -63,7 +69,14 @@ const handleCheckmate = (gameState, io, roomNumber, rooms) => {
         // For the room, set the winner to the player who is not the current player
         
         rooms[roomNumber].winner = winningPlayerColor + " wins by Checkmate";
-        io.to(roomNumber).emit(EVENTS.CHECKMATE, `${winningPlayerColor}`);
+
+        const room = rooms[roomNumber];
+        room.players.forEach(player => {
+            io.to(player.id).emit(EVENTS.CHECKMATE, `${winningPlayerColor}`);
+        });
+        room.spectators.forEach(spectator => {
+            io.to(spectator.id).emit(EVENTS.CHECKMATE, `${winningPlayerColor}`);
+        });
     }
 };
 
@@ -115,9 +128,21 @@ const handleMove = (io, socket, rooms, gameSchema, gameModel) => (roomNumber, fr
         const currentFen = game.getCurrentFEN();
         const validMoves = game.validMoves();
         const history = game.getGameHistory();
-        io.to(roomNumber).emit(EVENTS.MOVE_MADE, to, currentFen, validMoves, history);
+
+        const room = rooms[roomNumber];
+        room.players.forEach(player => {
+            io.to(player.id).emit(EVENTS.MOVE_MADE, to, currentFen, validMoves, history);
+        });
+        room.spectators.forEach(spectator => {
+            io.to(spectator.id).emit(EVENTS.MOVE_MADE, to, currentFen, validMoves, history);
+        });
+
     } catch (error) {
-        io.to(roomNumber).emit(EVENTS.ERROR_MOVING, `Error moving: ${error}`);
+        const room = rooms[roomNumber];
+        room.players.forEach(player => {
+            io.to(player.id).emit(EVENTS.ERROR_MOVING, `Error moving: ${error}`);
+        });
+
         console.log(`Error moving: ${error}`)
         return
     }
@@ -132,6 +157,7 @@ const handleMove = (io, socket, rooms, gameSchema, gameModel) => (roomNumber, fr
     rooms[roomNumber].timers[currentPlayer] += rooms[roomNumber].increment;
   
     if (gameState.gameOver) {
+
         handleGameOver(io, roomNumber, rooms, gameState, gameSchema, gameModel) 
     }
 };

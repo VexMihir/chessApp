@@ -20,8 +20,8 @@ const io = socketIo(server, {
     origin: [process.env.FRONTEND_URL || "http://localhost:3000", "https://admin.socket.io"],
     methods: ["GET", "POST"],
     allowedHeaders: ["my-custom-header"],
-    credentials: true
-  }
+    credentials: true,
+  },
 });
 const port = 5001;
 
@@ -47,10 +47,10 @@ const gameSchema = new mongoose.Schema({
   playerOneData: Object,
   playerTwoData: Object,
   date: Date,
-  result: String // "White", "Black", or "Draw"
+  result: String, // "White", "Black", or "Draw"
 });
 
-const Game = mongoose.model('Games', gameSchema);
+const Game = mongoose.model("Games", gameSchema);
 
 // Initialize socketHandlers
 socketHandlers.init(io, rooms, gameSchema, Game);
@@ -67,12 +67,11 @@ app.get('/createGame', (req, res) => {
   };
   const roomNumber = newUniqueRoomNumber();
 
-
   let timeControl = parseInt(req.query.timeControl); // Time control in minutes
 
   if (!isNaN(timeControl)) {
     timeControl *= 60; // to seconds
-  } 
+  }
 
   let timeIncrement = parseInt(req.query.timeIncrement); // time increment in seconds
 
@@ -86,8 +85,15 @@ app.get('/createGame', (req, res) => {
   }
 
   // max time control is 1 hour, max increment is +3 minutes
-  if (timeControl < 1 * 60 || timeControl > 60 * 60 || timeIncrement < 0 || timeIncrement > 180) {
-    return res.status(400).json({ error: "Invalid time control or time increment" });
+  if (
+    timeControl < 1 * 60 ||
+    timeControl > 60 * 60 ||
+    timeIncrement < 0 ||
+    timeIncrement > 180
+  ) {
+    return res
+      .status(400)
+      .json({ error: "Invalid time control or time increment" });
   }
 
   rooms[roomNumber] = {
@@ -98,8 +104,8 @@ app.get('/createGame', (req, res) => {
     timeControl: timeControl,
     increment: timeIncrement,
     currentPlayer: null,
-    drawOffer: null
-  }
+    drawOffer: null,
+  };
 
   res.send({ roomNumber });
 });
@@ -119,14 +125,16 @@ app.get('/games', async (req, res) => {
       if (game) {
         res.send(game);
       } else {
-        res.status(404).send({ message: 'No game found with the specified UUID.' });
+        res
+          .status(404)
+          .send({ message: "No game found with the specified UUID." });
       }
     } catch (error) {
       console.log(error);
-      res.status(500).send({ message: 'Error finding game by UUID.' });
+      res.status(500).send({ message: "Error finding game by UUID." });
     }
   } else {
-    const games = await Game.find().sort({ date: -1 }).limit(10);
+    const games = await Game.find().sort({ date: -1 }).limit(100);
     res.send(games);
   }
 });

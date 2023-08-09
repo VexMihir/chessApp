@@ -1,7 +1,28 @@
 import React, { useState, useEffect } from "react";
-import { BLACK_CHESS_PIECE, WHITE_CHESS_PIECE } from "../inGameView/InGameView";
+import { BLACK_CHESS_PIECE, WHITE_CHESS_PIECE } from "../../constants/customChessPiece";
+import { EVENTS } from "../../constants/aliases";
 
-import { InGamePrevMovePannel } from "./InGamePrevMovePannel";
+
+/*
+  A child component of InGameView
+  1. It has two distinct views - one for players, one for spectators
+  2. For the view the players can see, it can display player info, spectators, previous moves, pawn promotion choice, and game result actions.
+  3. For the view the spectators can see, it can display players info, spectators, previous moves and orientation
+  4. The players info section can display the information for the name, color and timer of 2 players
+  5. Player1 is the current player while Player2 is other player
+  6. Colors can be both white and black
+  7. Timer by default is set to 300 seconds
+  8. When the game started, the timer for Player1 starts decrementing by 1 second until 0
+  9. Once Player1 finsihes moveing a piece to other target chess square, the timer for Player1 stops and the timer for Player2 begins descrementing by 1 seconds until Player 2 finishes moving a piece to other square
+  10. A room can have 2 players and many spectators.
+  11. Once one of the players finsiehs moveing a chess piece, the previous moves get updated.
+  12. By default, the pawn promotion choice is Knight.
+  13. During the game, players change the Pawn promotion choice.
+  14. The section for game result actions contains both forfeit and offer draw buttons  
+  15. As a spectator, the sideboard can diplay players info, spectators and previous moves and orientation
+  16. There are 2 options for orientation - white and black. 
+  Technologies: React, Socket.io, Tailwind CSS
+*/
 export default function Sideboard(props) {
   const socket = props.socket;
   const players = props.players;
@@ -13,6 +34,9 @@ export default function Sideboard(props) {
   const setPawnPromotionChoice = props.setPawnPromotionChoice;
 
   const isSocketSpectator = props.isSocketSpectator;
+
+  const orientation = props.orientation;
+  const setOrientation = props.setOrientation;
 
   const [self, setSelf] = useState();
   const [challenger, setChallenger] = useState();
@@ -51,10 +75,14 @@ export default function Sideboard(props) {
       players !== undefined &&
       players !== null
     ) {
-      if (players.length === 1) {
+      if (players.length === 0) {
+        // setSelf("Unjoined");
+        // setChallenger("Unjoined")
+      } else if (players.length === 1) {
         if (socket.id === players[0].id) {
           setSelf(players[0]);
-          if (players[0].color === 'black') {
+          // setChallenger("Unjoined")
+          if (players[0].color.toLowerCase() === 'black') {
             setPawnPromotionChoice(BLACK_CHESS_PIECE.KNIGHT)
           }
         } 
@@ -62,13 +90,13 @@ export default function Sideboard(props) {
         if (socket.id === players[0].id) {
           setSelf(players[0]);
           setChallenger(players[1]);
-          if (players[0].color === 'black') {
+          if (players[0].color.toLowerCase() === 'black') {
             setPawnPromotionChoice(BLACK_CHESS_PIECE.KNIGHT)
           }
         } else if (socket.id === players[1].id) {
           setSelf(players[1]);
           setChallenger(players[0]);
-          if (players[1].color === 'black') {
+          if (players[1].color.toLowerCase() === 'black') {
             setPawnPromotionChoice(BLACK_CHESS_PIECE.KNIGHT)
           }
 
@@ -89,7 +117,7 @@ export default function Sideboard(props) {
               </div>
               <div className="flex justify-around text-custom-black text-xl text-center font-bold">
                 <div className="w-1/2 border border-black border-solid">
-                  <div>Player1:   (You)</div>
+                  <div>Player1: (You)</div>
                   <div className="flex border-x-0 border-y border-y-black border-solid px-2">
                     <div>Name:</div>
 
@@ -114,7 +142,7 @@ export default function Sideboard(props) {
                 </div>
 
                 <div className="w-1/2 border border-black border-solid">
-                  <div>Player2:  (Challenger)</div>
+                  <div>Player2: (Challenger)</div>
                   <div className="flex border-x-0 border-y border-y-black border-solid px-2">
                     <div>Name:</div>
                     <div className="text-center w-full">
@@ -158,35 +186,72 @@ export default function Sideboard(props) {
             <div className="text-center text-yellow-400 text-3xl bg-custom-black">
               Previous Moves
             </div>
-            <div className="">
-              <InGamePrevMovePannel history={history} />
+            <div className="h-[4.8rem]">
+              {history === undefined ? (
+              <div
+                //Source: https://stackoverflow.com/questions/72391045/what-do-the-parameters-in-tailwind-grid-cols-1fr-700px-2fr-do
+                //Source: https://stackoverflow.com/questions/67242334/tailwind-css-how-to-make-a-grid-with-two-columns-where-the-1st-column-has-20
+                className="overflow-y-scroll text-custom-black bg-custom-cream grid grid-cols-[1fr_6fr_6fr] text-2xl text-center"
+              ></div>
+              ) : (
+              <div className="h-[4.8rem] overflow-y-scroll text-custom-black bg-custom-cream grid grid-cols-[1fr_6fr_6fr] text-2xl text-center">
+                {history.map((child, index) => {
+                  return (
+                    <>
+                      {index % 2 === 0 ? (
+                        <>
+                          <div className="h-[min-content]">
+                            {index / 2 + 1}.
+                          </div>{" "}
+                          <div className="h-[min-content]">{child["san"]}</div>
+                        </>
+                      ) : (
+                        <div className="h-[min-content]">{child["san"]}</div>
+                      )}
+                    </>
+                  );
+                })}
+              </div>
+              )}
             </div>
             <div>
               <div className="text-5xl bg-custom-cream text-red-700 font-black text-center">
                 <div className="text-3xl text-yellow-400 text-center bg-custom-black">
                   Pawn Promotion Choice
                 </div>
-                {self !== undefined && self.color === "black" ? (
+                {self !== undefined && self.color.toLowerCase() === "black" ? (
                   <>
                     <div>{pawnPromotionChoice}</div>
                     <div className="bg-custom-cream flex justify-around">
-                      <button className="text-2xl text-yellow-400 font-bold bg-custom-black rounded-md"
-                        onClick={() => setPawnPromotionChoice(BLACK_CHESS_PIECE.ROOK)}
+                      <button
+                        className="text-2xl text-black font-bold bg-custom-cream rounded-md"
+                        onClick={() =>
+                          setPawnPromotionChoice(BLACK_CHESS_PIECE.ROOK)
+                        }
                       >
                         {BLACK_CHESS_PIECE.ROOK}
                       </button>
-                      <button className="text-2xl text-yellow-400 font-bold bg-custom-black rounded-md"
-                        onClick={() => setPawnPromotionChoice(BLACK_CHESS_PIECE.KNIGHT)}
+                      <button
+                        className="text-2xl text-black font-bold bg-custom-cream rounded-md"
+                        onClick={() =>
+                          setPawnPromotionChoice(BLACK_CHESS_PIECE.KNIGHT)
+                        }
                       >
                         {BLACK_CHESS_PIECE.KNIGHT}
                       </button>
-                      <button className="text-2xl text-yellow-400 font-bold bg-custom-black rounded-md"
-                        onClick={() => setPawnPromotionChoice(BLACK_CHESS_PIECE.BISHOP)}
+                      <button
+                        className="text-2xl text-black font-bold bg-custom-cream rounded-md"
+                        onClick={() =>
+                          setPawnPromotionChoice(BLACK_CHESS_PIECE.BISHOP)
+                        }
                       >
                         {BLACK_CHESS_PIECE.BISHOP}
                       </button>
-                      <button className="text-2xl text-yellow-400 font-bold bg-custom-black rounded-md"
-                        onClick={() => setPawnPromotionChoice(BLACK_CHESS_PIECE.QUEEN)}
+                      <button
+                        className="text-2xl text-black font-bold bg-custom-cream rounded-md"
+                        onClick={() =>
+                          setPawnPromotionChoice(BLACK_CHESS_PIECE.QUEEN)
+                        }
                       >
                         {BLACK_CHESS_PIECE.QUEEN}
                       </button>
@@ -196,23 +261,35 @@ export default function Sideboard(props) {
                   <>
                     <div>{pawnPromotionChoice}</div>
                     <div className="bg-custom-cream flex justify-around">
-                      <button className="text-2xl text-yellow-400 font-bold bg-custom-black rounded-md"
-                        onClick={() => setPawnPromotionChoice(WHITE_CHESS_PIECE.ROOK)}
+                      <button
+                        className="text-2xl text-custom-cream font-bold bg-custom-black rounded-md"
+                        onClick={() =>
+                          setPawnPromotionChoice(WHITE_CHESS_PIECE.ROOK)
+                        }
                       >
                         {WHITE_CHESS_PIECE.ROOK}
                       </button>
-                      <button className="text-2xl text-yellow-400 font-bold bg-custom-black rounded-md"
-                        onClick={() => setPawnPromotionChoice(WHITE_CHESS_PIECE.KNIGHT)}
+                      <button
+                        className="text-2xl text-custom-cream font-bold bg-custom-black rounded-md"
+                        onClick={() =>
+                          setPawnPromotionChoice(WHITE_CHESS_PIECE.KNIGHT)
+                        }
                       >
                         {WHITE_CHESS_PIECE.KNIGHT}
                       </button>
-                      <button className="text-2xl text-yellow-400 font-bold bg-custom-black rounded-md"
-                        onClick={() => setPawnPromotionChoice(WHITE_CHESS_PIECE.BISHOP)}
+                      <button
+                        className="text-2xl text-custom-cream font-bold bg-custom-black rounded-md"
+                        onClick={() =>
+                          setPawnPromotionChoice(WHITE_CHESS_PIECE.BISHOP)
+                        }
                       >
                         {WHITE_CHESS_PIECE.BISHOP}
                       </button>
-                      <button className="text-2xl text-yellow-400 font-bold bg-custom-black rounded-md"
-                        onClick={() => setPawnPromotionChoice(WHITE_CHESS_PIECE.QUEEN)}
+                      <button
+                        className="text-2xl text-custom-cream font-bold bg-custom-black rounded-md"
+                        onClick={() =>
+                          setPawnPromotionChoice(WHITE_CHESS_PIECE.QUEEN)
+                        }
                       >
                         {WHITE_CHESS_PIECE.QUEEN}
                       </button>
@@ -226,14 +303,14 @@ export default function Sideboard(props) {
             </div>
             <div className="flex justify-around">
               <button
-                className="bg-custom-black hover:bg-yellow-300 text-yellow-400 font-bold hover:text-custom-black rounded-md text-2xl w-1/2 p-1 m-1"
-                onClick={() => socket.emit("resignation", roomId)}
+                className="bg-custom-black hover:bg-yellow-300 text-yellow-400 font-bold hover:text-custom-black rounded-md text-2xl w-1/2 p-1"
+                onClick={() => socket.emit(EVENTS.RESIGNATION, roomId)}
               >
                 Forfeit
               </button>
               <button
-                className="bg-custom-black hover:bg-yellow-300 text-yellow-400 font-bold hover:text-custom-black rounded-md m-1 text-2xl w-1/2 p-1"
-                onClick={() => socket.emit("drawOffered", roomId)}
+                className="bg-custom-black hover:bg-yellow-300 text-yellow-400 font-bold hover:text-custom-black rounded-md text-2xl w-1/2 p-1"
+                onClick={() => socket.emit(EVENTS.DRAW_OFFERED, roomId)}
               >
                 Offer Draw
               </button>
@@ -241,13 +318,13 @@ export default function Sideboard(props) {
           </div>
         </div>
       ) : (
-        <div className="w-1/2 bg-white">
+        <div className="w-1/2 bg-custom-cream">
           <div className="w-full flex flex-col h-full justify-between items-stretch">
             <div>
-              <div className="text-white text-3xl text-center bg-slate-500">
+              <div className="text-center text-3xl text-yellow-400 font-bold bg-custom-black">
                 Players Info
               </div>
-              <div className="flex justify-around text-black text-xl text-center font-bold">
+              <div className="flex justify-around text-custom-black text-xl text-center font-bold">
                 <div className="w-1/2 border border-black border-solid">
                   <div>Player1 </div>
                   <div className="flex border-x-0 border-y border-y-black border-solid px-2">
@@ -299,10 +376,10 @@ export default function Sideboard(props) {
               </div>
             </div>
             <div>
-              <div className="text-white text-3xl text-center bg-slate-500">
+              <div className="text-center text-3xl text-yellow-400 font-bold bg-custom-black">
                 Spectators
               </div>
-              <div className="h-16 overflow-y-scroll text-black text-2xl grid grid-cols-[1fr_10fr_1fr_10fr]">
+              <div className="h-16 overflow-y-scroll text-custom-black text-2xl grid grid-cols-[1fr_10fr_1fr_10fr]">
                 {spectators
                   ? spectators.map((child, index) => {
                       return (
@@ -321,11 +398,63 @@ export default function Sideboard(props) {
                   : ""}
               </div>
             </div>
-            <div className="text-center text-white text-3xl bg-slate-500">
+            <div className="text-center text-3xl text-yellow-400 font-bold bg-custom-black">
               Previous Moves
             </div>
-            <div className="h-[25.6rem]">
-              <InGamePrevMovePannel history={history} />
+            <div className="h-[11.65rem]">
+            {history === undefined ? (
+              <div
+                //Source: https://stackoverflow.com/questions/72391045/what-do-the-parameters-in-tailwind-grid-cols-1fr-700px-2fr-do
+                //Source: https://stackoverflow.com/questions/67242334/tailwind-css-how-to-make-a-grid-with-two-columns-where-the-1st-column-has-20
+                className="overflow-y-scroll text-custom-black bg-custom-cream grid grid-cols-[1fr_6fr_6fr] text-2xl text-center"
+              ></div>
+              ) : (
+              <div className="h-[11.65rem] overflow-y-scroll text-custom-black bg-custom-cream grid grid-cols-[1fr_6fr_6fr] text-2xl text-center">
+                {history.map((child, index) => {
+                  return (
+                    <>
+                      {index % 2 === 0 ? (
+                        <>
+                          <div className="h-[min-content]">
+                            {index / 2 + 1}.
+                          </div>{" "}
+                          <div className="h-[min-content]">{child["san"]}</div>
+                        </>
+                      ) : (
+                        <div className="h-[min-content]">{child["san"]}</div>
+                      )}
+                    </>
+                  );
+                })}
+              </div>
+              )}
+            </div>
+            <div className="text-center text-3xl text-yellow-400 font-bold bg-custom-black">
+              Orientation
+            </div>
+            <div>
+              {/* Source: https://chat.openai.com/share/74c6ed80-6104-4787-903d-ab0de1dd408e */}
+              <button
+                className={
+                  orientation === "white"
+                    ? "font-bold bg-yellow-300 text-custom-black rounded-md text-2xl w-1/2 p-1"
+                    : "bg-custom-black text-yellow-400 font-bold hover:bg-yellow-300 hover:text-custom-black rounded-md text-2xl w-1/2 p-1"
+                }
+                onClick={() => setOrientation("white")}
+              >
+                White
+              </button>
+              {/* Source: https://chat.openai.com/share/74c6ed80-6104-4787-903d-ab0de1dd408e */}
+              <button
+                className={
+                  orientation === "black"
+                    ? "font-bold bg-yellow-300 text-custom-black rounded-md text-2xl w-1/2 p-1"
+                    : "bg-custom-black text-yellow-400 font-bold hover:bg-yellow-300 hover:text-custom-black rounded-md text-2xl w-1/2 p-1"
+                }
+                onClick={() => setOrientation("black")}
+              >
+                Black
+              </button>
             </div>
           </div>
         </div>
