@@ -1,7 +1,8 @@
 
 /**
  * Handle Disconnect
- * This module handles the disconnection of a client from a room.
+ * This module handles the disconnection of a client from a room. 
+ * In such an event the game is ended.
  */
 
 const { EVENTS } = require('../aliases');

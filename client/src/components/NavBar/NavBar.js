@@ -1,3 +1,15 @@
+/**
+ * NavBar Component
+ *
+ * This component represents the navigation bar at the top of the application.
+ * It provides links to different sections of the application, including joining a game and
+ * accessing the database collection. It uses React Router's NavLink for navigation and
+ * the useNavigate hook for programmatic navigation. The component also applies custom styling
+ * for the navigation buttons.
+ *
+ * @module NavBar
+ */
+
 import { NavLink } from "react-router-dom";
 import { joinPage, queryPage } from "../../RouteString/RouteString";
 import "./NavBar.css"

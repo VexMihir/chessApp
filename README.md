@@ -34,7 +34,7 @@
 -   ❌ Login system for users.
 -   ❌ ELO Rating System.
 
-## 🧑‍💻 Technologies
+## 🧑‍💻 Technologies (Units 1-5)
 
  ### **HTML, CSS, and JS**
 > - Castle & Conquer employs React to produce HTML elements, employing JavaScript components that engage with the Document Object Model (DOM). Our application embraces CSS via the widely recognized TailwindCSS framework. Leveraging Tailwind, we implement styling across diverse components without conventional CSS, streamlining comprehensive theme administration. Since React is intrinsically rooted in JavaScript, we extensively utilize JavaScript both in our front-end and our NodeJS/Express backend.
@@ -62,7 +62,8 @@ Our app has the capabilities of real-time communication between a server and mul
 - Establish guidelines for the emitting and receiving socket events using aliases.
 - Compartmentalize socket events based on chess events into various socket handlers.
 
-## 🔮 Future of Castle & Conquer
+
+## 🔮 Future of Castle & Conquer (Description of Next Steps)
 - Add a login system that allows users to save their games in our chess database. This also allows for a username-based invite system and a friend system. A barebones login system was in the works by Jason Lai but was scrapped due to logistical reasons.
 - Extend our existing Stockfish AI framework (being used for game analysis) to enable players to play against an AI-controlled bot with varying difficulties.
 - Develop and deploy a persistent leaderboard or player rating system, built upon the login system.

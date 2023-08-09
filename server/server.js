@@ -1,6 +1,6 @@
 /**
  * ChessApp Server
- * This file sets up the Express server, Socket.IO, and MongoDB connection for the ChessApp application.
+ * This file sets up the Node Endpoints, Express server, Socket.IO, and MongoDB connection for the ChessApp application.
  */
 
 const express = require('express');
@@ -41,7 +41,7 @@ mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('...// Connected to ChessApp Cluster //...'))
   .catch(error => console.log(error));
 
-  // Game Schema
+// Game Schema
 const gameSchema = new mongoose.Schema({
   history: [{}],
   playerOneData: Object,

@@ -1,6 +1,7 @@
 /**
  * Handle Join Room
- * This module handles the logic when a player joins a room.
+ * This module handles the logic when a player or spectator joins a room. 
+ * Initializes player information like names and colors, timers and starts the game.
  */
 
 const { EVENTS } = require('../aliases');
@@ -11,7 +12,7 @@ const { pushToMongoAndManageDB } = require("./pushToMongoAndManageDB");
  * @param {Object} io - Socket.IO instance.
  * @param {Object} socket - The socket of the connected client.
  * @param {Object} rooms - Object containing information about rooms and players.
- * @param {Object} gameModel - The Mongoose model for game data.
+ * @param {Object} gameModel - The Chess.js model for game data.
  * @param {Object} gameSchema - The Mongoose schema for game data.
  * @returns {Function} - The function that handles joining a room.
  */

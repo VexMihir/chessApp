@@ -9,14 +9,9 @@ export function Pagination() {
     const pageTotalNo = Math.ceil( pgnData.length / 5);
 
     let pagArr = []
-
-    // if (pageTotalNo >= 5) {
-        // pagArr = [1, 2, 3, 4, 5]
-    // } else {
     for (let i = 1; i <= pageTotalNo; i++) {
         pagArr.push(i)
     }
-    // }
 
     let initObj = {
         totalFirstPage: 1,

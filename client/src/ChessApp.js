@@ -1,3 +1,14 @@
+/**
+ * ChessApp Component
+ *
+ * This component serves as the core of the Chess Rumble application. It utilizes React Router
+ * to manage the navigation and rendering of different views within the application. It provides
+ * routes for various features including room assignment, game playback, previous game views,
+ * and the in-game view. It also establishes a Socket.IO context for real-time communication.
+ *
+ * @module ChessApp
+ */
+
 import React from "react";
 import {  BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import InGameView from "./components/inGameView/InGameView";

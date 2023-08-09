@@ -1,6 +1,7 @@
 /**
  * Handle Join As Spectator
  * This module handles adding a user as a spectator to a specific room.
+ * Sends name updates to the frontend as well
  */
 
 const { EVENTS } = require('../aliases');

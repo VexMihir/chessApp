@@ -1,6 +1,7 @@
 /**
  * Handle Move
- * This module handles player moves and related game logic.
+ * This module handles player moves and related game logic. 
+ * Handles game over scenarios, draw scenarios and general chess logic using chess.js model.
  */
 
 const {pushToMongoAndManageDB} = require('./pushToMongoAndManageDB');
@@ -66,8 +67,8 @@ const handleCheckmate = (gameState, io, roomNumber, rooms) => {
     if (gameState.inCheckmate) {
         const currentPlayer = rooms[roomNumber].players.find(player => player.id === rooms[roomNumber].currentPlayer);
         const winningPlayerColor = currentPlayer.color === 'White' ? 'Black' : 'White';
-        // For the room, set the winner to the player who is not the current player
         
+        // For the room, set the winner to the player who is not the current player
         rooms[roomNumber].winner = winningPlayerColor + " wins by Checkmate";
 
         const room = rooms[roomNumber];
@@ -98,7 +99,7 @@ const handleGameOver = (io, roomNumber, rooms, gameState, gameSchema, gameModel)
 };
 
 /**
- * Handle player move.
+ * Handle player move inluding pawn promotion.
  * @param {Object} io - The Socket.IO instance.
  * @param {Object} socket - The Socket.IO socket object.
  * @param {Object} rooms - The object containing room data.
