@@ -130,7 +130,7 @@ export function JoinRoomForm() {
                 </legend>
                 <div className="flex flex-row justify-around items-center ">
                     <button
-                        onClick={() => handleIncrementSelection("0")}
+                        onClick={() => handleIncrementSelection("1")}
                         className={`py-[0.1rem] px-4 rounded-lg text-xs ${
                             selectedIncrementControl === "0" ? "bg-yellow-400" : ""
                         }`}
