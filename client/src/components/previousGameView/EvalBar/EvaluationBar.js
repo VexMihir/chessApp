@@ -34,15 +34,16 @@ export function EvaluationBar({evaluation, offsetScore}) {
         // but not theoretically guaranteed to go some way in the depth searched
         percentage = Math.min(Math.max((evaluation + 10) * 5, 0), 97);
         color = evaluation >= 0 ? 'white' : 'black'; // White color for positive, black for negative
+        console.log('color:', color)
     } else if (typeof evaluation === 'string') {
         if (evaluation.startsWith('M')) {
             // If it's mate, we consider it as 100% for the winning side
-            percentage = 100;
             color = offsetScore >= 0 ? 'white' : 'black'; // White color for positive f, black for negative
+            percentage = color == 'white' ? 100 : 0;
         } else if (['1-0', '0-1'].includes(evaluation)) {
             // If it's a game result, bar is fully colored for the winner
-            percentage = 100;
             color = evaluation === '1-0' ? 'white' : 'black'; // White color for '1-0', black for '0-1'
+            percentage = color == 'white' ? 100 : 0;
         }
     }
 

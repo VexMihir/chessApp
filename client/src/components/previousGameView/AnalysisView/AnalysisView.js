@@ -25,9 +25,7 @@ export function AnalysisView() {
     const currIndex = useSelector(state=> state).PrevGameView.currIdx
     const bestMove = info.bestMoves[currIndex - 1] || "N/A";
     const displayScore = info.displayScore[currIndex] || 0;
-    const rawScore = (info.offsetScore && info.offsetScore.length > currIndex && info.offsetScore[currIndex]) 
-    ? info.offsetScore[currIndex] 
-    : (info.rawScore[currIndex] || "N/A");
+    const rawScore = (info.rawScore[currIndex] || "N/A");
     let percentage = Math.ceil((Math.abs(displayScore)/8)*100);
 
     if (percentage > 100 ) {
