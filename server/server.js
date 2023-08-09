@@ -57,7 +57,7 @@ const Game = mongoose.model("Games", gameSchema);
 socketHandlers.init(io, rooms, gameSchema, Game);
 
 // Create a new game room
-app.get('/createGame', (req, res) => {
+app.post('/createGame', (req, res) => {
   const newUniqueRoomNumber = () => {
     const roomNumber = Math.floor(Math.random() * 1000000);
     if (rooms[roomNumber]) {
@@ -68,17 +68,14 @@ app.get('/createGame', (req, res) => {
   };
   const roomNumber = newUniqueRoomNumber();
 
-  let timeControl = parseInt(req.query.timeControl); // Time control in minutes
 
-  console.log("line 72", timeControl);
+  let timeControl = parseInt(req.body.data.timeControl); // Time control in minutes
 
   if (!isNaN(timeControl)) {
     timeControl *= 60; // to seconds
   }
 
-  let timeIncrement = parseInt(req.query.timeIncrement); // time increment in seconds
-
-  console.log("line 80", timeIncrement);
+  let timeDecrement = parseInt(req.body.data.timeDecrement); // time decrement in seconds
 
 
   // default time controlis 5 minutes + 0 seconds if not specified 
@@ -86,20 +83,20 @@ app.get('/createGame', (req, res) => {
     timeControl = 5 * 60; // to seconds
   }
 
-  if (isNaN(timeIncrement)) {
-    timeIncrement = 0;
+  if (isNaN(timeDecrement)) {
+    timeDecrement = 0;
   }
 
-  // max time control is 1 hour, max increment is +3 minutes
+  // max time control is 1 hour, max decrement is +3 minutes
   if (
     timeControl < 1 * 60 ||
     timeControl > 60 * 60 ||
-    timeIncrement < 0 ||
-    timeIncrement > 180
+    timeDecrement < 0 ||
+    timeDecrement > 180
   ) {
     return res
       .status(400)
-      .json({ error: "Invalid time control or time increment" });
+      .json({ error: "Invalid time control or time decrement" });
   }
 
   rooms[roomNumber] = {
@@ -108,7 +105,7 @@ app.get('/createGame', (req, res) => {
     spectators: [],
     timers: {},
     timeControl: timeControl,
-    increment: timeIncrement,
+    decrement: timeDecrement,
     currentPlayer: null,
     drawOffer: null,
   };
@@ -118,7 +115,6 @@ app.get('/createGame', (req, res) => {
 
 // Create a new game room
 app.get('/rooms', (req, res) => {
-  // return rooms
   res.send(rooms)
 })
 

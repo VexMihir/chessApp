@@ -293,6 +293,8 @@ export default function InGameView() {
     });
 
     socket.on(EVENTS.TIME_UPDATES, (timer) => {
+      console.log("line 296 timer");
+      console.log(timer);
       setTimer(timer);
     });
 

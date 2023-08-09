@@ -14,7 +14,7 @@ export function WaitingRoomForm () {
     let {state} = useLocation();
 
     useEffect(()=> {
-        dispatch(getRoomNumberAsync(state.userName, state.selectedTimeControl, state.selectedIncrementControl))
+        dispatch(getRoomNumberAsync(state.userName, state.selectedTimeControl, state.selectedDecrementControl))
 
     }, [])
 

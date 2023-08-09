@@ -2,15 +2,17 @@ import axios from "axios";
 import {setRoomNo} from "../Action/joinRoomAction";
 import {setERROR} from "../Action/errorAction";
 
-export function getRoomNumberAsync(userName, timeControl, timeIncrement) {
+export function getRoomNumberAsync(userName, timeControl, timeDecrement) {
     return async (dispatch, getState) => {
             try {
-                const response = await axios.get(('http://localhost:5001') + '/createGame',
+                console.log("timeControl", timeControl);
+                console.log("timeDecrement", timeDecrement);
+                const response = await axios.post(('http://localhost:5001') + '/createGame',
                 // const response = await axios.get((process.env.REACT_APP_BACKEND_URL || 'http://localhost:5001') + '/createGame',
-                    {params:
+                    {data:
                             {
                             timeControl,
-                            timeIncrement
+                            timeDecrement
                             }
                         }
                     );
