@@ -23,7 +23,7 @@
 3. ✅ Be able to represent a chess game on a UI using React and CSS.
 #### 🎯 Standard Requirements:
    - ✅ Users should be able to offer a draw or resign (forfeit) the game
--   ✅ Having the last 10 games on the website posted somewhere, where users can click and playback the game.
+-   ✅ Having the last 100 games on the website posted somewhere, where users can click and playback the game.
 -   ✅ Handle network issues like disconnects and reconnects.
 -   ✅ Be able to see the legal moves of a piece in the UI.
 -   ✅ Allows users to retrieve and play back their previous games, step by step.
