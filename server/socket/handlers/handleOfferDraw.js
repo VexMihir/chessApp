@@ -1,5 +1,16 @@
+/**
+ * Handle Offer Draw
+ * This module handles the offering of a draw in a room.
+ */
+
 const { EVENTS, OFFERED_DRAW_STATES } = require('../aliases');
 
+/**
+ * Handle the offering of a draw in a room.
+ * @param {Object} io - The Socket.IO server instance.
+ * @param {Object} socket - The socket instance representing the client.
+ * @param {Object} rooms - The object storing room information.
+ */
 const handleOfferDraw = (io, socket, rooms) => (roomNumber) => {
 
     if (!rooms[roomNumber]) {

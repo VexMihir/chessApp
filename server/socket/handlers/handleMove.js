@@ -136,6 +136,7 @@ const handleMove = (io, socket, rooms, gameSchema, gameModel) => (roomNumber, fr
         room.spectators.forEach(spectator => {
             io.to(spectator.id).emit(EVENTS.MOVE_MADE, to, currentFen, validMoves, history);
         });
+
     } catch (error) {
         const room = rooms[roomNumber];
         room.players.forEach(player => {

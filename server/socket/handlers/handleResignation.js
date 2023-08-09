@@ -1,6 +1,19 @@
+/**
+ * Handle Resignation
+ * This module handles a player's resignation from a game room.
+ */
+
 const { EVENTS } = require('../aliases');
 const {pushToMongoAndManageDB} = require('./pushToMongoAndManageDB');
 
+/**
+ * Handle a player's resignation from a game room.
+ * @param {Object} io - The Socket.IO server instance.
+ * @param {Object} socket - The socket instance representing the client.
+ * @param {Object} rooms - The object storing room information.
+ * @param {Object} gameModel - The MongoDB model for the game.
+ * @param {Object} gameSchema - The schema for the game data.
+ */
 const handleResignation = (io, socket, rooms, gameModel, gameSchema) => (roomNumber) => {
     if (!rooms[roomNumber]) {
         console.log(`Room ${roomNumber} does not exist`);

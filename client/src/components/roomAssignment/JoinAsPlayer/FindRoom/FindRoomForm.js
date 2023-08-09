@@ -105,7 +105,7 @@ export function FindRoomForm() {
                         "no-underline border border-custom-black rounded-xl hover:shadow-transparent " +
                         "text-custom-black font-bold rounded " +
                         "shadow shadow-md shadow-custom-black " +
-                        "h-[10%] py-[0.5rem] px-4 m-auto "}
+                        "h-[10%] py-[0.5rem] px-4 m-auto join-button "}
                 onClick={(e)=>{
                     finalCheck(e)
                 }}

@@ -139,7 +139,7 @@ app.get('/games', async (req, res) => {
   }
 });
 
-// Start the server
+// Start the serverx
 server.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });

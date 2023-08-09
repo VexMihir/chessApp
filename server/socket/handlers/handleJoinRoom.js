@@ -15,23 +15,23 @@ const { pushToMongoAndManageDB } = require("./pushToMongoAndManageDB");
  * @param {Object} gameSchema - The Mongoose schema for game data.
  * @returns {Function} - The function that handles joining a room.
  */
-const handleJoinRoom =
-  (io, socket, rooms, gameModel, gameSchema) => (roomNumber, username) => {
-    const WHITE = "White";
-    const BLACK = "Black";
+const handleJoinRoom = (io, socket, rooms, gameModel, gameSchema) => (roomNumber, username) => {
 
-    /**
-     * Determine the starting color for the player.
-     * @returns {string} - The starting color ("White" or "Black").
-     */
-    const startingColor = () => {
-      const randomizer = Math.floor(Math.random() * 2);
-      if (randomizer > 0.5) {
-        return BLACK;
-      } else {
-        return WHITE;
-      }
-    };
+  const WHITE = "White";
+  const BLACK = "Black";
+
+  /**
+   * Determine the starting color for the player.
+   * @returns {string} - The starting color ("White" or "Black").
+   */
+  const startingColor = () => {
+    const randomizer = Math.floor(Math.random() * 2);
+    if (randomizer > 0.5) {
+      return BLACK;
+    } else {
+      return WHITE;
+    }
+  };
 
     /**
      * Get the opposite color for the given color.

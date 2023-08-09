@@ -1,6 +1,20 @@
+/**
+ * Handle Accept Draw
+ * This module handles the acceptance of a draw offer in a room.
+ */
+
 const { EVENTS, OFFERED_DRAW_STATES } = require('../aliases');
 const {pushToMongoAndManageDB} = require('./pushToMongoAndManageDB');
 
+
+/**
+ * Handle the acceptance of a draw offer in a room.
+ * @param {Object} io - The Socket.IO server instance.
+ * @param {Object} socket - The socket instance representing the client.
+ * @param {Object} rooms - The object storing room information.
+ * @param {Object} gameModel - The Mongoose model for the game.
+ * @param {Object} gameSchema - The Mongoose schema for the game.
+ */
 const handleAcceptDraw = (io, socket, rooms, gameModel, gameSchema) => (roomNumber) => {
     if (!rooms[roomNumber]) {
         console.log(`Room ${roomNumber} does not exist`);
