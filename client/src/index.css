@@ -1,30 +1,19 @@
-@tailwind components;
 @tailwind base;
+@tailwind components;
 @tailwind utilities;
-@tailwind variants;
-
-@import url('https://fonts.googleapis.com/css2?family=Andika:ital,wght@0,700;1,700&family=Rubik&display=swap');
-
-::placeholder{
-    color: white;
-}
-
-@font-face {
-    font-family: "Grenze";   /*Can be any text*/
-    src: local("Grenze-Black"),
-      url("../public/Fonts/Grenze-Black.ttf") format("truetype");
-  }
 
 body {
-    background-color: #cdcdcd;
-    color: white;
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-html, body, #app, #app>div {
-    height: 100%;
-    text-decoration-color: white;
-    font-family: 'Grenze';
-    font-size: 20px;
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
 }
+
+
