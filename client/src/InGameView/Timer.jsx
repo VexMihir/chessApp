@@ -6,7 +6,7 @@ const Timer = ({ timeInSeconds }) => {
   const seconds = timeInSeconds % 60;
 
   return (
-    <div className="text-xl font-bold bg-gray-950 text-gray-300 p-2 rounded">
+    <div className="text-xl font-bold bg-gray-950 text-gray-300 p-2 rounded shadow-lg">
       {minutes}:{seconds < 10 ? '0' + seconds : seconds}
     </div>
   );
