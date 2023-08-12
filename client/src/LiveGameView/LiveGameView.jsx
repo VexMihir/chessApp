@@ -30,6 +30,10 @@ const LiveGameView = () => {
     }
   }, []);
 
+  useEffect(() => {
+    connectToServerSocket();
+  }, []); 
+
   const connectToServerSocket = () => {
     // timeout as mock socket.io connect for 1 second
     setTimeout(() => {
@@ -57,11 +61,7 @@ const LiveGameView = () => {
       setMoveHistory(chess.history());
     }
   };
-   
-
-  useEffect(() => {
-    connectToServerSocket();
-  }, []); 
+  
 
   const renderInfo = (time, username) => (
     <div className="flex items-center justify-between w-full my-1.5">
