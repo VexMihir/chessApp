@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useRef} from 'react';
-import Chessboard from 'chessboardjsx';
-import {Chess} from 'chess.js';
+import React, { useState, useEffect, useRef } from 'react';
+import { Chess } from 'chess.js';
 import { color } from '../constants';
-import Timer from './Timer';
-import PastMovesPanel from './PastMovesPanel.jsx'
+import ChessboardPanel from './ChessboardPanel.jsx'
+import SidePanel from './SidePanel.jsx'
 
 const LiveGameView = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -14,7 +13,7 @@ const LiveGameView = () => {
   const [usernameForWhite, setUserNameWhite] = useState("user_white");
   const [usernameForBlack, setUserNameBlack] = useState("user_black");
   const [orientation, setOrientation] = useState(color.WHITE);
-  
+
   // Chess logic related data
   const [chess] = useState(new Chess()); // create a new chess.js instance
   const [fen, setFen] = useState(chess.fen()); // use FEN for board position
@@ -24,15 +23,38 @@ const LiveGameView = () => {
   const [boardHeight, setBoardHeight] = useState(0);
   const chessboardRef = useRef(null);
 
+  // Resign functionality
+  const onResign = () => {
+    console.log("Resigned")
+  }
+
+  // Offer draw functionality
+  const onOfferDraw = () => {
+    console.log("Offered draw")
+  }
+
+
   useEffect(() => {
     if (chessboardRef.current) {
       setBoardHeight(chessboardRef.current.clientHeight);
+
+      const resizeObserver = new ResizeObserver(() => {
+        setBoardHeight(chessboardRef.current.clientHeight);
+      });
+
+      resizeObserver.observe(chessboardRef.current);
+
+      // Cleanup function for the effect
+      return () => {
+        resizeObserver.disconnect();
+      };
     }
-  }, []);
+  }, [chessboardRef]);
+
 
   useEffect(() => {
     connectToServerSocket();
-  }, []); 
+  }, []);
 
   const connectToServerSocket = () => {
     // timeout as mock socket.io connect for 1 second
@@ -44,7 +66,7 @@ const LiveGameView = () => {
   // if the move was successful, return true
   const movePieceFromSourceToTarget = ({ sourceSquare, targetSquare }) => {
     try {
-      const move = chess.move({
+      chess.move({
         from: sourceSquare,
         to: targetSquare
       });
@@ -61,30 +83,25 @@ const LiveGameView = () => {
       setMoveHistory(chess.history());
     }
   };
-  
 
-  const renderInfo = (time, username) => (
-    <div className="flex items-center justify-between w-full my-1.5">
-      <div className="text-white">{username}</div>
-      <Timer timeInSeconds={time} />
-    </div>
-  );  
-  
   return (
     <div className="flex items-center justify-center h-screen bg-gray-900">
-      <div className="flex flex-row bg-transparent items-center">
-        <div className="flex flex-col items-center pr-10" ref={chessboardRef}>
-          {renderInfo(timeForWhite, usernameForWhite)}
-          <Chessboard
-            position={fen}
-            orientation={orientation}
-            darkSquareStyle={{ backgroundColor: '#3F72AF' }}
-            lightSquareStyle={{ backgroundColor: '#F9F7F7' }}
-            onDrop={handleDrop}
-          />
-          {renderInfo(timeForBlack, usernameForBlack)}
-        </div>
-        <PastMovesPanel moves={moveHistory} height={boardHeight} />
+      <div className="flex flex-row bg-transparent items-center" ref={chessboardRef}>
+        <ChessboardPanel
+          timeForWhite={timeForWhite}
+          timeForBlack={timeForBlack}
+          usernameForWhite={usernameForWhite}
+          usernameForBlack={usernameForBlack}
+          orientation={orientation}
+          fen={fen}
+          handleDrop={handleDrop}
+        />
+        <SidePanel
+          moves={moveHistory}
+          height={boardHeight}
+          onResign={onResign}
+          onOfferDraw={onOfferDraw}
+        />
       </div>
       {isLoading && <div className="text-white mt-4">Loading...</div>}
     </div>
