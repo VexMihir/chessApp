@@ -1,6 +1,7 @@
 import Chessboard from 'chessboardjsx';
 import Timer from './Timer';
 import PropTypes from 'prop-types';
+import roughSquare from './RoughJS/customRough.js' 
 
 const ChessboardPanel = ({
   timeForWhite,
@@ -24,9 +25,10 @@ const ChessboardPanel = ({
       <Chessboard
         position={fen}
         orientation={orientation}
-        darkSquareStyle={{ backgroundColor: '#3F72AF' }}
-        lightSquareStyle={{ backgroundColor: '#F9F7F7' }}
+        darkSquareStyle={{ backgroundColor: 'CornFlowerBlue' }}
+        lightSquareStyle={{ backgroundColor: 'grey' }}
         onDrop={handleDrop}
+        roughSquare={roughSquare}
       />
       {renderInfo(timeForBlack, usernameForBlack)}
     </div>
