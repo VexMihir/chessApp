@@ -8,8 +8,8 @@ const roughSquare = ({ squareElement, squareWidth }) => {
   const rc = new RoughSVG(svg);
   const chessSquare = rc.rectangle(0, 0, squareWidth, squareWidth, {
     roughness: 0,
-    fill: "grey",
-    bowing: 1,
+    fill: "White",
+    bowing: 7,
     fillStyle: "cross-hatch"
   });
   

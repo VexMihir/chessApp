@@ -26,7 +26,7 @@ const ChessboardPanel = ({
         position={fen}
         orientation={orientation}
         darkSquareStyle={{ backgroundColor: 'CornFlowerBlue' }}
-        lightSquareStyle={{ backgroundColor: 'grey' }}
+        lightSquareStyle={{ backgroundColor: 'White' }}
         onDrop={handleDrop}
         roughSquare={roughSquare}
       />
