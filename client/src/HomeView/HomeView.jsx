@@ -14,7 +14,7 @@ const HomeView = () => {
   return (
     <div className="flex items-center justify-center h-screen bg-gray-900">
       <div className="flex flex-col items-center pr-10">
-        <div className="text-white text-3xl mb-8">quick_chess</div>
+        <div className="text-white text-3xl mb-8 font-black">quick_chess</div>
         <button
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4"
           onClick={handlePlayWithFriends}

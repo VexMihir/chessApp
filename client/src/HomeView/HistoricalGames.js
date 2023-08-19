@@ -1,6 +1,25 @@
 // historicalGames.js
 export const games = [
     {
+        white: "xQc",
+        black: "moistCr1tikal",
+        pgn: [
+            '[Event "PogChamps"]',
+            '[Site "Chess.com"]',
+            '[Date "2020.06.09"]',
+            '[Round "-"]',
+            '[EventDate "?"]',
+            '[Round "?"]',
+            '[White "xQc"]',
+            '[Black "moistCr1tikal"]',
+            '[Result "1-0"]',
+            '[WhiteElo "843"]',
+            '[BlackElo "1074"]',
+            '',
+            '1.e4 e5 2.Nf3 Nc6 3.d4 exd4 4.Nxd4 Bc5 5.c3 Qf6 6.Nxc6 Qxf2# 0-1'
+        ]
+    },
+    {
         white: "Adolf Anderssen",
         black: "Jean Dufresne",
         pgn: [
@@ -49,25 +68,6 @@ export const games = [
             'axb5 34. Ra2 Rg5 35. Ra7+ Kf6 36. Ra2 f4 37. Rc2 Rg3 38. Ka2 Ke5 39. Kb2 Kd5 40.',
             'Rd2+ Ke4 41. Kb3 e5 42. Re2+ Kf5 43. Rd2 e4 44. Rd5+ Kf6 45. Rxb5 e3 46. Rb6+',
             'Kf5 47. Rb5+ Ke4 48. Rb8 e2 0-1'
-        ]
-    },
-    {
-        white: "xQc",
-        black: "moistCr1tikal",
-        pgn: [
-            '[Event "PogChamps"]',
-            '[Site "Chess.com"]',
-            '[Date "2020.06.09"]',
-            '[Round "-"]',
-            '[EventDate "?"]',
-            '[Round "?"]',
-            '[White "xQc"]',
-            '[Black "moistCr1tikal"]',
-            '[Result "1-0"]',
-            '[WhiteElo "843"]',
-            '[BlackElo "1074"]',
-            '',
-            '1.e4 e5 2.Nf3 Nc6 3.d4 exd4 4.Nxd4 Bc5 5.c3 Qf6 6.Nxc6 Qxf2# 0-1'
         ]
     }
     // More game objects here
