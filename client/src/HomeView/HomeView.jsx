@@ -1,5 +1,5 @@
 import React from 'react';
-import FamousGamePlayThrough from './FamousGamePlayThrough';
+import HistoricalGamePlayThrough from './HistoricalGamePlayThrough';
 
 const HomeView = () => {
 
@@ -28,7 +28,7 @@ const HomeView = () => {
           Join Game
         </button>
       </div>
-      <FamousGamePlayThrough />
+      <HistoricalGamePlayThrough />
     </div>
   );
 };
