@@ -1,6 +1,4 @@
-# Castle ⚔️ Conquer
-
-### **Ever dreamt of ruling the chessboard from the comfort of your couch? 🛋️ Say hello to Castle & Conquer, where you can reign as the grandmaster of real-time online chess! 🏆 Battle friends, rivals, or even foes across the globe, and dive into our captivating game archive to relive your most epic victories! 🌟 It's time to unleash your strategic prowess and conquer the chess world like never before! 🎉 Checkmate boredom with Castle & Conquer now!**
+# quick_chess
 
 [Live Website](https://jamdk-chess-frontend.onrender.com/)
 

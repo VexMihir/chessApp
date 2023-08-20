@@ -57,7 +57,7 @@ const HistoricalGamePlayThrough = () => {
     );
 
     return (
-        <div className={`flex flex-col items-center pr-10 transition-opacity duration-1000 ${visible ? 'opacity-100' : 'opacity-0'}`}>
+        <div className={`flex flex-col items-center transition-opacity duration-1000 ${visible ? 'opacity-100' : 'opacity-0'}`}>
             {renderInfo(black)}
             <Chessboard
                 width={400}
