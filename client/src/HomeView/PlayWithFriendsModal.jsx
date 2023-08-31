@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import { LOCALHOST_SERVER } from '../constants'
+import { useNavigate } from 'react-router-dom';
 
 const PlayWithFriendsModal = ({ onClose }) => {
-  const [minutesPerSide, setMinutesPerSide] = useState(10);
-  const [incrementInSeconds, setIncrementInSeconds] = useState(5);
+  const [minutesPerSide, setMinutesPerSide] = useState('10');
+  const [incrementInSeconds, setIncrementInSeconds] = useState('5');
+
+  const navigate = useNavigate();
 
   const handleBackgroundClick = (e) => {
     onClose();
@@ -10,6 +15,46 @@ const PlayWithFriendsModal = ({ onClose }) => {
 
   const handleContentClick = (e) => {
     e.stopPropagation();
+  };
+
+  async function createGame() {
+
+    const timeControl = {
+        minutesPerSide: minutesPerSide,
+        incrementInSeconds: incrementInSeconds,
+    };
+
+    let backendURL = process.env.REACT_APP_BACKEND_URL || LOCALHOST_SERVER
+
+    try {
+        const response = await axios.post(backendURL + '/createGame', timeControl);
+        // get the room number from the response
+        const roomNumber = response.data.roomNumber
+        navigate(`/live/${roomNumber}`);
+    } catch (e) {
+        console.error(e)
+    }
+
+    console.log(timeControl)
+  }
+
+  const handleBlackClick = () => {
+    console.log('Black button clicked');
+    // TODO - add in logic for choosing side
+    createGame() // should be something like createGame(BLACK)
+  };
+
+  const handleFiftyFiftyClick = () => {
+    console.log('50/50 button clicked');
+    // TODO - add in logic for choosing side
+    createGame()
+
+  };
+
+  const handleWhiteClick = () => {
+    console.log('White button clicked');
+    // TODO - add in logic for choosing side
+    createGame()
   };
 
   return (
@@ -51,13 +96,13 @@ const PlayWithFriendsModal = ({ onClose }) => {
           />
         </div>
         <div className="flex justify-between">
-          <button className="bg-black text-white p-4 rounded-lg">
+          <button onClick={handleBlackClick} className="bg-black text-white p-4 rounded-lg hover:bg-gray-800">
             Black
           </button>
-          <button className="bg-gray-400 text-black p-4 rounded-lg mx-2">
+          <button onClick={handleFiftyFiftyClick} className="bg-gray-400 text-black p-4 rounded-lg mx-2 hover:bg-gray-600">
             50/50
           </button>
-          <button className="bg-white text-black p-4 rounded-lg">
+          <button onClick={handleWhiteClick} className="bg-white text-black p-4 rounded-lg hover:bg-gray-300">
             White
           </button>
         </div>

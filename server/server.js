@@ -56,7 +56,7 @@ const Game = mongoose.model("Games", gameSchema);
 socketHandlers.init(io, rooms, gameSchema, Game);
 
 // Create a new game room
-app.get('/createGame', (req, res) => {
+app.post('/createGame', (req, res) => {
   const newUniqueRoomNumber = () => {
     const roomNumber = Math.floor(Math.random() * 1000000);
     if (rooms[roomNumber]) {
@@ -67,13 +67,13 @@ app.get('/createGame', (req, res) => {
   };
   const roomNumber = newUniqueRoomNumber();
 
-  let timeControl = parseInt(req.query.timeControl); // Time control in minutes
+  let timeControl = parseInt(req.body.timeControl); // Time control in minutes
 
   if (!isNaN(timeControl)) {
     timeControl *= 60; // to seconds
   }
 
-  let timeIncrement = parseInt(req.query.timeIncrement); // time increment in seconds
+  let timeIncrement = parseInt(req.body.timeIncrement); // time increment in seconds
 
   // default time controlis 5 minutes + 0 seconds if not specified 
   if (isNaN(timeControl)) {
