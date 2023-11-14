@@ -28,8 +28,10 @@ const handleJoinRoom = (io, socket, rooms, gameModel, gameSchema) => (roomNumber
   const startingColor = () => {
     const randomizer = Math.floor(Math.random() * 2);
     if (randomizer > 0.5) {
+      console.log(`User ${socket.id} is assigned color BLACK`);  // Logging statement added
       return BLACK;
     } else {
+      console.log(`User ${socket.id} is assigned color WHITE`);  // Logging statement added
       return WHITE;
     }
   };
@@ -54,6 +56,8 @@ const handleJoinRoom = (io, socket, rooms, gameModel, gameSchema) => (roomNumber
     const startTimer = (roomNumber) => {
       if (rooms[roomNumber].timer) return;
 
+      console.log(`Starting timer for room ${roomNumber}`);
+
       const timer = setInterval(() => {
         const currentPlayer = rooms[roomNumber].currentPlayer;
         rooms[roomNumber].timers[currentPlayer]--;
@@ -64,6 +68,7 @@ const handleJoinRoom = (io, socket, rooms, gameModel, gameSchema) => (roomNumber
           rooms[roomNumber].timers[currentPlayer] == 0 &&
           rooms[roomNumber].players.length === 2
         ) {
+          console.log(`Timer ran out in room ${roomNumber}. Player ${currentPlayer} loses.`);
           const winningColor =
             currentPlayer === rooms[roomNumber].players[0].id
               ? rooms[roomNumber].players[1].color
@@ -112,6 +117,7 @@ const handleJoinRoom = (io, socket, rooms, gameModel, gameSchema) => (roomNumber
           io.to(roomNumber).emit(EVENTS.START_GAME);
           startTimer(roomNumber);
         }
+        console.log(`User ${socket.id} joined room ${roomNumber}`);
       } else {
         socket.emit(EVENTS.ROOM_FULL, roomNumber);
         console.log(
@@ -134,6 +140,7 @@ const handleJoinRoom = (io, socket, rooms, gameModel, gameSchema) => (roomNumber
         spectators: rooms[roomNumber].spectators,
       };
     }
+    console.log("emitting user list update")
     io.to(roomNumber).emit(EVENTS.USER_LIST_UPDATE, userList);
   };
 

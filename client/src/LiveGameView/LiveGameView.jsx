@@ -3,6 +3,8 @@ import { Chess } from 'chess.js';
 import { color } from '../constants';
 import ChessboardPanel from './ChessboardPanel.jsx'
 import SidePanel from './SidePanel.jsx'
+import { io } from 'socket.io-client';
+import { EVENTS } from "../socket/aliases"
 
 const LiveGameView = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -22,6 +24,9 @@ const LiveGameView = () => {
   // UI Related data
   const [boardHeight, setBoardHeight] = useState(0);
   const chessboardRef = useRef(null);
+
+  // Socket related data
+  const socketRef = useRef();
 
   // Resign functionality
   const onResign = () => {
@@ -54,13 +59,56 @@ const LiveGameView = () => {
 
   useEffect(() => {
     connectToServerSocket();
+
+    return () => {
+      socketRef.current && socketRef.current.disconnect();
+    };
   }, []);
 
   const connectToServerSocket = () => {
-    // timeout as mock socket.io connect for 1 second
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
+    console.log("running connectToServerSocket")
+    socketRef.current = io(process.env.REACT_APP_BACKEND_URL || 'http://localhost:5001');
+    socketRef.current.on('connect', () => {
+      console.log('Connected to the server!');
+      const roomNumber = window.location.pathname.split('/')[2];
+      const username = "some_user"; 
+      socketRef.current.emit(EVENTS.JOIN_ROOM, roomNumber, username);
+      console.log("Emitted joinRoom")
+    });
+    
+    socketRef.current.on(EVENTS.USER_LIST_UPDATE, (userList) => {
+      console.log('Received user list:', userList);
+      
+      // Assuming the server sends an array of players, and each player has an `username` and `color` property
+      userList.players.forEach(player => {
+        if (player.color === color.WHITE) {
+          setUserNameWhite(player.username);
+        } else if (player.color === color.BLACK) {
+          setUserNameBlack(player.username);
+        }
+      });
+    });
+
+     // Handle the other events emitted by the server. These handlers are just examples:
+  socketRef.current.on(EVENTS.START_GAME, () => {
+    console.log('The game has started!');
+    // Implement any other logic you want here...
+  });
+
+  socketRef.current.on(EVENTS.ROOM_FULL, (room) => {
+    console.log(`Room ${room} is full!`);
+    // Inform the user that the room is full or handle as necessary
+  });
+
+  socketRef.current.on(EVENTS.ROOM_NOT_EXIST, () => {
+    console.log('This room does not exist.');
+    // Inform the user that the room does not exist or handle as necessary
+  });
+
+
+    socketRef.current.on()
+
+    setIsLoading(false);
   };
 
   // if the move was successful, return true

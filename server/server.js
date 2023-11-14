@@ -38,7 +38,7 @@ let rooms = {};
 
 // Database Connection
 mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('...// Connected to ChessApp Cluster //...'))
+  .then(() => console.log('// MongoDB Connection Established //'))
   .catch(error => console.log(error));
 
 // Game Schema
