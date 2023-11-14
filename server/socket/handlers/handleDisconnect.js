@@ -22,7 +22,7 @@ const handleDisconnect = (io, socket, rooms) => () => {
     
     if (roomNumber) {
 
-        rooms[roomNumber].players = rooms[roomNumber].players.filter(player => player.id !== socket.id);
+        // We should only remove spectators if they disconnect, not players. If a player disconnects, the game should end.
         rooms[roomNumber].spectators = rooms[roomNumber].spectators.filter(spectator => spectator.id !== socket.id);
         const userList = {
             players: rooms[roomNumber].players,

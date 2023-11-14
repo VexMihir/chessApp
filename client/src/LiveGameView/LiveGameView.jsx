@@ -10,8 +10,8 @@ const LiveGameView = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   // User related data
-  const [timeForWhite, setTimeForWhite] = useState(231);
-  const [timeForBlack, setTimeForBlack] = useState(190);
+  const [timeForWhite, setTimeForWhite] = useState(300);
+  const [timeForBlack, setTimeForBlack] = useState(300);
   const [usernameForWhite, setUserNameWhite] = useState("user_white");
   const [usernameForBlack, setUserNameBlack] = useState("user_black");
   const [orientation, setOrientation] = useState(color.WHITE);
@@ -37,7 +37,6 @@ const LiveGameView = () => {
   const onOfferDraw = () => {
     console.log("Offered draw")
   }
-
 
   useEffect(() => {
     if (chessboardRef.current) {
@@ -71,7 +70,7 @@ const LiveGameView = () => {
     socketRef.current.on('connect', () => {
       console.log('Connected to the server!');
       const roomNumber = window.location.pathname.split('/')[2];
-      const username = "some_user"; 
+      const username = `Anon${Math.floor(Math.random() * 9999999)}`;
       socketRef.current.emit(EVENTS.JOIN_ROOM, roomNumber, username);
       console.log("Emitted joinRoom")
     });
@@ -89,10 +88,27 @@ const LiveGameView = () => {
       });
     });
 
-     // Handle the other events emitted by the server. These handlers are just examples:
-  socketRef.current.on(EVENTS.START_GAME, () => {
-    console.log('The game has started!');
-    // Implement any other logic you want here...
+  socketRef.current.on(EVENTS.START_GAME, (gameInfo) => {
+    let whiteInfo = gameInfo.players[0].color === color.WHITE ? gameInfo.players[0] : gameInfo.players[1];
+    let blackInfo = gameInfo.players[0].color === color.BLACK ? gameInfo.players[0] : gameInfo.players[1];
+
+    if (whiteInfo.id === socketRef.current.id) {
+      setOrientation(color.WHITE);
+    } else {
+      setOrientation(color.BLACK);
+    }
+
+    setTimeForWhite(gameInfo.timeControl);
+    setTimeForBlack(gameInfo.timeControl);
+
+    setUserNameWhite(whiteInfo.username);
+    setUserNameBlack(blackInfo.username);
+  });
+
+  socketRef.current.on(EVENTS.TIME_UPDATES, (timeUpdate) => {
+    console.log(timeUpdate)
+    setTimeForWhite(timeUpdate[color.WHITE].time);
+    setTimeForBlack(timeUpdate[color.BLACK].time);
   });
 
   socketRef.current.on(EVENTS.ROOM_FULL, (room) => {
@@ -104,7 +120,6 @@ const LiveGameView = () => {
     console.log('This room does not exist.');
     // Inform the user that the room does not exist or handle as necessary
   });
-
 
     socketRef.current.on()
 

@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const JoinGameModal = ({ onClose }) => {
   const [roomNumber, setRoomNumber] = useState('');
+  const navigate = useNavigate();
 
   const handleBackgroundClick = (e) => {
     onClose();
@@ -12,7 +14,7 @@ const JoinGameModal = ({ onClose }) => {
   };
 
   const handleJoinRoom = () => {
-    console.log(`Joining room number: ${roomNumber}`);
+    navigate(`/live/${roomNumber}`);
   };
 
   return (

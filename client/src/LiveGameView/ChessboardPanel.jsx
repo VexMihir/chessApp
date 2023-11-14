@@ -2,6 +2,7 @@ import Chessboard from 'chessboardjsx';
 import Timer from './Timer';
 import PropTypes from 'prop-types';
 import roughSquare from './RoughJS/customRough.js' 
+import { color } from '../constants';
 
 const ChessboardPanel = ({
   timeForWhite,
@@ -19,9 +20,18 @@ const ChessboardPanel = ({
     </div>
   );
 
+  // decide which player's info to render at the top/bottom based on the orientation
+  const topPlayerInfo = orientation === color.WHITE
+    ? renderInfo(timeForBlack, usernameForBlack) 
+    : renderInfo(timeForWhite, usernameForWhite);
+
+  const bottomPlayerInfo = orientation === color.WHITE
+    ? renderInfo(timeForWhite, usernameForWhite) 
+    : renderInfo(timeForBlack, usernameForBlack);
+
   return (
     <div className="flex flex-col items-center pr-10">
-      {renderInfo(timeForWhite, usernameForWhite)}
+      {topPlayerInfo}
       <Chessboard
         position={fen}
         orientation={orientation}
@@ -30,7 +40,7 @@ const ChessboardPanel = ({
         onDrop={handleDrop}
         roughSquare={roughSquare}
       />
-      {renderInfo(timeForBlack, usernameForBlack)}
+      {bottomPlayerInfo}
     </div>
   );
 };
