@@ -5,6 +5,7 @@ import ChessboardPanel from './ChessboardPanel.jsx'
 import SidePanel from './SidePanel.jsx'
 import { io } from 'socket.io-client';
 import { EVENTS } from "../socket/aliases"
+import { useNavigate } from 'react-router-dom';
 
 const LiveGameView = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -24,6 +25,7 @@ const LiveGameView = () => {
   // UI Related data
   const [boardHeight, setBoardHeight] = useState(0);
   const chessboardRef = useRef(null);
+  const navigate = useNavigate();
 
   // Socket related data
   const socketRef = useRef();
@@ -67,6 +69,7 @@ const LiveGameView = () => {
   const connectToServerSocket = () => {
     console.log("running connectToServerSocket")
     socketRef.current = io(process.env.REACT_APP_BACKEND_URL || 'http://localhost:5001');
+    
     socketRef.current.on('connect', () => {
       console.log('Connected to the server!');
       const roomNumber = window.location.pathname.split('/')[2];
@@ -106,33 +109,65 @@ const LiveGameView = () => {
   });
 
   socketRef.current.on(EVENTS.TIME_UPDATES, (timeUpdate) => {
-    console.log(timeUpdate)
     setTimeForWhite(timeUpdate[color.WHITE].time);
     setTimeForBlack(timeUpdate[color.BLACK].time);
   });
 
+  socketRef.current.on(EVENTS.MOVE_MADE, (sourceSquare, targetSquare, currentPlayerID, currentFen, history) => {
+    if (socketRef.current.id !== currentPlayerID) {
+      chess.move({
+        from: sourceSquare,
+        to: targetSquare
+      });
+      setFen(currentFen);
+      setMoveHistory(history);
+    }
+  });
+
+  /**
+   * TODO: Handle the following events:
+   * Necessary Events:
+   * - EVENTS.TIMEOUT
+   *  - For this one:
+   *    - We will want to know which player timed out
+   *    - In general for all game over events, we will need a pop up that says who won and how
+   * - EVENTS.CHECKMATE
+   * - EVENTS.RESIGNATION
+   * - EVENTS.GAME_OVER_DRAW
+   * - EVENTS.DRAW_OFFERED
+   * - EVENTS.DRAW_ACCEPTED
+   * - EVENTS.DRAW_DECLINED
+   * 
+   * 
+   * Dubious Events (either get rid of or change -- server side errors are a bit rough to handle on the client):
+   * - ERROR
+   * - ERROR_MOVING
+   * - GAME_CURRENT_FEN
+   */
+
   socketRef.current.on(EVENTS.ROOM_FULL, (room) => {
-    console.log(`Room ${room} is full!`);
-    // Inform the user that the room is full or handle as necessary
+    alert(`Room ${room} is full!`);
+    // TODO: Let them spectate
   });
 
   socketRef.current.on(EVENTS.ROOM_NOT_EXIST, () => {
-    console.log('This room does not exist.');
-    // Inform the user that the room does not exist or handle as necessary
+    alert('This room does not exist.');
+    navigate("/home")
   });
 
     socketRef.current.on()
-
     setIsLoading(false);
   };
 
   // if the move was successful, return true
   const movePieceFromSourceToTarget = ({ sourceSquare, targetSquare }) => {
     try {
+      const roomNumber = window.location.pathname.split('/')[2];
       chess.move({
         from: sourceSquare,
         to: targetSquare
       });
+      socketRef.current.emit(EVENTS.MOVE, roomNumber, sourceSquare, targetSquare);
     } catch (error) {
       console.error(error);
       return false;

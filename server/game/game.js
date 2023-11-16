@@ -46,9 +46,17 @@ function ChessGame() {
 
     /**
      * Get the history of the game.
-     * @returns {Array} - Array of move objects representing the game history.
+     * @returns {Array} - Array of strings representing the game history.
      */
     this.getGameHistory = function() {
+        return this.game.history();
+    };
+
+    /**
+     * Get the VERBOSE history of the game.
+     * @returns {Array} - Array of move objects representing the game history.
+     */
+    this.getVerboseGameHistory = function() {
         return this.game.history({ verbose: true });
     };
 

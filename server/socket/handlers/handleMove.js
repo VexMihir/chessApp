@@ -107,7 +107,7 @@ const handleGameOver = (io, roomNumber, rooms, gameState, gameSchema, gameModel)
  * @param {Object} gameModel - The mongoose game model.
  * @returns {Function} - The function to handle the move operation.
  */
-const handleMove = (io, socket, rooms, gameSchema, gameModel) => (roomNumber, from, to, promotionChoice) => {
+const handleMove = (io, socket, rooms, gameSchema, gameModel) => (roomNumber, sourceSquare, targetSquare, promotionChoice) => {
     if (!checkRoomExists(rooms, roomNumber)) {
         socket.emit('error', `Error moving: room ${roomNumber} does not exist`);
         return;
@@ -123,9 +123,9 @@ const handleMove = (io, socket, rooms, gameSchema, gameModel) => (roomNumber, fr
 
     try {
         if (promotionChoice) {
-            game.movePieceWithPromotion(from, to, promotionChoice)
+            game.movePieceWithPromotion(sourceSquare, targetSquare, promotionChoice)
         } else {
-            game.movePieceWithPromotion(from, to)
+            game.movePieceWithPromotion(sourceSquare, targetSquare)
         }
         const currentFen = game.getCurrentFEN();
         const validMoves = game.validMoves();
@@ -133,10 +133,10 @@ const handleMove = (io, socket, rooms, gameSchema, gameModel) => (roomNumber, fr
 
         const room = rooms[roomNumber];
         room.players.forEach(player => {
-            io.to(player.id).emit(EVENTS.MOVE_MADE, to, currentFen, validMoves, history);
+            io.to(player.id).emit(EVENTS.MOVE_MADE, sourceSquare, targetSquare, currentPlayer, currentFen, history, validMoves);
         });
         room.spectators.forEach(spectator => {
-            io.to(spectator.id).emit(EVENTS.MOVE_MADE, to, currentFen, validMoves, history);
+            io.to(spectator.id).emit(EVENTS.MOVE_MADE, sourceSquare, targetSquare, currentFen, history, validMoves);
         });
 
     } catch (error) {
