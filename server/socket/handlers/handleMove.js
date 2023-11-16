@@ -73,7 +73,7 @@ const handleCheckmate = (gameState, io, roomNumber, rooms) => {
 
         const room = rooms[roomNumber];
         room.players.forEach(player => {
-            io.to(player.id).emit(EVENTS.CHECKMATE, `${winningPlayerColor}`);
+            io.to(player.id).emit(EVENTS.CHECKMATE, player.username, `${winningPlayerColor}`);
         });
         room.spectators.forEach(spectator => {
             io.to(spectator.id).emit(EVENTS.CHECKMATE, `${winningPlayerColor}`);

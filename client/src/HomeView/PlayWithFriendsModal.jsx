@@ -75,6 +75,7 @@ const PlayWithFriendsModal = ({ onClose }) => {
             type="range"
             id="minutes"
             value={minutesPerSide}
+            // TODO - figure out why this is not working
             onChange={(e) => setMinutesPerSide(e.target.value)}
             min="1"
             max="60"

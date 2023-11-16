@@ -35,7 +35,8 @@ module.exports = {
         TIME_UPDATES: 'time update',
         TIMEOUT: 'timeout',
         GAME_CURRENT_FEN: 'game current fen',
-        GAME_CURRENT_HISTORY: 'game current history'
+        GAME_CURRENT_HISTORY: 'game current history',
+        FIRST_PLAYER_JOINED: 'first player joined',
     },
 
     /**

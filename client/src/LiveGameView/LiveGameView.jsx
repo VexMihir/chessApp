@@ -6,6 +6,7 @@ import SidePanel from './SidePanel.jsx'
 import { io } from 'socket.io-client';
 import { EVENTS } from "../socket/aliases"
 import { useNavigate } from 'react-router-dom';
+import GameOverModal from './GameOverModal.jsx';
 
 const LiveGameView = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -13,14 +14,18 @@ const LiveGameView = () => {
   // User related data
   const [timeForWhite, setTimeForWhite] = useState(300);
   const [timeForBlack, setTimeForBlack] = useState(300);
-  const [usernameForWhite, setUserNameWhite] = useState("user_white");
-  const [usernameForBlack, setUserNameBlack] = useState("user_black");
+  const [usernameForWhite, setUserNameWhite] = useState("waiting..."); // TODO: make the ... a spinner
+  const [usernameForBlack, setUserNameBlack] = useState("waiting...");
   const [orientation, setOrientation] = useState(color.WHITE);
 
   // Chess logic related data
   const [chess] = useState(new Chess()); // create a new chess.js instance
   const [fen, setFen] = useState(chess.fen()); // use FEN for board position
   const [moveHistory, setMoveHistory] = useState([]);
+
+  // Game Over Modal
+  const [isGameOverModalOpen, setGameOverModalOpen] = useState(false);
+  const [gameOverMessage, setGameOverMessage] = useState({ primary: "", secondary: "" });
 
   // UI Related data
   const [boardHeight, setBoardHeight] = useState(0);
@@ -67,20 +72,15 @@ const LiveGameView = () => {
   }, []);
 
   const connectToServerSocket = () => {
-    console.log("running connectToServerSocket")
     socketRef.current = io(process.env.REACT_APP_BACKEND_URL || 'http://localhost:5001');
-    
+
     socketRef.current.on('connect', () => {
-      console.log('Connected to the server!');
       const roomNumber = window.location.pathname.split('/')[2];
-      const username = `Anon${Math.floor(Math.random() * 9999999)}`;
+      const username = `Anon${Math.floor(Math.random() * 999999)}`;
       socketRef.current.emit(EVENTS.JOIN_ROOM, roomNumber, username);
-      console.log("Emitted joinRoom")
     });
-    
+
     socketRef.current.on(EVENTS.USER_LIST_UPDATE, (userList) => {
-      console.log('Received user list:', userList);
-      
       // Assuming the server sends an array of players, and each player has an `username` and `color` property
       userList.players.forEach(player => {
         if (player.color === color.WHITE) {
@@ -91,69 +91,107 @@ const LiveGameView = () => {
       });
     });
 
-  socketRef.current.on(EVENTS.START_GAME, (gameInfo) => {
-    let whiteInfo = gameInfo.players[0].color === color.WHITE ? gameInfo.players[0] : gameInfo.players[1];
-    let blackInfo = gameInfo.players[0].color === color.BLACK ? gameInfo.players[0] : gameInfo.players[1];
+    socketRef.current.on(EVENTS.FIRST_PLAYER_JOINED, (gameInfo) => {
+      let playerInfo = gameInfo.players[0]
 
-    if (whiteInfo.id === socketRef.current.id) {
-      setOrientation(color.WHITE);
-    } else {
-      setOrientation(color.BLACK);
-    }
+      if (playerInfo.color === color.WHITE) {
+        setOrientation(color.WHITE);
+        setUserNameWhite(playerInfo.username);
+      } else {
+        setOrientation(color.BLACK);
+        setUserNameBlack(playerInfo.username);
+      }
 
-    setTimeForWhite(gameInfo.timeControl);
-    setTimeForBlack(gameInfo.timeControl);
+      setTimeForWhite(gameInfo.timeControl);
+      setTimeForBlack(gameInfo.timeControl);
+    });
 
-    setUserNameWhite(whiteInfo.username);
-    setUserNameBlack(blackInfo.username);
-  });
+    socketRef.current.on(EVENTS.START_GAME, (gameInfo) => {
+      let whiteInfo = gameInfo.players[0].color === color.WHITE ? gameInfo.players[0] : gameInfo.players[1];
+      let blackInfo = gameInfo.players[0].color === color.BLACK ? gameInfo.players[0] : gameInfo.players[1];
 
-  socketRef.current.on(EVENTS.TIME_UPDATES, (timeUpdate) => {
-    setTimeForWhite(timeUpdate[color.WHITE].time);
-    setTimeForBlack(timeUpdate[color.BLACK].time);
-  });
+      if (whiteInfo.id === socketRef.current.id) {
+        setOrientation(color.WHITE);
+      } else {
+        setOrientation(color.BLACK);
+      }
 
-  socketRef.current.on(EVENTS.MOVE_MADE, (sourceSquare, targetSquare, currentPlayerID, currentFen, history) => {
-    if (socketRef.current.id !== currentPlayerID) {
-      chess.move({
-        from: sourceSquare,
-        to: targetSquare
-      });
-      setFen(currentFen);
-      setMoveHistory(history);
-    }
-  });
+      setTimeForWhite(gameInfo.timeControl);
+      setTimeForBlack(gameInfo.timeControl);
 
-  /**
-   * TODO: Handle the following events:
-   * Necessary Events:
-   * - EVENTS.TIMEOUT
-   *  - For this one:
-   *    - We will want to know which player timed out
-   *    - In general for all game over events, we will need a pop up that says who won and how
-   * - EVENTS.CHECKMATE
-   * - EVENTS.RESIGNATION
-   * - EVENTS.GAME_OVER_DRAW
-   * - EVENTS.DRAW_OFFERED
-   * - EVENTS.DRAW_ACCEPTED
-   * - EVENTS.DRAW_DECLINED
-   * 
-   * 
-   * Dubious Events (either get rid of or change -- server side errors are a bit rough to handle on the client):
-   * - ERROR
-   * - ERROR_MOVING
-   * - GAME_CURRENT_FEN
-   */
+      setUserNameWhite(whiteInfo.username);
+      setUserNameBlack(blackInfo.username);
+    });
 
-  socketRef.current.on(EVENTS.ROOM_FULL, (room) => {
-    alert(`Room ${room} is full!`);
-    // TODO: Let them spectate
-  });
+    socketRef.current.on(EVENTS.TIME_UPDATES, (timeUpdate) => {
+      setTimeForWhite(timeUpdate[color.WHITE].time);
+      setTimeForBlack(timeUpdate[color.BLACK].time);
+    });
 
-  socketRef.current.on(EVENTS.ROOM_NOT_EXIST, () => {
-    alert('This room does not exist.');
-    navigate("/home")
-  });
+    socketRef.current.on(EVENTS.MOVE_MADE, (sourceSquare, targetSquare, currentPlayerID, currentFen, history) => {
+      if (socketRef.current.id !== currentPlayerID) {
+        chess.move({
+          from: sourceSquare,
+          to: targetSquare
+        });
+        setFen(currentFen);
+        setMoveHistory(history);
+      }
+    });
+
+    socketRef.current.on(EVENTS.GAME_OVER_DRAW, (username, color) => {
+      // TODO
+    });
+
+    socketRef.current.on(EVENTS.TIMEOUT, (username, color) => {
+      // TODO
+    });
+
+    socketRef.current.on(EVENTS.CHECKMATE, (winnerUsername, winnerColor) => {
+      console.log(winnerUsername)
+      console.log(winnerColor)
+      setGameOverMessage({
+        primary: `${winnerUsername} (${winnerColor}) wins`,
+        secondary: "by checkmate!"
+      })
+      setGameOverModalOpen(true);
+    });
+
+    socketRef.current.on(EVENTS.RESIGNATION, (username, color) => {
+      // TODO
+    });
+
+
+    /**
+     * TODO: Handle the following events:
+     * Necessary Events:
+     * - EVENTS.TIMEOUT
+     *  - For this one:
+     *    - We will want to know which player timed out
+     *    - In general for all game over events, we will need a pop up that says who won and how
+     * - EVENTS.CHECKMATE
+     * - EVENTS.RESIGNATION
+     * - EVENTS.GAME_OVER_DRAW
+     * - EVENTS.DRAW_OFFERED
+     * - EVENTS.DRAW_ACCEPTED
+     * - EVENTS.DRAW_DECLINED
+     * 
+     * 
+     * Dubious Events (either get rid of or change -- server side errors are a bit rough to handle on the client):
+     * - ERROR
+     * - ERROR_MOVING
+     * - GAME_CURRENT_FEN
+     */
+
+    socketRef.current.on(EVENTS.ROOM_FULL, (room) => {
+      alert(`Room ${room} is full!`);
+      // TODO: Let them spectate
+    });
+
+    socketRef.current.on(EVENTS.ROOM_NOT_EXIST, () => {
+      alert('This room does not exist.');
+      navigate("/home")
+    });
 
     socketRef.current.on()
     setIsLoading(false);
@@ -202,6 +240,12 @@ const LiveGameView = () => {
         />
       </div>
       {isLoading && <div className="text-white mt-4">Loading...</div>}
+      <GameOverModal
+        isOpen={isGameOverModalOpen}
+        onClose={() => setGameOverModalOpen(false)}
+        primaryMessage={gameOverMessage.primary}
+        secondaryMessage={gameOverMessage.secondary}
+      />
     </div>
   );
 };

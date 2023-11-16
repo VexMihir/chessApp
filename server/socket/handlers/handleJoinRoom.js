@@ -1,6 +1,6 @@
 /**
  * Handle Join Room
- * This module handles the logic when a player or spectator joins a room. 
+ * This module handles the logic when a player joins a room. 
  * Initializes player information like names and colors, timers and starts the game.
  */
 
@@ -115,7 +115,9 @@ const handleJoinRoom = (io, socket, rooms, gameModel, gameSchema) => (roomNumber
         color: color,
       });
 
-      if (rooms[roomNumber].players.length === 2) {
+      if (rooms[roomNumber].players.length === 1) {
+        io.to(roomNumber).emit(EVENTS.FIRST_PLAYER_JOINED, rooms[roomNumber]);
+      } else if (rooms[roomNumber].players.length === 2) {
         rooms[roomNumber].currentPlayer =
           rooms[roomNumber].players[0].color == WHITE
             ? rooms[roomNumber].players[0].id
